@@ -73,7 +73,7 @@ public class AuthorizeController {
      * 简化模式（implicit）
      * @return
      */
-    @GetMapping(value = "/authorize",params = {"response_type=code"})
+    @GetMapping(value = "/authorize",params = {"response_type=implicit"})
     public Object authorizeimplicit(HttpServletRequest request)throws OAuthSystemException, OAuthProblemException {
         ModelAndView mav = new ModelAndView();
         // 构建OAuth请求
