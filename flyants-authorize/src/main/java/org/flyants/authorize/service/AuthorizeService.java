@@ -1,5 +1,7 @@
 package org.flyants.authorize.service;
 
+import org.flyants.authorize.oauth2.AuthorizeRequest;
+
 /**
  * @Author zhangchao
  * @Date 2019/4/25 13:54
@@ -17,4 +19,6 @@ public interface AuthorizeService {
     public boolean checkRedirectUri(String redirectURI);
 
     public boolean checkAuthCode(String authCode);
+
+    AuthorizeRequest authorization(String response_type, String client_id, String redirect_uri, String scope, String state);
 }

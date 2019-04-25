@@ -1,6 +1,5 @@
 package org.flyants.authorize.domain.repository;
 
-import org.flyants.authorize.oauth2.Authorize;
 import org.flyants.authorize.oauth2.AuthorizeRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

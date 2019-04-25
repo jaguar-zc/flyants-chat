@@ -1,7 +1,9 @@
 package org.flyants.authorize.service.impl;
 
 import org.flyants.authorize.domain.repository.AuthorizeRepository;
+import org.flyants.authorize.domain.repository.AuthorizeRequestRepository;
 import org.flyants.authorize.domain.repository.ClientRepository;
+import org.flyants.authorize.oauth2.AuthorizeRequest;
 import org.flyants.authorize.service.AuthorizeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,9 @@ public class AuthorizeServiceImpl implements AuthorizeService {
 
     @Autowired
     private AuthorizeRepository authorizeRepository;
+
+    @Autowired
+    private AuthorizeRequestRepository authorizeRequestRepository;
 
 
     @Autowired
@@ -48,4 +53,10 @@ public class AuthorizeServiceImpl implements AuthorizeService {
     public boolean checkAuthCode(String authCode) {
         return false;
     }
+
+    @Override
+    public AuthorizeRequest authorization(String response_type, String client_id, String redirect_uri, String scope, String state) {
+        return null;
+    }
+
 }
