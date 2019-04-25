@@ -1,5 +1,4 @@
 package org.flyants.authorize.web;
-import java.util.Date;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.oltu.oauth2.as.issuer.MD5Generator;
@@ -9,10 +8,8 @@ import org.apache.oltu.oauth2.common.OAuth;
 import org.apache.oltu.oauth2.common.exception.OAuthProblemException;
 import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
 import org.apache.oltu.oauth2.common.message.types.ResponseType;
-import org.flyants.authorize.oauth2.Authorize;
+import org.flyants.authorize.domain.service.AuthorizeService;
 import org.flyants.authorize.oauth2.AuthorizeRequest;
-import org.flyants.authorize.service.AuthorizeService;
-import org.flyants.authorize.utils.ResponseData;
 import org.flyants.authorize.utils.ResponseDataUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.net.URISyntaxException;
 
 /**
  * 用户授权有四种模式：
@@ -61,6 +57,9 @@ public class AuthorizeController {
         }
         //检查用户是否登陆和同意授权，如何还没登陆则跳转至登陆页面,然后进行授权提示
         //待开发。。。
+
+
+
 
         //生成授权码
         //ResponseType仅支持CODE和TOKEN

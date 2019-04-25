@@ -1,10 +1,11 @@
-package org.flyants.authorize.service.impl;
+package org.flyants.authorize.domain.service.impl;
+import java.util.Date;
 
 import org.flyants.authorize.domain.repository.AuthorizeRepository;
 import org.flyants.authorize.domain.repository.AuthorizeRequestRepository;
 import org.flyants.authorize.domain.repository.ClientRepository;
 import org.flyants.authorize.oauth2.AuthorizeRequest;
-import org.flyants.authorize.service.AuthorizeService;
+import org.flyants.authorize.domain.service.AuthorizeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -56,7 +57,20 @@ public class AuthorizeServiceImpl implements AuthorizeService {
 
     @Override
     public AuthorizeRequest authorization(String response_type, String client_id, String redirect_uri, String scope, String state) {
-        return null;
+        AuthorizeRequest  request = new AuthorizeRequest();
+        request.setCreationDate(new Date());
+        request.setModificationDate(new Date());
+        request.setAuthState("");
+        request.setAuthorizationCode("");
+        request.setEncodedPrincipal("");
+        request.setRedirectUri(redirect_uri);
+        request.setResponseType(response_type);
+        request.setState(state);
+        request.setClientId(client_id);
+
+        authorizeRequestRepository.saveAndFlush(request);
+
+        return request;
     }
 
 }

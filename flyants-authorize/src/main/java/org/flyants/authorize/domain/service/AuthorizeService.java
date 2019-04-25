@@ -1,4 +1,4 @@
-package org.flyants.authorize.service;
+package org.flyants.authorize.domain.service;
 
 import org.flyants.authorize.oauth2.AuthorizeRequest;
 

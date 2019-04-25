@@ -11,7 +11,7 @@ import org.apache.oltu.oauth2.common.exception.OAuthProblemException;
 import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
 import org.apache.oltu.oauth2.common.message.OAuthResponse;
 import org.apache.oltu.oauth2.common.message.types.GrantType;
-import org.flyants.authorize.service.AuthorizeService;
+import org.flyants.authorize.domain.service.AuthorizeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +28,7 @@ import javax.servlet.http.HttpServletResponse;
  * @Version v1.0
  */
 @RestController
-@RequestMapping("/oauth2")
+@RequestMapping("/oauth2/access_token")
 @Slf4j
 public class AccessTokenController {
 
