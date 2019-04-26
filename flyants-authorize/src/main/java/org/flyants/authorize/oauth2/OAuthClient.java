@@ -1,0 +1,51 @@
+package org.flyants.authorize.oauth2;
+
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.*;
+
+/**
+ * @Author zhangchao
+ * @Date 2019/4/25 16:10
+ * @Version v1.0
+ */
+
+@Getter
+@Setter
+@Entity
+public class OAuthClient {
+
+    @Id
+    @Column
+    private String clientId;
+
+    @Column
+    private String clientName;
+
+    @Column
+    private String clientIcon;
+
+    @Column
+    private String clientSecret;
+
+    @Column
+    private String contactEmail;
+
+    @Column
+    private String contactName;
+
+    @Column
+    private String description;
+
+    @Column
+    private String clientRedirectUriHost;//对应主机域名
+
+    @Column
+    private Integer status;//状态。0:正常；1:冻结
+
+    @OneToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "client_resource_id", referencedColumnName = "id")
+    private OAuthClientResource oAuthClientResource;
+
+}

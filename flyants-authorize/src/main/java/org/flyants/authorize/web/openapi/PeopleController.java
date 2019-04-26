@@ -1,0 +1,45 @@
+package org.flyants.authorize.web.openapi;
+
+import lombok.extern.slf4j.Slf4j;
+import org.flyants.authorize.domain.service.AuthorizeService;
+import org.flyants.authorize.domain.service.PeopleService;
+import org.flyants.authorize.oauth2.People;
+import org.flyants.authorize.utils.ResponseDataUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Optional;
+
+/**
+ * @Author zhangchao
+ * @Date 2019/4/26 13:46
+ * @Version v1.0
+ */
+@RestController
+@RequestMapping("/people")
+@Slf4j
+public class PeopleController {
+
+    @Autowired
+    AuthorizeService authorizeService;
+
+    @Autowired
+    PeopleService peopleService;
+
+    @GetMapping
+    public Object info(@RequestHeader("access_token") String accessToken, String openId) {
+
+        if (authorizeService.checkAccessToken(accessToken)) {
+            return ResponseDataUtils.buildError("无效的 access_token");
+        }
+        Optional<Long> peopleId = authorizeService.findPeopleIdByOpenId(accessToken, openId);
+        if (!peopleId.isPresent()) {
+            return ResponseDataUtils.buildError("openId 错误");
+        }
+        Optional<People> optional = peopleService.findPeopleById(peopleId.get());
+        return ResponseDataUtils.buildSuccess(optional.get());
+    }
+}

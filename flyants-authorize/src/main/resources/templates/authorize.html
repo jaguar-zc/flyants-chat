@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>授权</h1><br/>
+<img th:width="40" th:height="40" th:src="${clientIcon}"/><br/>
+<span th:text="${clientName}"></span><br/>
+请求获取你的公开资料和个人信息<br/>
+<span th:text="${resource}"></span><br/>
+<hr/>
+
+<form  method="post">
+    <img th:width="40" th:height="40" th:src="${encodedPrincipal}"/><br/>
+    <input type="submit" value="同意" />
+</form>
+
+</body>
+</html>

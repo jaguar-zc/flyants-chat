@@ -1,6 +1,13 @@
 server:
-  port: 8080
+  port: 8000
+  application:
+    name: flyants-oauth2
+    admin:
+      enabled: true
 spring:
+  thymeleaf:
+    mode: LEGACYHTML5
+    cache: false
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://localhost:3306/flyants_oauth2?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&failOverReadOnly=false&autoReconnect=true&roundRobinLoadBalance=true
@@ -20,11 +27,8 @@ spring:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     show-sql: true
     hibernate:
-      ddl-auto: update
-  application:
-    name: flyants-oauth2
-    admin:
-      enabled: true
+      ddl-auto: create
 logging:
   level:
-    root: info
+    root: INFO
+    org.springframework.web: TRACE

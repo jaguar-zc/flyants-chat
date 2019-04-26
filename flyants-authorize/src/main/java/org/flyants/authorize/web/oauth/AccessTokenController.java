@@ -1,4 +1,4 @@
-package org.flyants.authorize.web;
+package org.flyants.authorize.web.oauth;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.oltu.oauth2.as.issuer.MD5Generator;
@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,17 +28,16 @@ import javax.servlet.http.HttpServletResponse;
  * @Date 2019/4/25 16:32
  * @Version v1.0
  */
-@RestController
-@RequestMapping("/oauth2/access_token")
 @Slf4j
+@RestController
+@RequestMapping("/api/v1.0/oauth2/access_token")
 public class AccessTokenController {
-
 
 
     @Autowired
     private AuthorizeService authorizeService;
 
-    @GetMapping
+    @PostMapping
     public ResponseEntity<String> accessToken(HttpServletRequest request) throws OAuthSystemException, OAuthProblemException {
         //构建OAuth请求
         OAuthTokenRequest tokenRequest = new OAuthTokenRequest(request);
@@ -55,7 +55,7 @@ public class AccessTokenController {
         }
 
         //检查客户端安全KEY是否正确
-        if(!authorizeService.checkClientSecret(tokenRequest.getClientSecret())){
+        if(!authorizeService.checkClientSecret(clientId,tokenRequest.getClientSecret())){
             OAuthResponse response = OAuthResponse.errorResponse(HttpServletResponse.SC_UNAUTHORIZED)
                     .setError(OAuthError.TokenResponse.UNAUTHORIZED_CLIENT)
                     .setErrorDescription("客户端安全KEY认证不通过")
@@ -64,7 +64,7 @@ public class AccessTokenController {
         }
 
         //检查redirect_uri是否和认证的一致
-        if(!authorizeService.checkRedirectUri(tokenRequest.getRedirectURI())){
+        if(!authorizeService.checkRedirectUri(clientId,tokenRequest.getRedirectURI())){
             OAuthResponse response = OAuthResponse.errorResponse(HttpServletResponse.SC_UNAUTHORIZED)
                     .setError(OAuthError.TokenResponse.UNAUTHORIZED_CLIENT)
                     .setErrorDescription("客户端认证不通过")

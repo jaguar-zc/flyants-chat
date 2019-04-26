@@ -1,6 +1,6 @@
 package org.flyants.authorize.domain.repository;
 
-import org.flyants.authorize.oauth2.People;
+import org.flyants.authorize.oauth2.OAuthAuthorizeRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,7 +12,7 @@ import java.util.Optional;
  * @Version v1.0
  */
 @Repository
-public interface PeopleRepository extends JpaRepository<People,Long> {
+public interface OAuthorizeRequestRepository extends JpaRepository<OAuthAuthorizeRequest,Long> {
 
-    Optional<People> findByUsernameAndPassword(String username, String password);
+    Optional<OAuthAuthorizeRequest> findByAuthorizationCode(String authorizationCode);
 }

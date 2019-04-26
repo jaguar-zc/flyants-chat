@@ -1,6 +1,10 @@
 package org.flyants.authorize.domain.service;
 
-import org.flyants.authorize.oauth2.AuthorizeRequest;
+import org.flyants.authorize.oauth2.OAuthAuthorizeRequest;
+import org.flyants.authorize.oauth2.OAuthClient;
+import org.flyants.authorize.oauth2.OAuthUserAuthorize;
+
+import java.util.Optional;
 
 /**
  * @Author zhangchao
@@ -10,15 +14,21 @@ import org.flyants.authorize.oauth2.AuthorizeRequest;
 
 public interface AuthorizeService {
 
-    public boolean checkClientId(String clientId);
+    boolean checkClientId(String clientId);
 
-    public String authorizationCode();
+    OAuthClient findOAuthClinetByClientId(String clientId);
 
-    public boolean checkClientSecret(String clientSecret);
+    boolean checkClientSecret(String clientId,String clientSecret);
 
-    public boolean checkRedirectUri(String redirectURI);
+    boolean checkRedirectUri(String clientId,String redirectURI);
 
-    public boolean checkAuthCode(String authCode);
+    boolean checkAuthCode(String authCode);
 
-    AuthorizeRequest authorization(String response_type, String client_id, String redirect_uri, String scope, String state);
+    OAuthAuthorizeRequest authorization(String response_type, String client_id, String redirect_uri, String scope, String state);
+
+    boolean checkAccessToken(String accessToken);
+
+    Optional<Long> findPeopleIdByOpenId(String accessToken, String openId);
+
+    OAuthUserAuthorize findOauthUserAuthorizeByClientIdAndUserId(String clientId, Long userId);
 }

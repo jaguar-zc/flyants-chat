@@ -1,9 +1,10 @@
 package org.flyants.authorize.domain.repository;
 
-import org.flyants.authorize.oauth2.AccessToken;
-import org.flyants.authorize.oauth2.Authorize;
+import org.flyants.authorize.oauth2.OAuthAccessToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
 
 /**
  * @Author zhangchao
@@ -11,6 +12,9 @@ import org.springframework.stereotype.Repository;
  * @Version v1.0
  */
 @Repository
-public interface AccessTokenRepository extends JpaRepository<AccessToken,Long> {
+public interface OAuthAccessTokenRepository extends JpaRepository<OAuthAccessToken,Long> {
+
+
+    Optional<OAuthAccessToken> findByToken(String token);
 
 }

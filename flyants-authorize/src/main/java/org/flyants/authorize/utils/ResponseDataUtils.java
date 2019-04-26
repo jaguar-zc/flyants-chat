@@ -1,11 +1,13 @@
 package org.flyants.authorize.utils;
 
+import org.flyants.common.ResponseData;
+
 /**
  * @Author zhangchao
  * @Date 2019/4/25 17:38
  * @Version v1.0
  */
-public class ResponseDataUtil {
+public class ResponseDataUtils {
     /**
      * 带实体的统一返回
      *
@@ -14,11 +16,11 @@ public class ResponseDataUtil {
      * @return
      */
     public static <T> ResponseData buildSuccess(T data) {
-        return new ResponseData<T>(ResultEnums.SUCCESS, data);
+        return new ResponseData<T>(ResultEnums.SUCCESS.getCode(),ResultEnums.SUCCESS.getMsg(), data);
     }
 
     public static ResponseData buildSuccess() {
-        return new ResponseData(ResultEnums.SUCCESS);
+        return new ResponseData(ResultEnums.SUCCESS.getCode(),ResultEnums.SUCCESS.getMsg());
     }
 
     public static ResponseData buildSuccess(String msg) {
@@ -33,18 +35,6 @@ public class ResponseDataUtil {
         return new ResponseData<T>(code, msg, data);
     }
 
-    public static ResponseData buildSuccess(ResultEnums resultEnums) {
-        return new ResponseData(resultEnums);
-    }
-
-    public static <T> ResponseData buildError(T data) {
-        return new ResponseData<T>(ResultEnums.ERROR, data);
-    }
-
-    public static ResponseData buildError() {
-        return new ResponseData(ResultEnums.ERROR);
-    }
-
     public static ResponseData buildError(String msg) {
         return new ResponseData(ResultEnums.ERROR.getCode(), msg);
     }
@@ -55,9 +45,5 @@ public class ResponseDataUtil {
 
     public static <T> ResponseData buildError(String code, String msg, T data) {
         return new ResponseData<T>(code, msg, data);
-    }
-
-    public static ResponseData buildError(ResultEnums resultEnums) {
-        return new ResponseData(resultEnums);
     }
 }

@@ -2,21 +2,19 @@ package org.flyants.authorize.oauth2;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.Date;
 
 /**
  * @Author zhangchao
- * @Date 2019/4/25 18:15
+ * @Date 2019/4/25 15:01
  * @Version v1.0
  */
-@ToString
 @Getter
 @Setter
 @Entity
-public class People {
+public class OAuthAuthorizeRequest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,13 +26,28 @@ public class People {
     @Column
     private Date modificationDate;
 
+    /**
+     * 0: 未知
+     * 1: 拒绝
+     * 2: 同意
+     */
     @Column
-    private String encodedPrincipal;
+    private Integer authState;
 
     @Column
-    private String username;
+    private String authorizationCode;
 
     @Column
-    private String password;
+    private String redirectUri;
+
+    @Column
+    private String responseType;
+
+    @Column
+    private String state;
+
+    @Column
+    private String clientId;
+
 
 }

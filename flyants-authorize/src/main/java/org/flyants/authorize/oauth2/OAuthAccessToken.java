@@ -1,8 +1,6 @@
 package org.flyants.authorize.oauth2;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -12,11 +10,13 @@ import java.util.Date;
  * @Date 2019/4/25 18:15
  * @Version v1.0
  */
-@ToString
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
-public class People {
+public class OAuthAccessToken {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,9 +32,17 @@ public class People {
     private String encodedPrincipal;
 
     @Column
-    private String username;
+    private Integer expires;
 
     @Column
-    private String password;
+    private String refreshToken;
+
+    @Column
+    private String resourceOwnerId;
+
+    @Column
+    private String token;
+    @Column
+    private String clientId;
 
 }

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>首页</h1>
+<span th:text="${userstr}"></span>
+<hr/>
+name:<span th:text="${user.username}"></span><br/>
+age:<span th:text="${user.password}"></span><br/>
+encodedPrincipal:<span th:text="${user.encodedPrincipal}"></span><br/>
+<hr/>
+<!--<h3>循环主题加内容</h3>-->
+<!--<div th:each="l:${list}">-->
+    <!--<span th:text="${l.username}"></span>-->
+    <!--<span th:text="${l.passowrd}"></span>-->
+    <!--<span th:text="${l.encodedPrincipal}"></span>-->
+<!--</div>-->
+<!--<h3>下拉列表</h3>-->
+<!--<select >-->
+    <!--<option th:each="l:${list}" th:value="${l.username}" th:text="${l.name}" th:selected="${l.age==46}"> </option>-->
+<!--</select>-->
+
+<!--<h3 > 图片</h3>-->
+<!--<img th:src="${imgsrc}"/>-->
+<a href="/logout">logout</a>
+</body>
+</html>
