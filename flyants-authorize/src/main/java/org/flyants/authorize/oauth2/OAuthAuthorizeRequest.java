@@ -34,6 +34,16 @@ public class OAuthAuthorizeRequest {
     @Column
     private Integer authState;
 
+    /**
+     * 0 未使用
+     * 1 已使用
+     */
+    @Column
+    private Integer status;
+
+    @Column
+    private Long userId;
+
     @Column
     private String authorizationCode;
 

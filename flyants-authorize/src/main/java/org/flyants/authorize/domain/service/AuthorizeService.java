@@ -1,5 +1,6 @@
 package org.flyants.authorize.domain.service;
 
+import org.flyants.authorize.oauth2.OAuthAccessToken;
 import org.flyants.authorize.oauth2.OAuthAuthorizeRequest;
 import org.flyants.authorize.oauth2.OAuthClient;
 import org.flyants.authorize.oauth2.OAuthUserAuthorize;
@@ -31,4 +32,6 @@ public interface AuthorizeService {
     Optional<Long> findPeopleIdByOpenId(String accessToken, String openId);
 
     OAuthUserAuthorize findOauthUserAuthorizeByClientIdAndUserId(String clientId, Long userId);
+
+    OAuthAccessToken generatorAccessToken(String clientId, String code);
 }

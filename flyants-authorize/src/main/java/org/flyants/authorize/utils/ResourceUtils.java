@@ -20,6 +20,9 @@ public class ResourceUtils {
         return (People) getRequest().getSession().getAttribute(SESSION_USER);
     }
 
+    public static void setLoginPeople(People people){
+        getRequest().getSession().setAttribute(SESSION_USER,people);
+    }
 
     public static Boolean isLogin(){
         return Optional.ofNullable(getCurrentPeople()).isPresent();

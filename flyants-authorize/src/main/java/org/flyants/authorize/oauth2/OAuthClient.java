@@ -48,4 +48,11 @@ public class OAuthClient {
     @JoinColumn(name = "client_resource_id", referencedColumnName = "id")
     private OAuthClientResource oAuthClientResource;
 
+
+    @ManyToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "people_id", referencedColumnName = "id")
+    private People people;
+
+
+
 }

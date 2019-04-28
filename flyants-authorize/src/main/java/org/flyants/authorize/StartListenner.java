@@ -34,6 +34,19 @@ public class StartListenner {
 
     @PostConstruct
     public void run(){
+
+
+        People people = new People();
+        people.setCreationDate(new Date());
+        people.setModificationDate(new Date());
+        people.setEncodedPrincipal("https://thirdqq.qlogo.cn/g?b=sdk&k=XC5OAkdV3Kg0srWxwKPVJg&s=100&t=1556270245");
+        people.setUsername("root");
+        people.setPassword("root");
+
+        peopleRepository.save(people);
+
+
+
         OAuthClient client = new OAuthClient();
         client.setClientId("1F23FE23FR");
         client.setClientName("测试商户号");
@@ -44,23 +57,15 @@ public class StartListenner {
         client.setDescription("这是一个用于测试的商户号");
         client.setClientRedirectUriHost("127.0.0.1");
         client.setStatus(0);
+        client.setPeople(people);
 
         OAuthClientResource resource = new OAuthClientResource();
         resource.setClientId(client.getClientId());
         resource.setResource("昵称、头像、手机号");
-
         client.setOAuthClientResource(resource);
 
         clientRepository.saveAndFlush(client);
 
-        People people = new People();
-        people.setCreationDate(new Date());
-        people.setModificationDate(new Date());
-        people.setEncodedPrincipal("https://thirdqq.qlogo.cn/g?b=sdk&k=XC5OAkdV3Kg0srWxwKPVJg&s=100&t=1556270245");
-        people.setUsername("root");
-        people.setPassword("root");
-
-        peopleRepository.save(people);
 
     }
 

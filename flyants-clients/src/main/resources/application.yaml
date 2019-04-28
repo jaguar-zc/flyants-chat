@@ -10,7 +10,7 @@ spring:
     cache: false
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/flyants_oauth2?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&failOverReadOnly=false&autoReconnect=true&roundRobinLoadBalance=true&useSSL=false
+    url: jdbc:mysql://localhost:3306/flyants_client?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&failOverReadOnly=false&autoReconnect=true&roundRobinLoadBalance=true&useSSL=false
     username: root
     password: admin
     type: com.zaxxer.hikari.HikariDataSource
@@ -27,7 +27,7 @@ spring:
     database-platform: org.hibernate.dialect.MySQL57Dialect
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
 logging:
   level:
     root: INFO

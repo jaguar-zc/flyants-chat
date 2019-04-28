@@ -2,11 +2,13 @@ package org.flyants.authorize.web.oauth;
 
 import lombok.extern.slf4j.Slf4j;
 import org.flyants.authorize.domain.service.AuthorizeService;
+import org.flyants.authorize.domain.service.PeopleService;
 import org.flyants.authorize.oauth2.OAuthAuthorizeRequest;
 import org.flyants.authorize.oauth2.OAuthClient;
 import org.flyants.authorize.oauth2.People;
 import org.flyants.authorize.utils.ResourceUtils;
 import org.flyants.authorize.utils.ResponseDataUtils;
+import org.flyants.common.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,8 +30,13 @@ import java.util.Optional;
 @RequestMapping("/api/v1.0/oauth2")
 public class AuthorizeCodeController {
 
+
     @Autowired
     private AuthorizeService authorizeService;
+
+
+    @Autowired
+    private PeopleService peopleService;
 
     /**
      * 授权码模式（authorization code） 跳转到用户授权的界面
@@ -45,7 +52,6 @@ public class AuthorizeCodeController {
         if (!authorizeService.checkClientId(client_id)) {
             return ResponseDataUtils.buildError("无效的 client_id");
         }
-
         ModelAndView mav = new ModelAndView();
         mav.addObject("response_type",response_type);
         mav.addObject("client_id",client_id);
@@ -66,10 +72,10 @@ public class AuthorizeCodeController {
             People people = ResourceUtils.getCurrentPeople();
             mav.addObject("encodedPrincipal",people.getEncodedPrincipal());
             mav.addObject("login","1");
-            mav.setViewName("authorize");
+            mav.setViewName("oauth/authorize");
         }else{
             mav.addObject("login","0");
-            mav.setViewName("authorize_login");
+            mav.setViewName("oauth/authorize_login");
         }
         return mav;
     }
@@ -85,10 +91,24 @@ public class AuthorizeCodeController {
      * @return
      */
     @PostMapping(value = "/authorize",params = {"response_type=code"})
-    public Object authorizeCodeComform(String response_type, String client_id, String redirect_uri, String scope, String state,String login)  {
+    public Object authorizeCodeComform(String response_type, String client_id, String redirect_uri, String scope, String state,String login,String username,String password)  {
         if (!authorizeService.checkClientId(client_id)) {
             return ResponseDataUtils.buildError("无效的 client_id");
         }
+
+        if("0".equals(login)){//未登录
+            Optional<People> optional = peopleService.findByUsernameAndPassword(username, password);
+            People people = optional.orElseThrow(() -> new BusinessException("用户名密码错误"));
+            ResourceUtils.setLoginPeople(people);
+        }
+
+        if("1".equals(login)){//已登录
+
+        }
+
+        //TODO 点击同意 已登录判断是否同意
+        //todo 未登录 判断输入的用户名密码是否正确
+
         OAuthAuthorizeRequest authorize = authorizeService.authorization(response_type,client_id,redirect_uri,scope,state);
         String authCode = authorize.getAuthorizationCode();
         System.out.println("授权码="+authCode);

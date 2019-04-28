@@ -13,6 +13,7 @@
 <hr/>
 
 <form  method="post">
+    <input type="text" th:value="${login}" name="login" required /><br/>
     <img th:width="40" th:height="40" th:src="${encodedPrincipal}"/><br/>
     <input type="submit" value="同意" />
 </form>

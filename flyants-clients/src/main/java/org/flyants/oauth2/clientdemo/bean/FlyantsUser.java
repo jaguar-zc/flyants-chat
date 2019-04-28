@@ -1,4 +1,4 @@
-package org.flyants.authorize.oauth2;
+package org.flyants.oauth2.clientdemo.bean;
 
 import lombok.*;
 
@@ -7,7 +7,7 @@ import java.util.Date;
 
 /**
  * @Author zhangchao
- * @Date 2019/4/25 18:15
+ * @Date 2019/4/28 14:43
  * @Version v1.0
  */
 @Getter
@@ -16,7 +16,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 @Entity
-public class OAuthAccessToken {
+public class FlyantsUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,18 +29,9 @@ public class OAuthAccessToken {
     private Date modificationDate;
 
     @Column
-    private Integer expires;
+    private String openId;
 
     @Column
-    private String refreshToken;
-
-    @Column
-    private String resourceOwnerId;
-
-    @Column
-    private String token;
-
-    @Column
-    private String clientId;
+    private String username;
 
 }

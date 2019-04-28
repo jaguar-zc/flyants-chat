@@ -6,10 +6,7 @@ import org.flyants.authorize.domain.service.PeopleService;
 import org.flyants.authorize.oauth2.People;
 import org.flyants.authorize.utils.ResponseDataUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -29,10 +26,10 @@ public class PeopleController {
     @Autowired
     PeopleService peopleService;
 
-    @GetMapping
-    public Object info(@RequestHeader("access_token") String accessToken, String openId) {
 
-        if (authorizeService.checkAccessToken(accessToken)) {
+    @GetMapping
+    public Object info(@RequestHeader("access_token") @RequestParam("access_token") String accessToken, @RequestParam("openId")String openId) {
+        if (!authorizeService.checkAccessToken(accessToken)) {
             return ResponseDataUtils.buildError("无效的 access_token");
         }
         Optional<Long> peopleId = authorizeService.findPeopleIdByOpenId(accessToken, openId);

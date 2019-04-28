@@ -1,27 +1,20 @@
 package org.flyants.authorize.web.oauth;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.oltu.oauth2.as.issuer.MD5Generator;
-import org.apache.oltu.oauth2.as.issuer.OAuthIssuerImpl;
-import org.apache.oltu.oauth2.as.request.OAuthTokenRequest;
-import org.apache.oltu.oauth2.as.response.OAuthASResponse;
-import org.apache.oltu.oauth2.common.OAuth;
-import org.apache.oltu.oauth2.common.error.OAuthError;
 import org.apache.oltu.oauth2.common.exception.OAuthProblemException;
 import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
-import org.apache.oltu.oauth2.common.message.OAuthResponse;
 import org.apache.oltu.oauth2.common.message.types.GrantType;
 import org.flyants.authorize.domain.service.AuthorizeService;
+import org.flyants.authorize.oauth2.OAuthAccessToken;
+import org.flyants.authorize.utils.ResponseDataUtils;
+import org.flyants.common.ResponseData;
+import org.flyants.common.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @Author zhangchao
@@ -37,68 +30,44 @@ public class AccessTokenController {
     @Autowired
     private AuthorizeService authorizeService;
 
-    @PostMapping
-    public ResponseEntity<String> accessToken(HttpServletRequest request) throws OAuthSystemException, OAuthProblemException {
-        //构建OAuth请求
-        OAuthTokenRequest tokenRequest = new OAuthTokenRequest(request);
-        //获取OAuth客户端Id
-        String clientId = tokenRequest.getClientId();
+    /**
+     * 获取 access_token
+     * @param grant_type authorization_code
+     * @param code
+     * @param client_id
+     * @param client_secret
+     * @return
+     * @throws OAuthSystemException
+     * @throws OAuthProblemException
+     */
+    @RequestMapping
+    public ResponseData<String> accessToken(String grant_type,String code,String client_id,String client_secret) {
+
         //校验客户端Id是否正确
-        if(!authorizeService.checkClientId(clientId)){
-            OAuthResponse oAuthResponse = OAuthASResponse
-                    .errorResponse(HttpServletResponse.SC_BAD_REQUEST)
-                    .setError(OAuthError.TokenResponse.INVALID_CLIENT)
-                    .setErrorDescription("无效的客户端Id")
-                    .buildJSONMessage();
-            System.out.println(oAuthResponse.getBody());
-            return new ResponseEntity<String>(oAuthResponse.getBody(), HttpStatus.valueOf(oAuthResponse.getResponseStatus()));
+        if (!authorizeService.checkClientId(client_id)) {
+            throw new BusinessException("无效的客户端Id");
         }
 
         //检查客户端安全KEY是否正确
-        if(!authorizeService.checkClientSecret(clientId,tokenRequest.getClientSecret())){
-            OAuthResponse response = OAuthResponse.errorResponse(HttpServletResponse.SC_UNAUTHORIZED)
-                    .setError(OAuthError.TokenResponse.UNAUTHORIZED_CLIENT)
-                    .setErrorDescription("客户端安全KEY认证不通过")
-                    .buildJSONMessage();
-            return new ResponseEntity<String>(response.getBody(), HttpStatus.valueOf(response.getResponseStatus()));
+        if (!authorizeService.checkClientSecret(client_id, client_secret)) {
+            throw new BusinessException("客户端安全KEY认证不通过");
         }
 
-        //检查redirect_uri是否和认证的一致
-        if(!authorizeService.checkRedirectUri(clientId,tokenRequest.getRedirectURI())){
-            OAuthResponse response = OAuthResponse.errorResponse(HttpServletResponse.SC_UNAUTHORIZED)
-                    .setError(OAuthError.TokenResponse.UNAUTHORIZED_CLIENT)
-                    .setErrorDescription("客户端认证不通过")
-                    .buildJSONMessage();
-            return new ResponseEntity<String>(response.getBody(), HttpStatus.valueOf(response.getResponseStatus()));
-        }
         //验证类型，有AUTHORIZATION_CODE/PASSWORD/REFRESH_TOKEN/CLIENT_CREDENTIALS
-        if(tokenRequest.getParam(OAuth.OAUTH_GRANT_TYPE).equals(GrantType.AUTHORIZATION_CODE.toString())){
-            String authCode = tokenRequest.getParam(OAuth.OAUTH_CODE);
-            if(!authorizeService.checkAuthCode(authCode)){
-                OAuthResponse response = OAuthResponse.errorResponse(HttpServletResponse.SC_BAD_REQUEST)
-                        .setError(OAuthError.TokenResponse.INVALID_GRANT)
-                        .setErrorDescription("错误的授权码")
-                        .buildJSONMessage();
-                return new ResponseEntity<String>(response.getBody(), HttpStatus.valueOf(response.getResponseStatus()));
+        if (grant_type.equals(GrantType.AUTHORIZATION_CODE.toString())) {
+            if (!authorizeService.checkAuthCode(code)) {
+                throw new BusinessException("错误的授权码");
             }
-            //生成访问令牌
-            OAuthIssuerImpl authIssuerImpl = new OAuthIssuerImpl(new MD5Generator());
-            String accessToken = authIssuerImpl.accessToken();
-            //生成OAuth响应
-            OAuthResponse response = OAuthASResponse
-                    .tokenResponse(HttpServletResponse.SC_OK)
-                    .setAccessToken(accessToken)
-                    .setExpiresIn("1000")
-                    .buildJSONMessage();
-            System.out.println(response.getBody());
-//         HttpHeaders headers = new HttpHeaders();
-//         headers.setContentType(MediaType.APPLICATION_JSON);
-            return new ResponseEntity<String>(response.getBody(), HttpStatus.valueOf(response.getResponseStatus()));
+            OAuthAccessToken oAuthAccessToken = authorizeService.generatorAccessToken(client_id, code);
+
+            Map<String,Object> map = new HashMap<>();
+            map.put("access_token",oAuthAccessToken.getToken());
+            map.put("token_type","example");
+            map.put("expires_in",oAuthAccessToken.getExpires());
+            map.put("refresh_token",oAuthAccessToken.getRefreshToken());
+            map.put("scope","");
+            return ResponseDataUtils.buildSuccess(map);
         }
-        OAuthResponse response = OAuthResponse.errorResponse(HttpServletResponse.SC_BAD_REQUEST)
-                .setError(OAuthError.TokenResponse.UNSUPPORTED_GRANT_TYPE)
-                .setErrorDescription("不支持此授权类型")
-                .buildJSONMessage();
-        return new ResponseEntity<String>(response.getBody(), HttpStatus.valueOf(response.getResponseStatus()));
+        throw new BusinessException("不支持的授权类型");
     }
 }
