@@ -39,7 +39,10 @@ public class OAuthClient {
     private String description;
 
     @Column
-    private String clientRedirectUriHost;//对应主机域名
+    private String clientRedirectUriHost;//重定向域名
+
+    @Column
+    private String clientServerDomain;
 
     @Column
     private Integer status;//状态。0:正常；1:冻结

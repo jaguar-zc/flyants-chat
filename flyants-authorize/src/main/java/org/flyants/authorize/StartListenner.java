@@ -55,7 +55,8 @@ public class StartListenner {
         client.setClientIcon("https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3060159114,959845824&fm=26&gp=0.jpg");
         client.setContactName("测试商户号");
         client.setDescription("这是一个用于测试的商户号");
-        client.setClientRedirectUriHost("127.0.0.1");
+        client.setClientRedirectUriHost("http://88.88.10.82:8080/clientserver/callback");
+        client.setClientServerDomain("http://www.flyants.org");
         client.setStatus(0);
         client.setPeople(people);
 

@@ -3,28 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style type="text/css">
+        .container{
+            width: 500px;
+            margin: 0px auto;
+        }
+
+
+
+    </style>
 </head>
 <body>
-<h1>首页</h1>
-<span th:text="${userstr}"></span>
-<hr/>
-name:<span th:text="${user.username}"></span><br/>
-age:<span th:text="${user.password}"></span><br/>
-encodedPrincipal:<span th:text="${user.encodedPrincipal}"></span><br/>
-<hr/>
-<!--<h3>循环主题加内容</h3>-->
-<!--<div th:each="l:${list}">-->
+
+<div class="container">
+    <h1>首页</h1>
+    <span th:text="${userstr}"></span>
+    <hr/>
+    name:<span th:text="${user.username}"></span><br/>
+    age:<span th:text="${user.password}"></span><br/>
+    encodedPrincipal:<span th:text="${user.encodedPrincipal}"></span><br/>
+    <hr/>
+    <!--<h3>循环主题加内容</h3>-->
+    <!--<div th:each="l:${list}">-->
     <!--<span th:text="${l.username}"></span>-->
     <!--<span th:text="${l.passowrd}"></span>-->
     <!--<span th:text="${l.encodedPrincipal}"></span>-->
-<!--</div>-->
-<!--<h3>下拉列表</h3>-->
-<!--<select >-->
+    <!--</div>-->
+    <!--<h3>下拉列表</h3>-->
+    <!--<select >-->
     <!--<option th:each="l:${list}" th:value="${l.username}" th:text="${l.name}" th:selected="${l.age==46}"> </option>-->
-<!--</select>-->
+    <!--</select>-->
 
-<!--<h3 > 图片</h3>-->
-<!--<img th:src="${imgsrc}"/>-->
-<a href="/logout">logout</a>
+    <!--<h3 > 图片</h3>-->
+    <!--<img th:src="${imgsrc}"/>-->
+    <a href="/logout">logout</a>
+</div>
 </body>
 </html>

@@ -3,21 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet"  href="/css/oauth2.css" />
 </head>
 <body>
-<h1>授权</h1><br/>
-<img th:width="40" th:height="40" th:src="${clientIcon}"/><br/>
-<span th:text="${clientName}"></span><br/>
-请求获取你的公开资料和个人信息<br/>
-<span th:text="${resource}"></span><br/>
-<hr/>
+<div class="container">
+    <!-- @header Start-->
+    <div class="lay_top">
+        <div class="lay_top_inner">
+            <h1 class="logo text_hide">Flyants登录</h1>
+            <div class="lat_top_other">
+                <a th:href="${clientServerDomain}" target="_blank" title="什么是QQ登录"><i class="icon_help_white"></i>Flyants登录</a>
+                <span class="line">|</span>
+                <a th:href="${clientServerDomain}" id="auth_manager_link" target="_blank"
+                   title="登录授权管理">授权管理</a>
+                <span class="line">|</span>
+                <a th:href="${clientServerDomain}" target="_blank" title="申请接入">申请接入</a>
+            </div>
+        </div>
+    </div>
+    <!-- @header End -->
 
-<form  method="post">
-    <input type="text" th:value="${login}" name="login" required /><br/>
-    username:<input type="text" th:value="${username}" name="username" required /><br/>
-    password:<input type="password" name="password" required />
-    <input type="submit" />
-</form>
+    <div id="combine_page">
+        <div class="page_login combine_page_children float_left border_right">
+            <div class="lay_login_form">
+                <form method="post" style="padding: 30px;">
+                    <input type="hidden" th:value="${login}" name="login" required/><br/>
+                    <input type="text" th:value="${username}" name="username" placeholder="用户名" required/><br/>
+                    <input type="password" name="password" placeholder="密码" required/><br/>
+                    <input type="submit" value="授权并登陆"/>
+                </form>
+            </div>
+        </div>
+        <div class="page_accredit combine_page_children float_left">
+            <div class="lay_main" id="lay_main">
+                <div class="lay_accredit_con">
+                    <p class="cnt_wording">该网站已有超过10万用户使用Flyants登录</p>
+                    <p class="app_site_wording"><a class="accredit_site" id="accredit_site_link"
+                                                   th:href="${clientServerDomain}" target="_blank"
+                                                   th:text="${clientName}"></a>将获得以下权限：</p>
+                    <div class="accredit_info" id="accredit_info">
+                        <ul class="accredit_info_op">
+                            <li class="select_all_li">
+                                <input type="checkbox" id="select_all" class="checkbox oauth_checkbox_all"
+                                       hidefocus="true" checked="checked">
+                                <label class="oauth_item_title" for="select_all">全选</label>
+                            </li>
+                            <li>
+                                <input name="api_choose" hidefocus="true" type="checkbox"
+                                       class="checkbox oauth_checkbox" id="item_80901010" value="80901010"
+                                       title="默认授权 不可更改" checked disabled/>
+                                <label for="item_80901010" class="oauth_item_title" th:text="${resource}"></label>
+                            </li>
 
+                        </ul>
+                    </div>
+                    <div class="oauth_tips_div">
+                        <p class="oauth_tips">授权后表明你已同意 <a href="#" target="_blank">Flyants登录服务协议</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

@@ -62,10 +62,12 @@ public class AuthorizeCodeController {
         OAuthClient oAuthClient = authorizeService.findOAuthClinetByClientId(client_id);
         String clientIcon = oAuthClient.getClientIcon();
         String clientName = oAuthClient.getClientName();
+        String clientServerDomain = oAuthClient.getClientServerDomain();
         String resource = oAuthClient.getOAuthClientResource().getResource();
         mav.addObject("resource",resource);
         mav.addObject("clientIcon",clientIcon);
         mav.addObject("clientName",clientName);
+        mav.addObject("clientServerDomain",clientServerDomain);
 
         log.info("check login:{}"+ResourceUtils.isLogin());
         if(ResourceUtils.isLogin()){
