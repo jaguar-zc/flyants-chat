@@ -16,7 +16,7 @@ import java.util.Optional;
  * @Version v1.0
  */
 @RestController
-@RequestMapping("/people")
+@RequestMapping("/api/v1.0/people/info")
 @Slf4j
 public class PeopleController {
 

@@ -8,42 +8,29 @@ import org.flyants.common.ResponseData;
  * @Version v1.0
  */
 public class ResponseDataUtils {
-    /**
-     * 带实体的统一返回
-     *
-     * @param data 实体
-     * @param <T>  实体类型
-     * @return
-     */
-    public static <T> ResponseData buildSuccess(T data) {
-        return new ResponseData<T>(ResultEnums.SUCCESS.getCode(),ResultEnums.SUCCESS.getMsg(), data);
-    }
+
 
     public static ResponseData buildSuccess() {
         return new ResponseData(ResultEnums.SUCCESS.getCode(),ResultEnums.SUCCESS.getMsg());
     }
 
-    public static ResponseData buildSuccess(String msg) {
-        return new ResponseData(ResultEnums.SUCCESS.getCode(), msg);
+    public static ResponseData buildSuccess(Object obj) {
+        return new ResponseData(ResultEnums.SUCCESS.getCode(), ResultEnums.SUCCESS.getMsg()).addObject(obj);
     }
 
     public static ResponseData buildSuccess(String code, String msg) {
         return new ResponseData(code, msg);
     }
 
-    public static <T> ResponseData buildSuccess(String code, String msg, T data) {
-        return new ResponseData<T>(code, msg, data);
+    public static <T> ResponseData buildSuccess(String code, String msg, Object data) {
+        return new ResponseData<T>(code, msg).addObject(data);
     }
 
     public static ResponseData buildError(String msg) {
         return new ResponseData(ResultEnums.ERROR.getCode(), msg);
     }
 
-    public static ResponseData buildError(String code, String msg) {
-        return new ResponseData(code, msg);
-    }
-
-    public static <T> ResponseData buildError(String code, String msg, T data) {
-        return new ResponseData<T>(code, msg, data);
+    public static <T> ResponseData buildError(String code, String msg) {
+        return new ResponseData<T>(code, msg);
     }
 }
