@@ -1,6 +1,6 @@
 package org.flyants.authorize.domain.service;
 
-import org.flyants.authorize.oauth2.People;
+import org.flyants.authorize.domain.entity.platform.People;
 
 import java.util.Optional;
 

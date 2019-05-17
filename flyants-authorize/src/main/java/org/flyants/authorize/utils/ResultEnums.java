@@ -8,7 +8,7 @@ package org.flyants.authorize.utils;
 public enum ResultEnums {
 
     SUCCESS("0000", "请求成功"),
-    ERROR("1111", "请求失败"),
+    ERROR("9999", "系统异常"),
     SYSTEM_ERROR("1000", "系统异常"),
     BUSSINESS_ERROR("2001", "业务逻辑错误"),
     VERIFY_CODE_ERROR("2002", "业务参数错误"),

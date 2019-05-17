@@ -1,9 +1,9 @@
-package org.flyants.authorize.web.openapi;
+package org.flyants.authorize.web.v1.openapi;
 
 import lombok.extern.slf4j.Slf4j;
 import org.flyants.authorize.domain.service.AuthorizeService;
 import org.flyants.authorize.domain.service.PeopleService;
-import org.flyants.authorize.oauth2.People;
+import org.flyants.authorize.domain.entity.platform.People;
 import org.flyants.authorize.utils.ResponseDataUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +25,6 @@ public class PeopleController {
 
     @Autowired
     PeopleService peopleService;
-
 
     @GetMapping
     public Object info(@RequestHeader("access_token") @RequestParam("access_token") String accessToken, @RequestParam("openId")String openId) {

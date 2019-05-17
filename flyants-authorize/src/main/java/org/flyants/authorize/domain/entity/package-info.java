@@ -1,0 +1,1 @@
+package org.flyants.authorize.domain.entity;

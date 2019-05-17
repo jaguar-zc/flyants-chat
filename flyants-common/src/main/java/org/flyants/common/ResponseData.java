@@ -14,13 +14,13 @@ public class ResponseData<T> extends LinkedHashMap<String, Object> {
     private static final String RESP_CODE = "resp_code";
     private static final String RESP_MSG = "resp_msg";
 
-    public ResponseData(String code, String msg) {
+    public ResponseData(int code, String msg) {
         setResp_code(code);
         setResp_msg(msg);
     }
 
     public ResponseData() {
-        setResp_code("0000");
+        setResp_code(200);
         setResp_msg("OK");
     }
 
@@ -56,11 +56,11 @@ public class ResponseData<T> extends LinkedHashMap<String, Object> {
         return this;
     }
 
-    public String getResp_code() {
-        return (String) get(RESP_CODE);
+    public int getResp_code() {
+        return   (int)get(RESP_CODE);
     }
 
-    public void setResp_code(String resp_code) {
+    public void setResp_code(int resp_code) {
         this.put(RESP_CODE, resp_code);
     }
 

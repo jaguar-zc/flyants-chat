@@ -1,4 +1,4 @@
-package org.flyants.authorize.web.oauth.json;
+package org.flyants.authorize.web.v1.oauth.json;
 
 import lombok.*;
 

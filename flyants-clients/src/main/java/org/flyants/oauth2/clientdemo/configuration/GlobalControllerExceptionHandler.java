@@ -1,7 +1,6 @@
-package org.flyants.authorize.configuration;
+package org.flyants.oauth2.clientdemo.configuration;
 
 import lombok.extern.slf4j.Slf4j;
-import org.flyants.authorize.utils.ResponseDataUtils;
 import org.flyants.common.ResponseData;
 import org.flyants.common.exception.BusinessException;
 import org.springframework.http.HttpStatus;
@@ -26,20 +25,17 @@ import java.util.Set;
 public class GlobalControllerExceptionHandler {
 
     @ExceptionHandler(value = {BusinessException.class})
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseData constraintBusinessException(BusinessException ex) {
         log.error("Business exception, errorCode: {}, errorDesc: {}", ex.getErrorCode(), ex.getErrorMsg());
-        return ResponseDataUtils.buildError(ex.getErrorCode(),ex.getErrorMsg());
+        return new ResponseData(Integer.valueOf(ex.getErrorCode()),ex.getErrorMsg());
     }
-
-
-
 
     @ExceptionHandler(value = {Exception.class})
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseData constraintException(Exception ex) {
         log.error("Unknow exception", ex);
-        return ResponseDataUtils.buildError("500","系统异常");
+        return new ResponseData(500,"系统异常");
     }
 
     /**
@@ -49,7 +45,7 @@ public class GlobalControllerExceptionHandler {
      * @param ex
      */
     @ExceptionHandler(value = ConstraintViolationException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseData error(ConstraintViolationException ex) {
         log.error("Params violation excetion", ex);
 
@@ -60,7 +56,7 @@ public class GlobalControllerExceptionHandler {
                 errorMsg.add(violation.getMessage());
             }
         }
-        return ResponseDataUtils.buildError(errorMsg.toString());
+        return new ResponseData(403,errorMsg.toString());
     }
 
 }

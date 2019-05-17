@@ -1,18 +1,16 @@
 package org.flyants.authorize;
-import java.util.Date;
 
 import org.flyants.authorize.domain.repository.ClientRepository;
 import org.flyants.authorize.domain.repository.OAuthClientResourceRepository;
 import org.flyants.authorize.domain.repository.PeopleRepository;
-import org.flyants.authorize.domain.service.PeopleService;
-import org.flyants.authorize.oauth2.OAuthClient;
-import org.flyants.authorize.oauth2.OAuthClientResource;
-import org.flyants.authorize.oauth2.People;
+import org.flyants.authorize.domain.entity.oauth2.OAuthClient;
+import org.flyants.authorize.domain.entity.oauth2.OAuthClientResource;
+import org.flyants.authorize.domain.entity.platform.People;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.util.UUID;
+import java.util.Date;
 
 /**
  * @Author zhangchao

@@ -1,4 +1,4 @@
-package org.flyants.authorize.web.pateform;
+package org.flyants.authorize.web.v1.platform;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;

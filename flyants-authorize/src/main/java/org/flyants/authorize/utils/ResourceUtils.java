@@ -1,6 +1,6 @@
 package org.flyants.authorize.utils;
 
-import org.flyants.authorize.oauth2.People;
+import org.flyants.authorize.domain.entity.platform.People;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 

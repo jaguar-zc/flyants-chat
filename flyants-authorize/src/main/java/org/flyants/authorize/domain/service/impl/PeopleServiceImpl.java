@@ -3,7 +3,7 @@ package org.flyants.authorize.domain.service.impl;
 import lombok.extern.slf4j.Slf4j;
 import org.flyants.authorize.domain.repository.PeopleRepository;
 import org.flyants.authorize.domain.service.PeopleService;
-import org.flyants.authorize.oauth2.People;
+import org.flyants.authorize.domain.entity.platform.People;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

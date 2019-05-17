@@ -1,7 +1,8 @@
-package org.flyants.authorize.oauth2;
+package org.flyants.authorize.domain.entity.oauth2;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.flyants.authorize.domain.entity.platform.People;
 
 import javax.persistence.*;
 

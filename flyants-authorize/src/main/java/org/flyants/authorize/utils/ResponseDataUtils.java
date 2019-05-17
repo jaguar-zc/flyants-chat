@@ -11,26 +11,26 @@ public class ResponseDataUtils {
 
 
     public static ResponseData buildSuccess() {
-        return new ResponseData(ResultEnums.SUCCESS.getCode(),ResultEnums.SUCCESS.getMsg());
+        return new ResponseData(200,ResultEnums.SUCCESS.getMsg());
     }
 
     public static ResponseData buildSuccess(Object obj) {
-        return new ResponseData(ResultEnums.SUCCESS.getCode(), ResultEnums.SUCCESS.getMsg()).addObject(obj);
+        return new ResponseData(200, ResultEnums.SUCCESS.getMsg()).addObject(obj);
     }
 
     public static ResponseData buildSuccess(String code, String msg) {
-        return new ResponseData(code, msg);
+        return new ResponseData(200, msg);
     }
 
     public static <T> ResponseData buildSuccess(String code, String msg, Object data) {
-        return new ResponseData<T>(code, msg).addObject(data);
+        return new ResponseData<T>(200, msg).addObject(data);
     }
 
     public static ResponseData buildError(String msg) {
-        return new ResponseData(ResultEnums.ERROR.getCode(), msg);
+        return new ResponseData(400, msg);
     }
 
     public static <T> ResponseData buildError(String code, String msg) {
-        return new ResponseData<T>(code, msg);
+        return new ResponseData<T>(400, msg);
     }
 }

@@ -1,11 +1,11 @@
-package org.flyants.authorize.web.oauth;
+package org.flyants.authorize.web.v1.oauth;
 
 import lombok.extern.slf4j.Slf4j;
 import org.flyants.authorize.domain.service.AuthorizeService;
 import org.flyants.authorize.domain.service.PeopleService;
-import org.flyants.authorize.oauth2.OAuthAuthorizeRequest;
-import org.flyants.authorize.oauth2.OAuthClient;
-import org.flyants.authorize.oauth2.People;
+import org.flyants.authorize.domain.entity.oauth2.OAuthAuthorizeRequest;
+import org.flyants.authorize.domain.entity.oauth2.OAuthClient;
+import org.flyants.authorize.domain.entity.platform.People;
 import org.flyants.authorize.utils.ResourceUtils;
 import org.flyants.authorize.utils.ResponseDataUtils;
 import org.flyants.common.exception.BusinessException;

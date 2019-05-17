@@ -1,6 +1,6 @@
 package org.flyants.authorize.domain.repository;
 
-import org.flyants.authorize.oauth2.OAuthClientResource;
+import org.flyants.authorize.domain.entity.oauth2.OAuthClientResource;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

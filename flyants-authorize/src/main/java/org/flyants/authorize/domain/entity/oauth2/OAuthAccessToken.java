@@ -1,4 +1,4 @@
-package org.flyants.authorize.oauth2;
+package org.flyants.authorize.domain.entity.oauth2;
 
 import lombok.*;
 

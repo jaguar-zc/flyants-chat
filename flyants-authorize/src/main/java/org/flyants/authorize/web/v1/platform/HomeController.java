@@ -1,7 +1,7 @@
-package org.flyants.authorize.web.pateform;
+package org.flyants.authorize.web.v1.platform;
 
 import lombok.extern.slf4j.Slf4j;
-import org.flyants.authorize.oauth2.People;
+import org.flyants.authorize.domain.entity.platform.People;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,8 +20,6 @@ import static org.flyants.authorize.utils.ResourceUtils.SESSION_USER;
 @RequestMapping("/")
 @Slf4j
 public class HomeController {
-
-
 
 
     @GetMapping
