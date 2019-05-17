@@ -1,5 +1,6 @@
 package org.flyants.authorize.domain.service.impl;
 
+import org.flyants.authorize.configuration.PageResult;
 import org.flyants.authorize.domain.entity.oauth2.OAuthClient;
 import org.flyants.authorize.domain.entity.oauth2.OAuthClientResource;
 import org.flyants.authorize.domain.repository.ClientRepository;
@@ -23,13 +24,15 @@ public class AppServiceImpl implements AppService {
 
 
     @Override
-    public Page<OAuthClient> findList(Integer page) {
-        PageRequest of = PageRequest.of(page, 10);
-        return clientRepository.findAll(of);
+    public PageResult<OAuthClient> findList(Integer page,Integer size) {
+        PageRequest of = PageRequest.of(page - 1, size);
+
+        Page<OAuthClient> all = clientRepository.findAll(of);
+        return new PageResult<OAuthClient>(all.getTotalElements(), all.getContent());
     }
 
     @Override
-    public void save(  OAuthClient client) {
+    public void save(OAuthClient client) {
         client.setStatus(0);
         client.setPeople(ResourceUtils.getCurrentPeople());
         OAuthClientResource resource = new OAuthClientResource();

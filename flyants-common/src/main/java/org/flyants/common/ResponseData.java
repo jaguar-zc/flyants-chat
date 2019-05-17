@@ -1,6 +1,7 @@
 package org.flyants.common;
 
 import java.lang.reflect.Field;
+import java.util.Date;
 import java.util.LinkedHashMap;
 
 /**
@@ -28,7 +29,12 @@ public class ResponseData<T> extends LinkedHashMap<String, Object> {
         for (Field declaredField : obj.getClass().getDeclaredFields()) {
             try {
                 declaredField.setAccessible(true);
-                put(revertName(declaredField.getName()), declaredField.get(obj));
+                Object value = declaredField.get(obj);
+                if(value instanceof Date && value != null){
+                    put(revertName(declaredField.getName()), ((Date)value).getTime());
+                }else{
+                    put(revertName(declaredField.getName()), value);
+                }
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }

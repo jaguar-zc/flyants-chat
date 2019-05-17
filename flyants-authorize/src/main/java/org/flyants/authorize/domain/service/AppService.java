@@ -1,7 +1,7 @@
 package org.flyants.authorize.domain.service;
 
+import org.flyants.authorize.configuration.PageResult;
 import org.flyants.authorize.domain.entity.oauth2.OAuthClient;
-import org.springframework.data.domain.Page;
 
 /**
  * @Author zhangchao
@@ -9,7 +9,7 @@ import org.springframework.data.domain.Page;
  * @Version v1.0
  */
 public interface AppService {
-    Page<OAuthClient> findList(Integer page);
+    PageResult<OAuthClient> findList(Integer page,Integer size);
 
     void save(  OAuthClient oAuthClient);
 }

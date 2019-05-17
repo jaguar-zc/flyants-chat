@@ -1,6 +1,7 @@
 package org.flyants.authorize.web.v1.platform;
 
 import lombok.extern.slf4j.Slf4j;
+import org.flyants.authorize.configuration.PageResult;
 import org.flyants.authorize.domain.entity.oauth2.OAuthClient;
 import org.flyants.authorize.domain.service.AppService;
 import org.flyants.authorize.utils.ResponseDataUtils;
@@ -27,15 +28,14 @@ public class AppController {
 
 
     @GetMapping("/list")
-    public ResponseData<Page> findList(Integer page){
-        return ResponseDataUtils.buildSuccess(appService.findList(page));
+    public PageResult<OAuthClient> findList(Integer page,Integer size){
+        return appService.findList(page,size);
     }
 
 
     @PostMapping
-    public ResponseData add(OAuthClient oAuthClient){
+    public void add(OAuthClient oAuthClient){
         appService.save(oAuthClient);
-        return ResponseDataUtils.buildSuccess();
     }
 
 }
