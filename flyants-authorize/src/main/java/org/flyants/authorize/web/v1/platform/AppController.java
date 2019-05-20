@@ -4,14 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.flyants.authorize.configuration.PageResult;
 import org.flyants.authorize.domain.entity.oauth2.OAuthClient;
 import org.flyants.authorize.domain.service.AppService;
-import org.flyants.authorize.utils.ResponseDataUtils;
-import org.flyants.common.ResponseData;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @Author zhangchao
@@ -27,15 +21,24 @@ public class AppController {
     private AppService appService;
 
 
+
     @GetMapping("/list")
-    public PageResult<OAuthClient> findList(Integer page,Integer size){
-        return appService.findList(page,size);
+    public PageResult<OAuthClient> findList(@RequestParam(required = false,name = "page",defaultValue = "1") Integer page,
+                                            @RequestParam(required = false,name = "page",defaultValue = "10") Integer size,
+                                            @RequestParam(required = false,name = "searchBy") String searchBy,
+                                            @RequestParam(required = false,name = "keyword") String keyWord) {
+        return appService.findList(page, size, searchBy, keyWord);
+    }
+
+    @PostMapping
+    public void add(@RequestBody OAuthClient oAuthClient) {
+        appService.save(oAuthClient);
     }
 
 
-    @PostMapping
-    public void add(OAuthClient oAuthClient){
-        appService.save(oAuthClient);
+    @PutMapping("/{id}")
+    public void update(@PathVariable("id") String id ,@RequestBody OAuthClient oAuthClient) {
+        appService.update(id,oAuthClient);
     }
 
 }

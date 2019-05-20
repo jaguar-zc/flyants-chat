@@ -9,7 +9,9 @@ import org.flyants.authorize.domain.entity.oauth2.OAuthClient;
  * @Version v1.0
  */
 public interface AppService {
-    PageResult<OAuthClient> findList(Integer page,Integer size);
+    PageResult<OAuthClient> findList(Integer page,Integer size,String searchBy,String keyWord);
 
     void save(  OAuthClient oAuthClient);
+
+    void update(String id, OAuthClient oAuthClient);
 }

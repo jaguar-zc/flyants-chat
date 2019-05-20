@@ -2,6 +2,7 @@ package org.flyants.authorize.domain.repository;
 
 import org.flyants.authorize.domain.entity.oauth2.OAuthClient;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -12,7 +13,7 @@ import java.util.Optional;
  * @Version v1.0
  */
 @Repository
-public interface ClientRepository extends JpaRepository<OAuthClient,String> {
+public interface ClientRepository extends JpaRepository<OAuthClient,String> , JpaSpecificationExecutor {
 
     Optional<OAuthClient> findByClientIdAndClientSecret(String clientId, String clientSecret);
 

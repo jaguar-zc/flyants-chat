@@ -6,10 +6,21 @@ import org.flyants.authorize.domain.entity.oauth2.OAuthClientResource;
 import org.flyants.authorize.domain.repository.ClientRepository;
 import org.flyants.authorize.domain.service.AppService;
 import org.flyants.authorize.utils.ResourceUtils;
+import org.flyants.common.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * @Author zhangchao
@@ -24,10 +35,18 @@ public class AppServiceImpl implements AppService {
 
 
     @Override
-    public PageResult<OAuthClient> findList(Integer page,Integer size) {
-        PageRequest of = PageRequest.of(page - 1, size);
+    public PageResult<OAuthClient> findList(Integer page,Integer size,String searchBy,String keyWord) {
+        Page<OAuthClient> all = clientRepository.findAll(new Specification() {
+            @Override
+            public Predicate toPredicate(Root root, CriteriaQuery query, CriteriaBuilder cb) {
+                List<Predicate> pr = new ArrayList<>();
+                if(!StringUtils.isEmpty(searchBy)){
+                    pr.add( cb.like(root.get(searchBy).as(String.class),"%"+keyWord+"%"));
+                }
+                return cb.and(pr.toArray(new Predicate[pr.size()]));
+            }
+        },PageRequest.of(page - 1, size));
 
-        Page<OAuthClient> all = clientRepository.findAll(of);
         return new PageResult<OAuthClient>(all.getTotalElements(), all.getContent());
     }
 
@@ -40,5 +59,15 @@ public class AppServiceImpl implements AppService {
         resource.setResource("昵称、头像、手机号");
         client.setOAuthClientResource(resource);
         clientRepository.saveAndFlush(client);
+    }
+
+    @Override
+    public void update(String id, OAuthClient oAuthClientPa) {
+        Optional<OAuthClient> optionalOAuthClient = clientRepository.findById(id);
+        if(!optionalOAuthClient.isPresent()){
+            throw  new BusinessException("AppId不存在");
+        }
+        oAuthClientPa.setClientId(id);
+        clientRepository.saveAndFlush(oAuthClientPa);
     }
 }
