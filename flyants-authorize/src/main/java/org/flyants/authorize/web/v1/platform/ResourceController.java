@@ -16,7 +16,7 @@ import java.util.List;
  * @Version v1.0
  */
 @RestController
-@RequestMapping("/resource")
+@RequestMapping(PlatformVersion.version + "/resource")
 @Slf4j
 public class ResourceController {
 

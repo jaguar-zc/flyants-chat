@@ -13,21 +13,25 @@ import org.springframework.web.bind.annotation.*;
  * @Version v1.0
  */
 @RestController
-@RequestMapping("/app")
+@RequestMapping(PlatformVersion.version + "/app")
 @Slf4j
 public class AppController {
 
     @Autowired
     private AppService appService;
 
-
-
     @GetMapping("/list")
     public PageResult<OAuthClient> findList(@RequestParam(required = false,name = "page",defaultValue = "1") Integer page,
-                                            @RequestParam(required = false,name = "page",defaultValue = "10") Integer size,
-                                            @RequestParam(required = false,name = "searchBy") String searchBy,
-                                            @RequestParam(required = false,name = "keyword") String keyWord) {
+                                                          @RequestParam(required = false,name = "size",defaultValue = "10") Integer size,
+                                                          @RequestParam(required = false,name = "searchBy") String searchBy,
+                                                          @RequestParam(required = false,name = "keyword") String keyWord) {
         return appService.findList(page, size, searchBy, keyWord);
+    }
+
+
+    @GetMapping("/{id}")
+    public OAuthClient find(@PathVariable("id") String clientId){
+        return appService.find(clientId);
     }
 
     @PostMapping

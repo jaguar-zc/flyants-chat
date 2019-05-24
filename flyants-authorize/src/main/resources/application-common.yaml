@@ -25,6 +25,6 @@ spring:
       connection-test-query: SELECT 1
   jpa:
     database-platform: org.hibernate.dialect.MySQL57Dialect
-    show-sql: false
+    show-sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update

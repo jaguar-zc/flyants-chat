@@ -13,7 +13,7 @@ import java.util.Optional;
  * @Version v1.0
  */
 @Repository
-public interface ClientRepository extends JpaRepository<OAuthClient,String> , JpaSpecificationExecutor {
+public interface OAuthClientRepository extends JpaRepository<OAuthClient,String> , JpaSpecificationExecutor {
 
     Optional<OAuthClient> findByClientIdAndClientSecret(String clientId, String clientSecret);
 

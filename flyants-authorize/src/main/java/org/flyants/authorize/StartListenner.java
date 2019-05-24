@@ -1,16 +1,21 @@
 package org.flyants.authorize;
 
-import org.flyants.authorize.domain.repository.ClientRepository;
-import org.flyants.authorize.domain.repository.OAuthClientResourceRepository;
-import org.flyants.authorize.domain.repository.PeopleRepository;
+import org.flyants.authorize.domain.Language;
 import org.flyants.authorize.domain.entity.oauth2.OAuthClient;
 import org.flyants.authorize.domain.entity.oauth2.OAuthClientResource;
+import org.flyants.authorize.domain.entity.platform.LoginMethod;
+import org.flyants.authorize.domain.entity.platform.LoginMethod.LoginMethodStatus;
+import org.flyants.authorize.domain.entity.platform.LoginMethod.LoginType;
 import org.flyants.authorize.domain.entity.platform.People;
+import org.flyants.authorize.domain.repository.LoginMethodRepository;
+import org.flyants.authorize.domain.repository.OAuthClientRepository;
+import org.flyants.authorize.domain.repository.OAuthClientResourceRepository;
+import org.flyants.authorize.domain.repository.PeopleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.util.Date;
+import java.util.*;
 
 /**
  * @Author zhangchao
@@ -22,7 +27,7 @@ public class StartListenner {
 
 
     @Autowired
-    ClientRepository clientRepository;
+    OAuthClientRepository OAuthClientRepository;
 
     @Autowired
     PeopleRepository peopleRepository;
@@ -30,20 +35,48 @@ public class StartListenner {
     @Autowired
     OAuthClientResourceRepository oAuthClientResourceRepository;
 
-    @PostConstruct
-    public void run(){
+    @Autowired
+    LoginMethodRepository loginMethodRepository;
 
+//    @PostConstruct
+    public void run(){
 
         for (int i = 0; i < 50; i++) {
             People people = new People();
             people.setCreationDate(new Date());
             people.setModificationDate(new Date());
             people.setEncodedPrincipal("https://thirdqq.qlogo.cn/g?b=sdk&k=XC5OAkdV3Kg0srWxwKPVJg&s=100&t=1556270245");
-            people.setUsername("root_"+i);
-            people.setPassword("root");
+            people.setNickName("root_"+i);
+            people.setPhone("130000000"+(i<10?"0"+i:i));
+            people.setSex(0);
+            people.setLanguage(Language.zh_CN);
+            people.setCountry("中国");
+            people.setProvince("北京市");
+            people.setCity("望江区");
+            people = peopleRepository.saveAndFlush(people);
 
-            peopleRepository.save(people);
 
+            List<LoginMethod> loginMethodSet = new ArrayList<>();
+
+            LoginMethod phoneLogin = new LoginMethod();
+            phoneLogin.setType(LoginType.PHONE);
+            phoneLogin.setMark(people.getPhone());
+            phoneLogin.setPeopleId(people.getId());
+            phoneLogin.setStatus(LoginMethodStatus.ACTIVE);
+
+            loginMethodSet.add(phoneLogin);
+
+            LoginMethod pwdLogin = new LoginMethod();
+            pwdLogin.setType(LoginType.PASSWORD);
+            pwdLogin.setMark(LoginMethod.buildPasswordMark(people.getPhone(),"123456"));
+            pwdLogin.setPeopleId(people.getId());
+            pwdLogin.setStatus(LoginMethodStatus.ACTIVE);
+            loginMethodSet.add(pwdLogin);
+
+//            people.setLoginMethodList(loginMethodSet);
+
+            loginMethodRepository.save(phoneLogin);
+            loginMethodRepository.save(pwdLogin);
 
 
             OAuthClient client = new OAuthClient();
@@ -64,13 +97,8 @@ public class StartListenner {
             resource.setResource("昵称、头像、手机号");
             client.setOAuthClientResource(resource);
 
-            clientRepository.saveAndFlush(client);
+            OAuthClientRepository.saveAndFlush(client);
         }
-
-
-
-
-
 
     }
 

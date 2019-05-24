@@ -6,6 +6,7 @@ import org.flyants.authorize.domain.entity.platform.People;
 import org.flyants.authorize.utils.ResponseDataUtils;
 import org.flyants.authorize.web.v1.platform.dto.LoginReq;
 import org.flyants.common.ResponseData;
+import org.flyants.common.annotation.Anonymous;
 import org.flyants.common.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -21,7 +23,7 @@ import java.util.Optional;
  * @Version v1.0
  */
 @RestController
-@RequestMapping("/login")
+@RequestMapping(PlatformVersion.version + "/login")
 @Slf4j
 public class LoginController {
 
@@ -30,14 +32,15 @@ public class LoginController {
     PeopleService peopleService;
 
 
+
+    @Anonymous
     @PostMapping
     public ResponseData<Object> login(@RequestBody LoginReq loginReq) {
         log.info("username:{},password:{}", loginReq.getUsername(), loginReq.getPassword());
-        Optional<People> people = peopleService.findByUsernameAndPassword(loginReq.getUsername(), loginReq.getPassword());
+        Optional<String> people = peopleService.loginByPassword(loginReq.getUsername(), loginReq.getPassword());
         if (people.isPresent()) {
-            People people1 = people.get();
-            log.info(people1.toString());
-            return ResponseDataUtils.buildSuccess(people.get());
+            log.info(people.get());
+            return ResponseDataUtils.buildSuccess().addAttrs("token",people.get());
         } else {
             throw new BusinessException("用户名密码不存在");
         }

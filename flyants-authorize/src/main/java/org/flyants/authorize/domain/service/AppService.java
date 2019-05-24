@@ -14,4 +14,6 @@ public interface AppService {
     void save(  OAuthClient oAuthClient);
 
     void update(String id, OAuthClient oAuthClient);
+
+    OAuthClient find(String clientId);
 }

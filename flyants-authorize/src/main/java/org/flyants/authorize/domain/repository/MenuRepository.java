@@ -1,10 +1,12 @@
 package org.flyants.authorize.domain.repository;
 
-import org.flyants.authorize.domain.entity.platform.People;
+import org.flyants.authorize.domain.entity.platform.Menu;
+import org.flyants.authorize.domain.entity.platform.Token;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -13,7 +15,8 @@ import java.util.Optional;
  * @Version v1.0
  */
 @Repository
-public interface PeopleRepository extends JpaRepository<People,Long>  , JpaSpecificationExecutor {
+public interface MenuRepository extends JpaRepository<Menu,Long>  , JpaSpecificationExecutor {
 
-    Optional<People> findByPhone(String phone);
+    List<Menu> findByParentId(Long parentId);
+
 }

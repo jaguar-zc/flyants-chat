@@ -1,6 +1,7 @@
 package org.flyants.authorize.web.v1.platform;
 
 import lombok.extern.slf4j.Slf4j;
+import org.flyants.common.annotation.Anonymous;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,10 +16,12 @@ import static org.flyants.authorize.utils.ResourceUtils.SESSION_USER;
  * @Version v1.0
  */
 @Controller
-@RequestMapping("/logout")
+@RequestMapping(PlatformVersion.version + "/logout")
 @Slf4j
 public class LogoutController {
 
+
+    @Anonymous
     @GetMapping
     public String logout(HttpServletRequest request) {
         request.getSession().removeAttribute(SESSION_USER);

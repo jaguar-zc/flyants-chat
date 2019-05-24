@@ -3,7 +3,7 @@ package org.flyants.authorize.domain.service.impl;
 import org.flyants.authorize.configuration.PageResult;
 import org.flyants.authorize.domain.entity.oauth2.OAuthClient;
 import org.flyants.authorize.domain.entity.oauth2.OAuthClientResource;
-import org.flyants.authorize.domain.repository.ClientRepository;
+import org.flyants.authorize.domain.repository.OAuthClientRepository;
 import org.flyants.authorize.domain.service.AppService;
 import org.flyants.authorize.utils.ResourceUtils;
 import org.flyants.common.exception.BusinessException;
@@ -31,17 +31,17 @@ import java.util.Optional;
 public class AppServiceImpl implements AppService {
 
     @Autowired
-    ClientRepository clientRepository;
+    OAuthClientRepository OAuthClientRepository;
 
 
     @Override
     public PageResult<OAuthClient> findList(Integer page,Integer size,String searchBy,String keyWord) {
-        Page<OAuthClient> all = clientRepository.findAll(new Specification() {
+        Page<OAuthClient> all = OAuthClientRepository.findAll(new Specification() {
             @Override
             public Predicate toPredicate(Root root, CriteriaQuery query, CriteriaBuilder cb) {
                 List<Predicate> pr = new ArrayList<>();
                 if(!StringUtils.isEmpty(searchBy)){
-                    pr.add( cb.like(root.get(searchBy).as(String.class),"%"+keyWord+"%"));
+                    pr.add(cb.like(root.get(searchBy).as(String.class),"%"+keyWord+"%"));
                 }
                 return cb.and(pr.toArray(new Predicate[pr.size()]));
             }
@@ -58,16 +58,21 @@ public class AppServiceImpl implements AppService {
         resource.setClientId(client.getClientId());
         resource.setResource("昵称、头像、手机号");
         client.setOAuthClientResource(resource);
-        clientRepository.saveAndFlush(client);
+        OAuthClientRepository.saveAndFlush(client);
     }
 
     @Override
     public void update(String id, OAuthClient oAuthClientPa) {
-        Optional<OAuthClient> optionalOAuthClient = clientRepository.findById(id);
+        Optional<OAuthClient> optionalOAuthClient = OAuthClientRepository.findById(id);
         if(!optionalOAuthClient.isPresent()){
             throw  new BusinessException("AppId不存在");
         }
         oAuthClientPa.setClientId(id);
-        clientRepository.saveAndFlush(oAuthClientPa);
+        OAuthClientRepository.saveAndFlush(oAuthClientPa);
+    }
+
+    @Override
+    public OAuthClient find(String clientId) {
+        return OAuthClientRepository.findById(clientId).orElseThrow(()->new BusinessException("ClientID不存在"));
     }
 }

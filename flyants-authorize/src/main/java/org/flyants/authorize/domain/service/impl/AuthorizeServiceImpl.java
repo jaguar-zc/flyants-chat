@@ -9,7 +9,7 @@ import org.flyants.authorize.domain.entity.oauth2.OAuthAuthorizeRequest;
 import org.flyants.authorize.domain.entity.oauth2.OAuthClient;
 import org.flyants.authorize.domain.entity.oauth2.OAuthUserAuthorize;
 import org.flyants.authorize.domain.entity.platform.People;
-import org.flyants.authorize.domain.repository.ClientRepository;
+import org.flyants.authorize.domain.repository.OAuthClientRepository;
 import org.flyants.authorize.domain.repository.OAuthAccessTokenRepository;
 import org.flyants.authorize.domain.repository.OAuthUserAuthorizeRepository;
 import org.flyants.authorize.domain.repository.OAuthorizeRequestRepository;
@@ -45,16 +45,16 @@ public class AuthorizeServiceImpl implements AuthorizeService {
     private OAuthAccessTokenRepository oAuthAccessTokenRepository;
 
     @Autowired
-    private ClientRepository clientRepository;
+    private OAuthClientRepository OAuthClientRepository;
 
     @Override
     public boolean checkClientId(String clientId) {
-        return clientRepository.findById(clientId).isPresent();
+        return OAuthClientRepository.findById(clientId).isPresent();
     }
 
     @Override
     public OAuthClient findOAuthClinetByClientId(String clientId) {
-        return clientRepository.findById(clientId).orElseThrow(() -> new BusinessException("clientId不存在"));
+        return OAuthClientRepository.findById(clientId).orElseThrow(() -> new BusinessException("clientId不存在"));
     }
 
     @Override
@@ -64,12 +64,12 @@ public class AuthorizeServiceImpl implements AuthorizeService {
 
     @Override
     public boolean checkClientSecret(String clientId,String clientSecret) {
-        return clientRepository.findByClientIdAndClientSecret(clientId,clientSecret).isPresent();
+        return OAuthClientRepository.findByClientIdAndClientSecret(clientId,clientSecret).isPresent();
     }
 
     @Override
     public boolean checkRedirectUri(String clientId,String redirectURI) {
-        return clientRepository.findByClientIdAndClientRedirectUriHost(clientId,redirectURI).isPresent();
+        return OAuthClientRepository.findByClientIdAndClientRedirectUriHost(clientId,redirectURI).isPresent();
     }
 
     @Override
@@ -87,7 +87,7 @@ public class AuthorizeServiceImpl implements AuthorizeService {
 
         People currentPeople = ResourceUtils.getCurrentPeople();
 
-        Optional<OAuthClient> client = clientRepository.findById(client_id);
+        Optional<OAuthClient> client = OAuthClientRepository.findById(client_id);
 
         OAuthAuthorizeRequest request = new OAuthAuthorizeRequest();
         request.setCreationDate(new Date());
@@ -119,7 +119,7 @@ public class AuthorizeServiceImpl implements AuthorizeService {
                     e.printStackTrace();
                 }
                 userAuthorize.setUserId(currentPeople.getId());
-                userAuthorize.setOauthUserName(currentPeople.getUsername());
+                userAuthorize.setOauthUserName(currentPeople.getNickName());
                 userAuthorize.setAuthorizeResource(client.get().getOAuthClientResource().getResource());
                 return userAuthorize;
             });

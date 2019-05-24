@@ -44,16 +44,17 @@ public class ResponseData<T> extends LinkedHashMap<String, Object> {
 
 
     private String revertName(String name) {
-        StringBuffer buffer = new StringBuffer("");
-        for (char c : name.toCharArray()) {
-            if (c >= 65 && c <= 90) {
-                buffer.append(APLIT);
-                buffer.append(((char) (c + 32)));
-            } else {
-                buffer.append(c);
-            }
-        }
-        return buffer.toString();
+        return name;
+//        StringBuffer buffer = new StringBuffer("");
+//        for (char c : name.toCharArray()) {
+//            if (c >= 65 && c <= 90) {
+//                buffer.append(APLIT);
+//                buffer.append(((char) (c + 32)));
+//            } else {
+//                buffer.append(c);
+//            }
+//        }
+//        return buffer.toString();
     }
 
 

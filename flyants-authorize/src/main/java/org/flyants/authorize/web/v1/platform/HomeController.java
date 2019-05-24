@@ -17,7 +17,7 @@ import static org.flyants.authorize.utils.ResourceUtils.SESSION_USER;
  * @Version v1.0
  */
 @Controller
-@RequestMapping("/")
+@RequestMapping(PlatformVersion.version + "/")
 @Slf4j
 public class HomeController {
 

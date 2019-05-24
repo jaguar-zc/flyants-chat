@@ -31,6 +31,6 @@ public class ResponseDataUtils {
     }
 
     public static <T> ResponseData buildError(String code, String msg) {
-        return new ResponseData<T>(400, msg);
+        return new ResponseData<T>(Integer.valueOf(code), msg);
     }
 }
