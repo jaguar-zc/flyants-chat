@@ -20,4 +20,8 @@ public interface PeopleService {
     Optional<People> findByPassword(String phone,String password);
 
     PageResult<People> findList(Integer page, Integer size, String searchBy, String keyWord);
+
+
+
+    void createPeople(String phone,String nickName);
 }

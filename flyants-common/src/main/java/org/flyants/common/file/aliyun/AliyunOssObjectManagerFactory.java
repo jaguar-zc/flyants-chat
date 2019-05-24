@@ -2,10 +2,7 @@ package org.flyants.common.file.aliyun;
 
 import org.flyants.common.file.ObjectManagerFactory;
 import org.flyants.common.file.ObjectUpload;
-import org.flyants.common.utils.ImageUtil;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
 
@@ -14,7 +11,7 @@ import java.io.InputStream;
  * @Date 2019/5/23 17:04
  * @Version v1.0
  */
-public class AliyunOssObjectManagerFactory  implements ObjectManagerFactory,ObjectUpload {
+public class AliyunOssObjectManagerFactory implements ObjectManagerFactory,ObjectUpload {
 
     private AliyunOssObjectUpload aliyunOssFileUpload;
 
@@ -30,9 +27,6 @@ public class AliyunOssObjectManagerFactory  implements ObjectManagerFactory,Obje
     public AliyunOssObjectManagerFactory() {
         aliyunOssFileUpload = new AliyunOssObjectUpload(endpoint,accessKeyId,accessKeySecret,bucketName);
     }
-
-
-
 
     @Override
     public String upload(File file) {
@@ -50,13 +44,13 @@ public class AliyunOssObjectManagerFactory  implements ObjectManagerFactory,Obje
     }
 
 
-    public static void main(String[] args) throws Exception {
-        AliyunOssObjectManagerFactory build = ObjectManagerFactory.build();
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        ImageUtil.generateImg("Juck",byteArrayOutputStream);
-        ByteArrayInputStream inputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
-        String upload = build.upload(inputStream, "headimg/juck.jpg");
-        System.out.println(upload);
-    }
+//    public static void main(String[] args) throws Exception {
+//        AliyunOssObjectManagerFactory build = ObjectManagerFactory.build();
+//        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+//        ImageUtil.generateImg("Juck",byteArrayOutputStream);
+//        ByteArrayInputStream inputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
+//        String upload = build.upload(inputStream, "headimg/juck.jpg");
+//        System.out.println(upload);
+//    }
 
 }

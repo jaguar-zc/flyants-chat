@@ -40,6 +40,10 @@ public class AccountController {
 
 
 
+
+
+
+
     @GetMapping("/{peopleId}")
     public ResponseData<Object> get(@PathVariable("peopleId") Long id) {
         log.info("id:{} ", id);
@@ -51,6 +55,15 @@ public class AccountController {
         } else {
             throw new BusinessException("用户不存在");
         }
+    }
+
+
+    @PostMapping("/create")
+    public ResponseData<Object> create(@RequestParam("phone") String phone,@RequestParam("nickName")String nickName) {
+        Long id = JWTManager.get();
+        log.info("id:{} ", id);
+        peopleService.createPeople(phone,nickName);
+        return ResponseDataUtils.buildSuccess();
     }
 
 
