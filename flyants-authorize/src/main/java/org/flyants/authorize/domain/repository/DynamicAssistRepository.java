@@ -4,6 +4,8 @@ import org.flyants.authorize.domain.entity.platform.dynamic.DynamicAssist;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * @Author zhangchao
  * @Date 2019/4/25 15:33
@@ -12,4 +14,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface DynamicAssistRepository extends JpaRepository<DynamicAssist,Long> {
 
+    List<DynamicAssist>  findAllByDynamicId(Long dynamicId);
 }

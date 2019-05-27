@@ -3,6 +3,7 @@ package org.flyants.authorize.domain.repository;
 import org.flyants.authorize.domain.entity.platform.dynamic.Dynamic;
 import org.flyants.authorize.domain.entity.platform.message.MessageUser;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -11,6 +12,6 @@ import org.springframework.stereotype.Repository;
  * @Version v1.0
  */
 @Repository
-public interface DynamicRepository extends JpaRepository<Dynamic,Long> {
+public interface DynamicRepository extends JpaRepository<Dynamic,Long>  , JpaSpecificationExecutor {
 
 }

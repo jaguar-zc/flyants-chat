@@ -32,7 +32,6 @@ import java.util.Optional;
 @Service
 public class AuthorizeServiceImpl implements AuthorizeService {
 
-
     private ValueGenerator generator = new MD5Generator();
 
     @Autowired

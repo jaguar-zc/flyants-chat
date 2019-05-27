@@ -1,6 +1,5 @@
 package org.flyants.authorize.domain.repository;
 
-import org.flyants.authorize.domain.entity.platform.dynamic.Dynamic;
 import org.flyants.authorize.domain.entity.platform.message.Conversation;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

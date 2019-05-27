@@ -1,13 +1,11 @@
 package org.flyants.authorize.domain.repository;
 
 import org.flyants.authorize.domain.entity.platform.Menu;
-import org.flyants.authorize.domain.entity.platform.Token;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @Author zhangchao

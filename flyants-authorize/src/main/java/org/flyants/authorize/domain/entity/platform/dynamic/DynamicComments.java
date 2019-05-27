@@ -14,7 +14,7 @@ import java.util.Date;
 @Getter
 @Setter
 @Entity
-public class DynamicAssist {
+public class DynamicComments {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,6 +27,14 @@ public class DynamicAssist {
     private Long dynamicId;
 
     @Column
+    private String text;
+
+    @Column
     private Long peopleId;
+
+    @Column
+    private Long dynamicCommentsId;
+    @Column
+    private Integer level;//深度，最多2层
 
 }

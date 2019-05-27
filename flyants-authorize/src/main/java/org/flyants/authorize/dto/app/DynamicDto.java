@@ -1,4 +1,4 @@
-package org.flyants.authorize.domain.entity.platform.dynamic;
+package org.flyants.authorize.dto.app;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -6,6 +6,7 @@ import org.flyants.authorize.domain.DynamicVisibility;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 动态
@@ -15,31 +16,16 @@ import java.util.Date;
  */
 @Getter
 @Setter
-@Entity
-public class Dynamic {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class DynamicDto {
     private Long id;
-
-    @Column
     private Date createTime;
-
-    @Column
     private Long peopleId;
-
-    @Column
+    private String nickName;
+    private String encodedPrincipal;
     private String text;
-
-    @Column
-    private String images;//List<String>
-
-    @Column
+    private List<String> images;//List<String>
     private String location;//位置
-
-    @Column
-    @Enumerated(value = EnumType.STRING)
-    private DynamicVisibility visibility;
-
-
+    private DynamicVisibility visibility = DynamicVisibility.ALL;
+    private List<PeopleSimpleDto> assistPeopleList;//List<String>
+    private Integer commentsCount;
 }

@@ -1,6 +1,7 @@
 package org.flyants.authorize;
 
 import org.flyants.authorize.domain.Language;
+import org.flyants.authorize.domain.entity.PeopleSex;
 import org.flyants.authorize.domain.entity.oauth2.OAuthClient;
 import org.flyants.authorize.domain.entity.oauth2.OAuthClientResource;
 import org.flyants.authorize.domain.entity.platform.LoginMethod;
@@ -12,7 +13,6 @@ import org.flyants.authorize.domain.repository.OAuthClientRepository;
 import org.flyants.authorize.domain.repository.OAuthClientResourceRepository;
 import org.flyants.authorize.domain.repository.PeopleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -50,7 +50,7 @@ public class StartListenner {
             people.setEncodedPrincipal("https://thirdqq.qlogo.cn/g?b=sdk&k=XC5OAkdV3Kg0srWxwKPVJg&s=100&t=1556270245");
             people.setNickName("root_" + i);
             people.setPhone("130000000" + (i < 10 ? "0" + i : i));
-            people.setSex(0);
+            people.setSex(PeopleSex.UNKNOWN);
             people.setLanguage(Language.zh_CN);
             people.setCountry("中国");
             people.setProvince("北京市");

@@ -5,6 +5,7 @@ import lombok.Setter;
 import org.flyants.authorize.domain.Language;
 import org.flyants.authorize.domain.entity.PeopleSex;
 
+import javax.persistence.Column;
 import java.util.Date;
 
 /**
@@ -24,9 +25,10 @@ public class PeopleInfoDto {
     private String phone;
     private PeopleSex sex;
     private Language language = Language.zh_CN;
-    private String location;
+    private String country;
+    private String province;
+    private String city;
     private String introduction;
     private Integer peopleAssistCount;
-
 
 }

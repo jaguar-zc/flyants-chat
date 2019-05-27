@@ -12,4 +12,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MessageUserRepository extends JpaRepository<MessageUser,Long> {
 
+
+    MessageUser findByPeopleId(Long peopleId);
 }

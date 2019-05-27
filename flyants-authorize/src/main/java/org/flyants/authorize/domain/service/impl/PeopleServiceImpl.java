@@ -6,10 +6,7 @@ import org.flyants.authorize.configuration.Constents;
 import org.flyants.authorize.configuration.PageResult;
 import org.flyants.authorize.domain.Language;
 import org.flyants.authorize.domain.entity.PeopleSex;
-import org.flyants.authorize.domain.entity.platform.LoginMethod;
-import org.flyants.authorize.domain.entity.platform.People;
-import org.flyants.authorize.domain.entity.platform.PeopleIntroduction;
-import org.flyants.authorize.domain.entity.platform.Token;
+import org.flyants.authorize.domain.entity.platform.*;
 import org.flyants.authorize.domain.entity.platform.message.MessageUser;
 import org.flyants.authorize.domain.repository.*;
 import org.flyants.authorize.domain.service.PeopleService;
@@ -18,6 +15,7 @@ import org.flyants.common.exception.BusinessException;
 import org.flyants.common.file.ObjectManagerFactory;
 import org.flyants.common.utils.ImageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
@@ -214,7 +212,9 @@ public class PeopleServiceImpl implements PeopleService {
         peopleInfo.setPhone(people.getPhone());
         peopleInfo.setSex(people.getSex());
         peopleInfo.setLanguage(people.getLanguage());
-        peopleInfo.setLocation(people.getProvince() + "-" + people.getCountry() + "-" + people.getCity());
+        peopleInfo.setCountry(people.getCountry());
+        peopleInfo.setProvince(people.getProvince());
+        peopleInfo.setCity(people.getCity());
         peopleInfo.setIntroduction("");
 
         Optional<PeopleIntroduction> peopleIntroduction = peopleIntroductionRepository.findByPeopleIdAndStatus(peopleId, 1);
@@ -249,5 +249,50 @@ public class PeopleServiceImpl implements PeopleService {
         peopleIntroductionRepository.save(peopleIntroduction);
     }
 
+    @Override
+    public void assistPeople(Long peopleId, Long assistPeopleId) {
+        if (peopleAssistRepository.countByPeopleIdAndInitiativePeopleId(assistPeopleId,peopleId) >0) {
+            return;
+        }
+        PeopleAssist peopleAssist = new PeopleAssist();
+        peopleAssist.setInitiativePeopleId(peopleId);
+        peopleAssist.setPeopleId(assistPeopleId);
+        peopleAssistRepository.saveAndFlush(peopleAssist);
+    }
 
+    @Override
+    public void updatePeopleInfo(PeopleInfoDto peopleInfoDto) {
+        Optional<People> optionalPeople = peopleRepository.findById(peopleInfoDto.getId());
+        if (!optionalPeople.isPresent()) {
+            throw new BusinessException("用户名不存在");
+        }
+        People people = optionalPeople.get();
+
+        if(!StringUtils.isEmpty(peopleInfoDto.getEncodedPrincipal())){
+            people.setEncodedPrincipal(peopleInfoDto.getEncodedPrincipal());
+        }
+        if(!StringUtils.isEmpty(peopleInfoDto.getPhone())){
+            people.setPhone(peopleInfoDto.getPhone());
+        }
+
+        if(!StringUtils.isEmpty(peopleInfoDto.getCity())) {
+            people.setCity(peopleInfoDto.getCity());
+        }
+        if(!StringUtils.isEmpty(peopleInfoDto.getCountry())) {
+            people.setCountry(peopleInfoDto.getCountry());
+        }
+        if(!StringUtils.isEmpty(peopleInfoDto.getProvince())) {
+            people.setProvince(peopleInfoDto.getProvince());
+        }
+        if(!StringUtils.isEmpty(peopleInfoDto.getLanguage())) {
+            people.setLanguage(peopleInfoDto.getLanguage());
+        }
+        if(!StringUtils.isEmpty(peopleInfoDto.getNickName())) {
+            people.setNickName(peopleInfoDto.getNickName());
+        }
+        if(!StringUtils.isEmpty(peopleInfoDto.getSex())) {
+            people.setSex(peopleInfoDto.getSex());
+        }
+        peopleRepository.saveAndFlush(people);
+    }
 }

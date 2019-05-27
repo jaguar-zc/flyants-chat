@@ -18,11 +18,10 @@ public interface PeopleService {
     Optional<String> findByPhone(String phone);
 
     Optional<String> loginByPassword(String phone,String password);
+
     Optional<People> findByPassword(String phone,String password);
 
     PageResult<People> findList(Integer page, Integer size, String searchBy, String keyWord);
-
-
 
     void createPeople(String phone,String nickName);
 
@@ -31,4 +30,8 @@ public interface PeopleService {
     PeopleInfoDto info(Long peopleId);
 
     void editPeopleIntroduction(Long peopleId, String introduction);
+
+    void assistPeople(Long peopleId, Long assistPeopleId);
+
+    void updatePeopleInfo(PeopleInfoDto peopleInfoDto);
 }

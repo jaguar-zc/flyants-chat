@@ -5,10 +5,7 @@ import org.flyants.authorize.domain.service.PeopleService;
 import org.flyants.authorize.dto.app.PeopleInfoDto;
 import org.flyants.authorize.utils.JWTManager;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @Author zhangchao
@@ -30,10 +27,21 @@ public class AppPeopleController {
         return  peopleService.info(peopleId);
     }
 
+    @PostMapping("/updatePeopleInfo")
+    public void updatePeopleInfo(@RequestBody PeopleInfoDto peopleInfoDto){
+        peopleService.updatePeopleInfo(peopleInfoDto);
+    }
+
     @PostMapping("/editPeopleIntroduction")
     public void editPeopleIntroduction(String introduction){
         Long peopleId = JWTManager.get();
         peopleService.editPeopleIntroduction(peopleId,introduction);
+    }
+
+    @PostMapping("/assistPeople")
+    public void assistPeople(Long assistPeopleId){
+        Long peopleId = JWTManager.get();
+        peopleService.assistPeople(peopleId,assistPeopleId);
     }
 
 }
