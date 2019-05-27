@@ -1,13 +1,17 @@
 package org.flyants.authorize.configuration;
 
+import org.flyants.authorize.web.v1.app.AppVersion;
 import org.flyants.authorize.web.v1.platform.PlatformVersion;
 import org.flyants.common.file.aliyun.AliyunOssObjectManagerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.orm.jpa.vendor.HibernateJpaSessionFactoryBean;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import javax.persistence.EntityManagerFactory;
 
 /**
  * @Author zhangchao
@@ -26,8 +30,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(authenticationInterceptor)
-                .addPathPatterns(PlatformVersion.version + "/**");    // 拦截所有请求，通过判断是否有 @Anonymous 注解 决定是否需要登录
+        registry.addInterceptor(authenticationInterceptor).addPathPatterns(PlatformVersion.version + "/**");    // 拦截所有请求，通过判断是否有 @Anonymous 注解 决定是否需要登录
+        registry.addInterceptor(authenticationInterceptor).addPathPatterns(AppVersion.version + "/**");    // 拦截所有请求，通过判断是否有 @Anonymous 注解 决定是否需要登录
     }
 
 

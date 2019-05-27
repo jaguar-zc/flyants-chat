@@ -12,4 +12,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PeopleAssistRepository extends JpaRepository<PeopleAssist,Long> {
 
+
+    int countByPeopleId(Long peopleId);
 }

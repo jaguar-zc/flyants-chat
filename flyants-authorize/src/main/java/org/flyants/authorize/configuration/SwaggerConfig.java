@@ -1,5 +1,6 @@
 package org.flyants.authorize.configuration;
 
+import org.flyants.authorize.web.v1.app.AppVersion;
 import org.flyants.authorize.web.v1.platform.PlatformVersion;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +23,25 @@ public class SwaggerConfig {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("org.flyants.authorize.web.v1.platform"))
-                .paths(path -> path.startsWith(PlatformVersion.version))
+                .paths(path -> path.startsWith("v1.0"))
+                .build();
+    }
+
+    @Bean
+    public Docket appApi() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("org.flyants.authorize.web.v1.app"))
+                .paths(path -> path.startsWith(AppVersion.version))
+                .build();
+    }
+
+    @Bean
+    public Docket oauthApi() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("org.flyants.authorize.web.v1.oauth"))
+                .paths(path -> path.startsWith("v1.0"))
                 .build();
     }
 

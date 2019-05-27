@@ -7,9 +7,9 @@
         <artifactId>flyants-oauth2</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>flyants-authorize</artifactId>
+    <artifactId>flyants-chat</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>flyants-authorize</name>
+    <name>flyants-chat</name>
     <packaging>jar</packaging>
     <description>Demo project for Spring Boot</description>
 

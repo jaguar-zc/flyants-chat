@@ -1,22 +1,19 @@
 package org.flyants.authorize.domain.service.impl;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.*;
+import java.util.Date;
 
 import lombok.extern.slf4j.Slf4j;
+import org.flyants.authorize.configuration.Constents;
 import org.flyants.authorize.configuration.PageResult;
 import org.flyants.authorize.domain.Language;
-import org.flyants.authorize.domain.entity.oauth2.OAuthClient;
+import org.flyants.authorize.domain.entity.PeopleSex;
 import org.flyants.authorize.domain.entity.platform.LoginMethod;
+import org.flyants.authorize.domain.entity.platform.People;
+import org.flyants.authorize.domain.entity.platform.PeopleIntroduction;
 import org.flyants.authorize.domain.entity.platform.Token;
 import org.flyants.authorize.domain.entity.platform.message.MessageUser;
-import org.flyants.authorize.domain.repository.LoginMethodRepository;
-import org.flyants.authorize.domain.repository.MessageUserRepository;
-import org.flyants.authorize.domain.repository.PeopleRepository;
-import org.flyants.authorize.domain.repository.TokenRepository;
+import org.flyants.authorize.domain.repository.*;
 import org.flyants.authorize.domain.service.PeopleService;
-import org.flyants.authorize.domain.entity.platform.People;
+import org.flyants.authorize.dto.app.PeopleInfoDto;
 import org.flyants.common.exception.BusinessException;
 import org.flyants.common.file.ObjectManagerFactory;
 import org.flyants.common.utils.ImageUtil;
@@ -32,6 +29,10 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * @Author zhangchao
@@ -60,6 +61,11 @@ public class PeopleServiceImpl implements PeopleService {
     @Autowired
     private MessageUserRepository messageUserRepository;
 
+    @Autowired
+    PeopleIntroductionRepository peopleIntroductionRepository;
+    @Autowired
+    PeopleAssistRepository peopleAssistRepository;
+
 
     @Override
     public Optional<People> findPeopleById(Long peopleId) {
@@ -67,17 +73,29 @@ public class PeopleServiceImpl implements PeopleService {
     }
 
     @Override
-    public Optional<People> findByPhone(String phone ) {
-        return peopleRepository.findByPhone(phone);
+    public Optional<String> findByPhone(String phone) {
+        Optional<LoginMethod> loginMethod = loginMethodRepository.findByTypeAndMark(LoginMethod.LoginType.PHONE, phone);
+        if (!loginMethod.isPresent()) {
+            throw new BusinessException("手机号不存在");
+        }
+        return getLoginToken(loginMethod);
     }
 
     @Override
     public Optional<String> loginByPassword(String phone, String password) {
         Optional<LoginMethod> loginMethod = loginMethodRepository.findByTypeAndMark(LoginMethod.LoginType.PASSWORD, LoginMethod.buildPasswordMark(phone, password));
-        if(!loginMethod.isPresent()){
+        if (!loginMethod.isPresent()) {
             throw new BusinessException("用户名或者密码错误");
         }
+        return getLoginToken(loginMethod);
+    }
 
+    @Override
+    public void logout(Long peopleId) {
+        tokenRepository.findByPeopleId(peopleId);
+    }
+
+    private Optional<String> getLoginToken(Optional<LoginMethod> loginMethod) {
         Long peopleId = loginMethod.get().getPeopleId();
         Token token = new Token();
         token.setCreateTime(new Date());
@@ -86,14 +104,13 @@ public class PeopleServiceImpl implements PeopleService {
         token.setRefreshToken(UUID.randomUUID().toString());
         token.setPeopleId(peopleId);
         tokenRepository.save(token);
-
-        return Optional.of(token.getAccessToken());
+        return Optional.ofNullable(token.getAccessToken());
     }
 
     @Override
     public Optional<People> findByPassword(String phone, String password) {
         Optional<LoginMethod> loginMethod = loginMethodRepository.findByTypeAndMark(LoginMethod.LoginType.PASSWORD, LoginMethod.buildPasswordMark(phone, password));
-        if(!loginMethod.isPresent()){
+        if (!loginMethod.isPresent()) {
             throw new BusinessException("用户名或者密码错误");
         }
         return peopleRepository.findById(loginMethod.get().getPeopleId());
@@ -106,8 +123,8 @@ public class PeopleServiceImpl implements PeopleService {
             @Override
             public Predicate toPredicate(Root root, CriteriaQuery query, CriteriaBuilder cb) {
                 List<Predicate> pr = new ArrayList<>();
-                if(!StringUtils.isEmpty(searchBy)){
-                    pr.add(cb.like(root.get(searchBy).as(String.class),"%"+keyWord+"%"));
+                if (!StringUtils.isEmpty(searchBy)) {
+                    pr.add(cb.like(root.get(searchBy).as(String.class), "%" + keyWord + "%"));
                 }
                 return cb.and(pr.toArray(new Predicate[pr.size()]));
             }
@@ -117,8 +134,7 @@ public class PeopleServiceImpl implements PeopleService {
     }
 
     @Override
-    public void createPeople(String phone,String nickName) {
-
+    public void createPeople(String phone, String nickName) {
 
         if (peopleRepository.findByPhone(phone).isPresent()) {
             throw new BusinessException("手机号已存在");
@@ -130,7 +146,7 @@ public class PeopleServiceImpl implements PeopleService {
         people.setEncodedPrincipal("");
         people.setNickName(nickName);
         people.setPhone(phone);
-        people.setSex(0);
+        people.setSex(PeopleSex.UNKNOWN);
         people.setLanguage(Language.zh_CN);
         people.setCountry("中国");
         people.setProvince("北京市");
@@ -150,7 +166,7 @@ public class PeopleServiceImpl implements PeopleService {
 
         LoginMethod pwdLogin = new LoginMethod();
         pwdLogin.setType(LoginMethod.LoginType.PASSWORD);
-        pwdLogin.setMark(LoginMethod.buildPasswordMark(people.getPhone(),"123456"));
+        pwdLogin.setMark(LoginMethod.buildPasswordMark(people.getPhone(), Constents.DEFAUTL_PASSWORD));
         pwdLogin.setPeopleId(people.getId());
         pwdLogin.setStatus(LoginMethod.LoginMethodStatus.ACTIVE);
         loginMethodSet.add(pwdLogin);
@@ -164,10 +180,10 @@ public class PeopleServiceImpl implements PeopleService {
         messageUser.setPeopleId(people.getId());
         messageUserRepository.save(messageUser);
 
-        String imgName = "headimg/"+UUID.randomUUID().toString()+".jpg";
+        String imgName = "headimg/" + UUID.randomUUID().toString() + ".jpg";
         try {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            ImageUtil.generateImg(nickName,byteArrayOutputStream);
+            ImageUtil.generateImg(nickName, byteArrayOutputStream);
             ByteArrayInputStream inputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
             String path = objectManagerFactory.upload(inputStream, imgName);
             people.setEncodedPrincipal(path);
@@ -177,4 +193,61 @@ public class PeopleServiceImpl implements PeopleService {
         }
 
     }
+
+
+    @Override
+    public PeopleInfoDto info(Long peopleId) {
+        PeopleInfoDto peopleInfo = new PeopleInfoDto();
+
+
+        Optional<People> optionalPeople = peopleRepository.findById(peopleId);
+        if (!optionalPeople.isPresent()) {
+            throw new BusinessException("用户名不存在");
+        }
+        People people = optionalPeople.get();
+
+        peopleInfo.setId(people.getId());
+        peopleInfo.setPeopleNo(people.getPeopleNo());
+        peopleInfo.setCreationDate(people.getCreationDate());
+        peopleInfo.setEncodedPrincipal(people.getEncodedPrincipal());
+        peopleInfo.setNickName(people.getNickName());
+        peopleInfo.setPhone(people.getPhone());
+        peopleInfo.setSex(people.getSex());
+        peopleInfo.setLanguage(people.getLanguage());
+        peopleInfo.setLocation(people.getProvince() + "-" + people.getCountry() + "-" + people.getCity());
+        peopleInfo.setIntroduction("");
+
+        Optional<PeopleIntroduction> peopleIntroduction = peopleIntroductionRepository.findByPeopleIdAndStatus(peopleId, 1);
+        if(peopleIntroduction.isPresent()){
+            peopleInfo.setIntroduction(peopleIntroduction.get().getIntroduction());
+        }
+
+        int peopleAssistCount = peopleAssistRepository.countByPeopleId(peopleId);
+        peopleInfo.setPeopleAssistCount(peopleAssistCount);
+
+        return peopleInfo;
+    }
+
+
+    @Override
+    public void editPeopleIntroduction(Long peopleId, String introduction) {
+        if(StringUtils.isEmpty(introduction)){
+            return;
+        }
+        Optional<PeopleIntroduction> repositoryByPeopleIdAndStatus = peopleIntroductionRepository.findByPeopleIdAndStatus(peopleId, 1);
+        if(repositoryByPeopleIdAndStatus.isPresent()){
+            PeopleIntroduction peopleIntroduction = repositoryByPeopleIdAndStatus.get();
+            peopleIntroduction.setStatus(0);
+            peopleIntroductionRepository.saveAndFlush(peopleIntroduction);
+        }
+
+        PeopleIntroduction peopleIntroduction = new PeopleIntroduction();
+        peopleIntroduction.setCreateTime(new Date());
+        peopleIntroduction.setPeopleId(peopleId);
+        peopleIntroduction.setIntroduction(introduction);
+        peopleIntroduction.setStatus(1);
+        peopleIntroductionRepository.save(peopleIntroduction);
+    }
+
+
 }

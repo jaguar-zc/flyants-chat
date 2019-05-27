@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.flyants.authorize.domain.Language;
+import org.flyants.authorize.domain.entity.PeopleSex;
 
 import javax.persistence.*;
 import java.util.*;
@@ -42,7 +43,8 @@ public class People {
     private String phone;
 
     @Column
-    private Integer sex;
+    @Enumerated(value = EnumType.STRING)
+    private PeopleSex sex;
 
     @Column
     @Enumerated(value = EnumType.STRING)
