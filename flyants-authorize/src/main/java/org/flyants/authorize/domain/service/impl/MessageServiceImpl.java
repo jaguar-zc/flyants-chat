@@ -68,18 +68,11 @@ public class MessageServiceImpl implements MessageService {
         Message message = new Message();
         message.setConversationId(conversation.getId());
         message.setMessageUserId(selfMessageUserId);
+        message.setBody(publishMessage.getBody());
         message.setMessageType(messageType);
-
         message.setSendTime(new Date());
         message.setView(0);
-
-        MessageHandler messageHandler = messageType.getMessageHandler();
-        MessageHandler builder = messageHandler.builder(publishMessage.getBody());
-
-        message.setBody(builder.toBody());
-
         messageRepository.save(message);
-
         // todo 推送消息
     }
 

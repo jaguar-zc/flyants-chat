@@ -6,18 +6,19 @@ package org.flyants.authorize.domain.message;
  * @Version v1.0
  */
 public enum  MessageType {
-    FRIENDS_APPLY(new FriendsApplyMessageHandler()),
-    TEXT(new TextMessageHandler()),
-    IMAGE(new ImageMessageHandler()),
-    AUDIO(new AudioMessageHandler());
+    FRIENDS_APPLY(FriendsApplyMessageHandler.class),
+    TEXT( TextMessageHandler.class),
+    IMAGE( ImageMessageHandler.class),
+    AUDIO( AudioMessageHandler.class);
 //    VIDEO;
 
-    private MessageHandler messageHandler;
+    private Class<? extends MessageHandler> messageHandler;
 
-    public MessageHandler getMessageHandler() {
-        return messageHandler;
+    MessageType(Class<? extends MessageHandler> messageHandler) {
+        this.messageHandler = messageHandler;
     }
 
-    MessageType(MessageHandler messageHandler) {
-        this.messageHandler = messageHandler;
-    }}
+    public Class<? extends MessageHandler> getMessageHandler() {
+        return messageHandler;
+    }
+}

@@ -2,7 +2,9 @@ package org.flyants.authorize.domain.message;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.oltu.oauth2.common.utils.JSONUtils;
+import org.flyants.common.utils.JsonUtils;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,9 +16,9 @@ import java.util.Map;
 @Slf4j
 public class TextMessageHandler implements MessageHandler {
 
-    private static String  FIELD_NAME = "text";
+    private static String TEXT ="text";
 
-    private String value;
+    private String text;
 
     @Override
     public MessageType getMessageType() {
@@ -25,17 +27,24 @@ public class TextMessageHandler implements MessageHandler {
 
     @Override
     public String toBody() {
-        Map<String,Object> map = new HashMap<>();
-        map.put(FIELD_NAME,value);
-        return JSONUtils.buildJSON(map);
+        Map<String, Object> objectObjectMap = new HashMap<>();
+        objectObjectMap.put(TEXT,text);
+        return JsonUtils.obj2json(objectObjectMap);
     }
 
     @Override
     public MessageHandler builder(String body) {
         log.info("{}",body);
-        Map<String, Object> map = JSONUtils.parseJSON(body);
-        this.value = map.getOrDefault(FIELD_NAME,"").toString();
-        return this;
+        TextMessageHandler textMessageHandler = JsonUtils.json2pojo(body, TextMessageHandler.class);
+        this.text = textMessageHandler.getText();
+        return textMessageHandler;
     }
 
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
 }
