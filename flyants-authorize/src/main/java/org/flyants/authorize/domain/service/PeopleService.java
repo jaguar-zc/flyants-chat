@@ -1,7 +1,6 @@
 package org.flyants.authorize.domain.service;
 
 import org.flyants.authorize.configuration.PageResult;
-import org.flyants.authorize.domain.entity.oauth2.OAuthClient;
 import org.flyants.authorize.domain.entity.platform.People;
 import org.flyants.authorize.dto.app.PeopleInfoDto;
 
@@ -13,7 +12,7 @@ import java.util.Optional;
  * @Version v1.0
  */
 public interface PeopleService {
-    Optional<People> findPeopleById(Long peopleId);
+    Optional<People> findPeopleById(String peopleId);
 
     Optional<String> findByPhone(String phone);
 
@@ -25,13 +24,13 @@ public interface PeopleService {
 
     void createPeople(String phone,String nickName);
 
-    void logout(Long peopleId);
+    void logout(String peopleId);
 
-    PeopleInfoDto info(Long peopleId);
+    PeopleInfoDto info(String peopleId);
 
-    void editPeopleIntroduction(Long peopleId, String introduction);
+    void editPeopleIntroduction(String peopleId, String introduction);
 
-    void assistPeople(Long peopleId, Long assistPeopleId);
+    void assistPeople(String peopleId, String assistPeopleId);
 
-    void updatePeopleInfo(PeopleInfoDto peopleInfoDto);
+    void updatePeopleInfo(String peopleId, PeopleInfoDto peopleInfoDto);
 }

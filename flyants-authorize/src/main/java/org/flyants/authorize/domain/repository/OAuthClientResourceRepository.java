@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
  * @Version v1.0
  */
 @Repository
-public interface OAuthClientResourceRepository extends JpaRepository<OAuthClientResource,Long> {
+public interface OAuthClientResourceRepository extends JpaRepository<OAuthClientResource,String> {
 
 }

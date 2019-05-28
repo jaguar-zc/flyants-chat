@@ -12,7 +12,7 @@ import java.util.Optional;
  * @Version v1.0
  */
 @Repository
-public interface PeopleIntroductionRepository extends JpaRepository<PeopleIntroduction,Long> {
+public interface PeopleIntroductionRepository extends JpaRepository<PeopleIntroduction,String> {
 
-    Optional<PeopleIntroduction> findByPeopleIdAndStatus(Long peopleId, Integer status);
+    Optional<PeopleIntroduction> findByPeopleIdAndStatus(String peopleId, Integer status);
 }

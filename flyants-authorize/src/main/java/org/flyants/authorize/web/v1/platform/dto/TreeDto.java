@@ -16,7 +16,7 @@ import java.util.List;
 @Setter
 public class TreeDto {
     private String title;
-    private Long key;
+    private String key;
     private Boolean isLeaf;
     private List<TreeDto> children;
 }

@@ -28,3 +28,6 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
+  jackson:
+    serialization:
+      write-dates-as-timestamps: true

@@ -3,6 +3,7 @@ package org.flyants.authorize.domain.service.impl;
 import org.flyants.authorize.configuration.PageResult;
 import org.flyants.authorize.domain.entity.oauth2.OAuthClient;
 import org.flyants.authorize.domain.entity.oauth2.OAuthClientResource;
+import org.flyants.authorize.domain.repository.JpaSpecification;
 import org.flyants.authorize.domain.repository.OAuthClientRepository;
 import org.flyants.authorize.domain.service.AppService;
 import org.flyants.authorize.utils.ResourceUtils;
@@ -36,16 +37,10 @@ public class AppServiceImpl implements AppService {
 
     @Override
     public PageResult<OAuthClient> findList(Integer page,Integer size,String searchBy,String keyWord) {
-        Page<OAuthClient> all = OAuthClientRepository.findAll(new Specification() {
-            @Override
-            public Predicate toPredicate(Root root, CriteriaQuery query, CriteriaBuilder cb) {
-                List<Predicate> pr = new ArrayList<>();
-                if(!StringUtils.isEmpty(searchBy)){
-                    pr.add(cb.like(root.get(searchBy).as(String.class),"%"+keyWord+"%"));
-                }
-                return cb.and(pr.toArray(new Predicate[pr.size()]));
-            }
-        },PageRequest.of(page - 1, size));
+        PageRequest of = PageRequest.of(page - 1, size);
+        Specification specification = JpaSpecification.getSpecification(searchBy, keyWord);
+
+        Page<OAuthClient> all = OAuthClientRepository.findAll(specification,of);
 
         return new PageResult<OAuthClient>(all.getTotalElements(), all.getContent());
     }

@@ -7,14 +7,14 @@ package org.flyants.authorize.utils;
  */
 public class JWTManager {
 
-    private static ThreadLocal<Long> threadLocal = new ThreadLocal<>();
+    private static ThreadLocal<String> threadLocal = new ThreadLocal<>();
 
 
-    public static void set(Long id){
+    public static void set(String id){
         threadLocal.set(id);
     }
 
-    public static Long get(){
+    public static String get(){
         return threadLocal.get();
     }
 

@@ -12,8 +12,8 @@ import java.util.List;
  * @Version v1.0
  */
 @Repository
-public interface MessageFirendsRepository extends JpaRepository<MessageFirends,Long> {
+public interface MessageFirendsRepository extends JpaRepository<MessageFirends,String> {
 
-    List<MessageFirends> findAllByMyMessageUserId(Long myMessageUserId);
+    List<MessageFirends> findAllByMyMessageUserId(String myMessageUserId);
 
 }

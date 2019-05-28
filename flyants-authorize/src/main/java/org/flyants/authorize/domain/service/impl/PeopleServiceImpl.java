@@ -1,7 +1,7 @@
 package org.flyants.authorize.domain.service.impl;
-import java.util.Date;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.flyants.authorize.configuration.Constents;
 import org.flyants.authorize.configuration.PageResult;
 import org.flyants.authorize.domain.Language;
@@ -15,18 +15,12 @@ import org.flyants.common.exception.BusinessException;
 import org.flyants.common.file.ObjectManagerFactory;
 import org.flyants.common.utils.ImageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -66,7 +60,7 @@ public class PeopleServiceImpl implements PeopleService {
 
 
     @Override
-    public Optional<People> findPeopleById(Long peopleId) {
+    public Optional<People> findPeopleById(String peopleId) {
         return peopleRepository.findById(peopleId);
     }
 
@@ -89,12 +83,12 @@ public class PeopleServiceImpl implements PeopleService {
     }
 
     @Override
-    public void logout(Long peopleId) {
+    public void logout(String peopleId) {
         tokenRepository.findByPeopleId(peopleId);
     }
 
     private Optional<String> getLoginToken(Optional<LoginMethod> loginMethod) {
-        Long peopleId = loginMethod.get().getPeopleId();
+        String peopleId = loginMethod.get().getPeopleId();
         Token token = new Token();
         token.setCreateTime(new Date());
         token.setExpire(3000);
@@ -117,16 +111,9 @@ public class PeopleServiceImpl implements PeopleService {
 
     @Override
     public PageResult<People> findList(Integer page, Integer size, String searchBy, String keyWord) {
-        Page<People> all = peopleRepository.findAll(new Specification() {
-            @Override
-            public Predicate toPredicate(Root root, CriteriaQuery query, CriteriaBuilder cb) {
-                List<Predicate> pr = new ArrayList<>();
-                if (!StringUtils.isEmpty(searchBy)) {
-                    pr.add(cb.like(root.get(searchBy).as(String.class), "%" + keyWord + "%"));
-                }
-                return cb.and(pr.toArray(new Predicate[pr.size()]));
-            }
-        }, PageRequest.of(page - 1, size));
+        PageRequest of = PageRequest.of(page - 1, size);
+        Specification specification = JpaSpecification.getSpecification(searchBy, keyWord);
+        Page<People> all = peopleRepository.findAll(specification, of);
 
         return new PageResult<People>(all.getTotalElements(), all.getContent());
     }
@@ -139,16 +126,16 @@ public class PeopleServiceImpl implements PeopleService {
         }
 
         People people = new People();
-        people.setCreationDate(new Date());
-        people.setModificationDate(new Date());
+        people.setCreateTime(new Date());
+        people.setUpdateTime(new Date());
         people.setEncodedPrincipal("");
         people.setNickName(nickName);
         people.setPhone(phone);
         people.setSex(PeopleSex.UNKNOWN);
         people.setLanguage(Language.zh_CN);
-        people.setCountry("中国");
-        people.setProvince("北京市");
-        people.setCity("望江区");
+        people.setCountry("");
+        people.setProvince("");
+        people.setCity("");
         people = peopleRepository.saveAndFlush(people);
 
 
@@ -172,7 +159,6 @@ public class PeopleServiceImpl implements PeopleService {
         loginMethodRepository.save(phoneLogin);
         loginMethodRepository.save(pwdLogin);
 
-
         //保存消息用户
         MessageUser messageUser = new MessageUser();
         messageUser.setPeopleId(people.getId());
@@ -194,7 +180,7 @@ public class PeopleServiceImpl implements PeopleService {
 
 
     @Override
-    public PeopleInfoDto info(Long peopleId) {
+    public PeopleInfoDto info(String peopleId) {
         PeopleInfoDto peopleInfo = new PeopleInfoDto();
 
 
@@ -206,7 +192,7 @@ public class PeopleServiceImpl implements PeopleService {
 
         peopleInfo.setId(people.getId());
         peopleInfo.setPeopleNo(people.getPeopleNo());
-        peopleInfo.setCreationDate(people.getCreationDate());
+        peopleInfo.setCreateTime(people.getCreateTime());
         peopleInfo.setEncodedPrincipal(people.getEncodedPrincipal());
         peopleInfo.setNickName(people.getNickName());
         peopleInfo.setPhone(people.getPhone());
@@ -230,10 +216,14 @@ public class PeopleServiceImpl implements PeopleService {
 
 
     @Override
-    public void editPeopleIntroduction(Long peopleId, String introduction) {
+    public void editPeopleIntroduction(String peopleId, String introduction) {
         if(StringUtils.isEmpty(introduction)){
             return;
         }
+        if(peopleId == null){
+            throw new BusinessException("用户不存在");
+        }
+
         Optional<PeopleIntroduction> repositoryByPeopleIdAndStatus = peopleIntroductionRepository.findByPeopleIdAndStatus(peopleId, 1);
         if(repositoryByPeopleIdAndStatus.isPresent()){
             PeopleIntroduction peopleIntroduction = repositoryByPeopleIdAndStatus.get();
@@ -250,7 +240,7 @@ public class PeopleServiceImpl implements PeopleService {
     }
 
     @Override
-    public void assistPeople(Long peopleId, Long assistPeopleId) {
+    public void assistPeople(String peopleId, String assistPeopleId) {
         if (peopleAssistRepository.countByPeopleIdAndInitiativePeopleId(assistPeopleId,peopleId) >0) {
             return;
         }
@@ -261,36 +251,39 @@ public class PeopleServiceImpl implements PeopleService {
     }
 
     @Override
-    public void updatePeopleInfo(PeopleInfoDto peopleInfoDto) {
-        Optional<People> optionalPeople = peopleRepository.findById(peopleInfoDto.getId());
+    public void updatePeopleInfo(String peopleId, PeopleInfoDto peopleInfoDto) {
+        Optional<People> optionalPeople = peopleRepository.findById(peopleId);
         if (!optionalPeople.isPresent()) {
             throw new BusinessException("用户名不存在");
         }
         People people = optionalPeople.get();
 
-        if(!StringUtils.isEmpty(peopleInfoDto.getEncodedPrincipal())){
-            people.setEncodedPrincipal(peopleInfoDto.getEncodedPrincipal());
-        }
-        if(!StringUtils.isEmpty(peopleInfoDto.getPhone())){
-            people.setPhone(peopleInfoDto.getPhone());
+        if(StringUtils.isNotEmpty(peopleInfoDto.getPeopleNo())){
+            people.setPeopleNo(peopleInfoDto.getPeopleNo());
         }
 
-        if(!StringUtils.isEmpty(peopleInfoDto.getCity())) {
+        if(StringUtils.isNotEmpty(peopleInfoDto.getEncodedPrincipal())){
+            people.setEncodedPrincipal(peopleInfoDto.getEncodedPrincipal());
+        }
+        if(StringUtils.isNotEmpty(peopleInfoDto.getPhone())){
+            people.setPhone(peopleInfoDto.getPhone());
+        }
+        if(StringUtils.isNotEmpty(peopleInfoDto.getCity())) {
             people.setCity(peopleInfoDto.getCity());
         }
-        if(!StringUtils.isEmpty(peopleInfoDto.getCountry())) {
+        if(StringUtils.isNotEmpty(peopleInfoDto.getCountry())) {
             people.setCountry(peopleInfoDto.getCountry());
         }
-        if(!StringUtils.isEmpty(peopleInfoDto.getProvince())) {
+        if(StringUtils.isNotEmpty(peopleInfoDto.getProvince())) {
             people.setProvince(peopleInfoDto.getProvince());
         }
-        if(!StringUtils.isEmpty(peopleInfoDto.getLanguage())) {
+        if(peopleInfoDto.getLanguage() != null) {
             people.setLanguage(peopleInfoDto.getLanguage());
         }
-        if(!StringUtils.isEmpty(peopleInfoDto.getNickName())) {
+        if(StringUtils.isNotEmpty(peopleInfoDto.getNickName())) {
             people.setNickName(peopleInfoDto.getNickName());
         }
-        if(!StringUtils.isEmpty(peopleInfoDto.getSex())) {
+        if( peopleInfoDto.getSex() != null) {
             people.setSex(peopleInfoDto.getSex());
         }
         peopleRepository.saveAndFlush(people);

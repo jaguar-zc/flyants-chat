@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
  * @Version v1.0
  */
 @Repository
-public interface ConversationUserRepository extends JpaRepository<Conversation,Long> {
+public interface ConversationUserRepository extends JpaRepository<Conversation,String> {
 
 }

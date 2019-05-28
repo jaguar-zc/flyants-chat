@@ -12,6 +12,6 @@ import org.springframework.stereotype.Repository;
  * @Version v1.0
  */
 @Repository
-public interface DynamicRepository extends JpaRepository<Dynamic,Long>  , JpaSpecificationExecutor {
+public interface DynamicRepository extends JpaRepository<Dynamic,String>  , JpaSpecificationExecutor {
 
 }

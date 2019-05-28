@@ -17,9 +17,9 @@ import java.util.List;
 @Getter
 @Setter
 public class DynamicDto {
-    private Long id;
+    private String id;
     private Date createTime;
-    private Long peopleId;
+    private String peopleId;
     private String nickName;
     private String encodedPrincipal;
     private String text;

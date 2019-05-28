@@ -2,6 +2,7 @@ package org.flyants.authorize.domain.service.impl;
 
 import org.flyants.authorize.configuration.PageResult;
 import org.flyants.authorize.domain.entity.platform.Menu;
+import org.flyants.authorize.domain.repository.JpaSpecification;
 import org.flyants.authorize.domain.repository.MenuRepository;
 import org.flyants.authorize.domain.service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,23 +33,15 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public PageResult<Menu> findList(Integer page, Integer size, String searchBy, String keyWord) {
-        Page<Menu> all = menuRepository.findAll(new Specification() {
-            @Override
-            public Predicate toPredicate(Root root, CriteriaQuery query, CriteriaBuilder cb) {
-                List<Predicate> pr = new ArrayList<>();
-                if(!StringUtils.isEmpty(searchBy)){
-                    pr.add(cb.like(root.get(searchBy).as(String.class),"%"+keyWord+"%"));
-                }
-                return cb.and(pr.toArray(new Predicate[pr.size()]));
-            }
-        }, PageRequest.of(page - 1, size));
+        Specification specification = JpaSpecification.getSpecification(searchBy, keyWord);
+        Page<Menu> all = menuRepository.findAll(specification, PageRequest.of(page - 1, size));
 
         return new PageResult<Menu>(all.getTotalElements(), all.getContent());
     }
 
 
     @Override
-    public List<Menu> findListByParentId(Long parentId) {
+    public List<Menu> findListByParentId(String parentId) {
         if(parentId == null){
             return menuRepository.findByParentId(null);
         }else{
@@ -62,7 +55,7 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public Menu get(Long id) {
+    public Menu get(String id) {
         Menu one = menuRepository.findById(id).get();
         return one;
     }
@@ -84,7 +77,7 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(String id) {
         menuRepository.deleteById(id);
     }
 }

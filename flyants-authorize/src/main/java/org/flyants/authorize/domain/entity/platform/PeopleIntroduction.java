@@ -2,6 +2,7 @@ package org.flyants.authorize.domain.entity.platform;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -18,14 +19,15 @@ import java.util.Date;
 public class PeopleIntroduction {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GenericGenerator(name = "system-uuid", strategy = "uuid2")
+    @GeneratedValue(generator = "system-uuid")
+    private String id;
 
     @Column
     private Date createTime;
 
     @Column
-    private Long peopleId;
+    private String peopleId;
 
     @Column
     private String introduction;

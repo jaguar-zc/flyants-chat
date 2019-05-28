@@ -3,15 +3,13 @@ package org.flyants.authorize.configuration;
 import org.flyants.authorize.web.v1.app.AppVersion;
 import org.flyants.authorize.web.v1.platform.PlatformVersion;
 import org.flyants.common.file.aliyun.AliyunOssObjectManagerFactory;
+import org.hibernate.SessionFactory;
+import org.hibernate.jpa.HibernateEntityManagerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.orm.jpa.vendor.HibernateJpaSessionFactoryBean;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
-import javax.persistence.EntityManagerFactory;
 
 /**
  * @Author zhangchao

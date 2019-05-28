@@ -12,7 +12,7 @@ import java.util.Optional;
  * @Version v1.0
  */
 @Repository
-public interface LoginMethodRepository extends JpaRepository<LoginMethod,Long> {
+public interface LoginMethodRepository extends JpaRepository<LoginMethod,String> {
 
     public Optional<LoginMethod> findByTypeAndMark(LoginMethod.LoginType loginType,String mark);
 

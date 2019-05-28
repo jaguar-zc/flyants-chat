@@ -45,8 +45,8 @@ public class StartListenner {
 
         for (int i = 0; i < 50; i++) {
             People people = new People();
-            people.setCreationDate(new Date());
-            people.setModificationDate(new Date());
+            people.setCreateTime(new Date());
+            people.setUpdateTime(new Date());
             people.setEncodedPrincipal("https://thirdqq.qlogo.cn/g?b=sdk&k=XC5OAkdV3Kg0srWxwKPVJg&s=100&t=1556270245");
             people.setNickName("root_" + i);
             people.setPhone("130000000" + (i < 10 ? "0" + i : i));

@@ -12,7 +12,7 @@ import java.util.Optional;
  * @Version v1.0
  */
 @Repository
-public interface OAuthorizeRequestRepository extends JpaRepository<OAuthAuthorizeRequest,Long> {
+public interface OAuthorizeRequestRepository extends JpaRepository<OAuthAuthorizeRequest,String> {
 
     Optional<OAuthAuthorizeRequest> findByAuthorizationCode(String authorizationCode);
 }

@@ -12,7 +12,7 @@ import java.util.Optional;
  * @Version v1.0
  */
 @Repository
-public interface OAuthAccessTokenRepository extends JpaRepository<OAuthAccessToken,Long> {
+public interface OAuthAccessTokenRepository extends JpaRepository<OAuthAccessToken,String> {
 
 
     Optional<OAuthAccessToken> findByToken(String token);

@@ -2,6 +2,7 @@ package org.flyants.authorize.domain.entity.oauth2;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
@@ -16,8 +17,9 @@ import javax.persistence.*;
 public class OAuthUserAuthorize {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GenericGenerator(name = "system-uuid", strategy = "uuid2")
+    @GeneratedValue(generator = "system-uuid")
+    private String id;
 
     @Column
     private String clientId;//客户端id
@@ -26,7 +28,7 @@ public class OAuthUserAuthorize {
     private String oauthUserId;//绑定账号的id，例如对应wx来说，就是openId
 
     @Column
-    private Long userId;//用户ID
+    private String userId;//用户ID
 
     @Column
     private String oauthUserName;//绑定账号的名称

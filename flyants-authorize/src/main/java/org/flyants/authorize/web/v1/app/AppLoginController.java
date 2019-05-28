@@ -47,7 +47,7 @@ public class AppLoginController {
 
     @PostMapping("/logout")
     public ResponseData<Object> logout() {
-        Long aLong = JWTManager.get();
+        String aLong = JWTManager.get();
         log.info("logout:{}", aLong);
         peopleService.logout(aLong);
         return ResponseDataUtils.buildSuccess();

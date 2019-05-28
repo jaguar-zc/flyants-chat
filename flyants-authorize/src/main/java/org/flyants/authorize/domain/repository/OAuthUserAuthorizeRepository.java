@@ -12,8 +12,8 @@ import java.util.Optional;
  * @Version v1.0
  */
 @Repository
-public interface OAuthUserAuthorizeRepository extends JpaRepository<OAuthUserAuthorize,Long> {
+public interface OAuthUserAuthorizeRepository extends JpaRepository<OAuthUserAuthorize,String> {
 
     Optional<OAuthUserAuthorize> findByClientIdAndOauthUserId(String clientId,String oauthUserId);
-    Optional<OAuthUserAuthorize> findByClientIdAndUserId(String clientId,Long userId);
+    Optional<OAuthUserAuthorize> findByClientIdAndUserId(String clientId,String userId);
 }

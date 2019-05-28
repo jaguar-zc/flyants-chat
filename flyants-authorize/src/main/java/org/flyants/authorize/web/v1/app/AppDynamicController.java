@@ -26,7 +26,7 @@ public class AppDynamicController {
 
     @PostMapping("/publish")
     public void publishDynamic(@RequestBody DynamicAddDto dynamic){
-        Long peopleId = JWTManager.get();
+        String peopleId = JWTManager.get();
         dynamicService.publishDynamic(peopleId,dynamic);
     }
 
@@ -34,13 +34,15 @@ public class AppDynamicController {
     @GetMapping("/list/self")
     public PageResult<DynamicDto> listSelf(@RequestParam(required = false,name = "page",defaultValue = "1") Integer page,
                                        @RequestParam(required = false,name = "size",defaultValue = "10") Integer size) {
-        Long peopleId = JWTManager.get();
+        String peopleId = JWTManager.get();
         return dynamicService.listSelf(page, size, peopleId);
     }
+
+
     @GetMapping("/list/friend")
     public PageResult<DynamicDto> listFriend(@RequestParam(required = false,name = "page",defaultValue = "1") Integer page,
                                        @RequestParam(required = false,name = "size",defaultValue = "10") Integer size) {
-        Long peopleId = JWTManager.get();
+        String peopleId = JWTManager.get();
         return dynamicService.listFriend(page, size, peopleId);
     }
 

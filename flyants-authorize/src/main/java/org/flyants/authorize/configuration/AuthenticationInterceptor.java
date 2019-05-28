@@ -66,7 +66,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             throw new TokenExpireException("401","token expire");
         }
 
-        Long peopleId = accessToken.get().getPeopleId();
+        String peopleId = accessToken.get().getPeopleId();
         JWTManager.set(peopleId);
 
         return true;

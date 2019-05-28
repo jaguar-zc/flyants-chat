@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.flyants.authorize.domain.Language;
 import org.flyants.authorize.domain.entity.PeopleSex;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.*;
@@ -21,17 +22,18 @@ public class People {
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GenericGenerator(name = "system-uuid", strategy = "uuid2")
+    @GeneratedValue(generator = "system-uuid")
+    private String id;
 
     @Column
     private String peopleNo;
 
     @Column
-    private Date creationDate;
+    private Date createTime;
 
     @Column
-    private Date modificationDate;
+    private Date updateTime;
 
     @Column
     private String encodedPrincipal;

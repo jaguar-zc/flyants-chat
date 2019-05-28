@@ -2,8 +2,8 @@ package org.flyants.authorize.domain.service.impl;
 
 import org.flyants.authorize.configuration.PageResult;
 import org.flyants.authorize.domain.entity.platform.People;
+import org.flyants.authorize.domain.entity.platform.comments.CommentsType;
 import org.flyants.authorize.domain.entity.platform.dynamic.Dynamic;
-import org.flyants.authorize.domain.entity.platform.message.MessageFirends;
 import org.flyants.authorize.domain.entity.platform.message.MessageUser;
 import org.flyants.authorize.domain.repository.*;
 import org.flyants.authorize.domain.service.DynamicService;
@@ -47,10 +47,10 @@ public class DynamicServiceImpl implements DynamicService {
     MessageUserRepository messageUserRepository;
 
     @Autowired
-    DynamicCommentsRepository dynamicCommentsRepository;
+    CommentsRepository dynamicCommentsRepository;
 
     @Override
-    public void publishDynamic(Long peopleId, DynamicAddDto dynamic) {
+    public void publishDynamic(String peopleId, DynamicAddDto dynamic) {
         int count = 0;
         if (!StringUtils.isEmpty(dynamic.getText())) {
             count++;
@@ -76,14 +76,14 @@ public class DynamicServiceImpl implements DynamicService {
     }
 
     @Override
-    public PageResult<DynamicDto> list(Integer page, Integer size, List<Long> peopleId) {
-        PageRequest of = PageRequest.of(page - 1, size, Sort.by("createTime desc"));
+    public PageResult<DynamicDto> list(Integer page, Integer size, List<String> peopleId) {
+        PageRequest of = PageRequest.of(page - 1, size,  Sort.by(Sort.Order.desc("createTime")));
         Specification spec = new Specification() {
             @Override
             public Predicate toPredicate(Root root, CriteriaQuery query, CriteriaBuilder cb) {
                 List<Predicate> pr = new ArrayList<>();
                 if (!StringUtils.isEmpty(peopleId)) {
-                    pr.add(root.get("peopleId").as(Long.class).in(peopleId));
+                    pr.add(root.get("peopleId").as(String.class).in(peopleId));
                 }
                 return cb.and(pr.toArray(new Predicate[pr.size()]));
             }
@@ -119,7 +119,7 @@ public class DynamicServiceImpl implements DynamicService {
 
             dynamicDto.setAssistPeopleList(collect1);
 
-            Integer commentsCount = dynamicCommentsRepository.countByDynamicId(item.getId());
+            Integer commentsCount = dynamicCommentsRepository.countByResourceIdAndCommentsType(item.getId(), CommentsType.DYNAMIC);
 
             dynamicDto.setCommentsCount(commentsCount);
             return dynamicDto;
@@ -130,17 +130,17 @@ public class DynamicServiceImpl implements DynamicService {
     }
 
     @Override
-    public PageResult<DynamicDto> listSelf(Integer page, Integer size, Long peopleId) {
+    public PageResult<DynamicDto> listSelf(Integer page, Integer size, String peopleId) {
         return list(page, size, Arrays.asList(peopleId));
     }
 
     @Override
-    public PageResult<DynamicDto> listFriend(Integer page, Integer size, Long peopleId) {
-        List<Long> peopleIds = new ArrayList<>();
+    public PageResult<DynamicDto> listFriend(Integer page, Integer size, String peopleId) {
+        List<String> peopleIds = new ArrayList<>();
         peopleIds.add(peopleId);
         MessageUser myMessageUser = messageUserRepository.findByPeopleId(peopleId);
         //查询我的朋友 并且将其转换为 peopleId 数组
-        List<Long> collect = messageFirendsRepository.findAllByMyMessageUserId(myMessageUser.getId())
+        List<String> collect = messageFirendsRepository.findAllByMyMessageUserId(myMessageUser.getId())
                 .stream()
                 .map(i -> i.getFirendsMessageUserId())
                 .map(id -> messageUserRepository.findById(id))

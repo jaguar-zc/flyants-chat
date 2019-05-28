@@ -31,7 +31,7 @@ public class PeopleController {
         if (!authorizeService.checkAccessToken(accessToken)) {
             return ResponseDataUtils.buildError("无效的 access_token");
         }
-        Optional<Long> peopleId = authorizeService.findPeopleIdByOpenId(accessToken, openId);
+        Optional<String> peopleId = authorizeService.findPeopleIdByOpenId(accessToken, openId);
         if (!peopleId.isPresent()) {
             return ResponseDataUtils.buildError("openId 错误");
         }

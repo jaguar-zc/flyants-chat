@@ -12,11 +12,11 @@ import java.util.Optional;
  * @Version v1.0
  */
 @Repository
-public interface TokenRepository extends JpaRepository<Token,Long> {
+public interface TokenRepository extends JpaRepository<Token,String> {
 
     Optional<Token> findByAccessToken(String accessToken);
 
     Optional<Token> findByRefreshToken(String refreshToken);
 
-    Optional<Token> findByPeopleId(Long peopleId);
+    Optional<Token> findByPeopleId(String peopleId);
 }

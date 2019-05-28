@@ -12,7 +12,7 @@ import java.util.List;
  * @Version v1.0
  */
 @Repository
-public interface DynamicAssistRepository extends JpaRepository<DynamicAssist,Long> {
+public interface DynamicAssistRepository extends JpaRepository<DynamicAssist,String> {
 
-    List<DynamicAssist>  findAllByDynamicId(Long dynamicId);
+    List<DynamicAssist>  findAllByDynamicId(String dynamicId);
 }

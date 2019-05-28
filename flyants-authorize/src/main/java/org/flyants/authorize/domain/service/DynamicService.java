@@ -11,11 +11,11 @@ import java.util.List;
  */
 public interface DynamicService {
 
-    void publishDynamic(Long peopleId, DynamicAddDto dynamic);
+    void publishDynamic(String peopleId, DynamicAddDto dynamic);
 
-    PageResult<DynamicDto> list(Integer page, Integer size, List<Long> peopleId);
+    PageResult<DynamicDto> list(Integer page, Integer size, List<String> peopleId);
 
-    PageResult<DynamicDto> listSelf(Integer page, Integer size, Long peopleId);
+    PageResult<DynamicDto> listSelf(Integer page, Integer size, String peopleId);
 
-    PageResult<DynamicDto> listFriend(Integer page, Integer size, Long peopleId);
+    PageResult<DynamicDto> listFriend(Integer page, Integer size, String peopleId);
 }

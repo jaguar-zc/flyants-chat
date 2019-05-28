@@ -2,6 +2,7 @@ package org.flyants.authorize.domain.entity.platform.message;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
@@ -16,16 +17,14 @@ import javax.persistence.*;
 public class ConversationUser {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GenericGenerator(name = "system-uuid", strategy = "uuid2")
+    @GeneratedValue(generator = "system-uuid")
+    private String id;
 
     @Column
-    private Long messageUserId;//名称  单聊的话需要查询 动态查询
+    private String messageUserId;//会话用户
 
     @Column
-    private Integer owner;//会话拥有人
-
-    @Column
-    private Long conversationId;
+    private String conversationId;
 
 }

@@ -3,6 +3,7 @@ package org.flyants.authorize.domain.entity.platform;
 import lombok.Getter;
 import lombok.Setter;
 import org.flyants.authorize.domain.Language;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -20,8 +21,9 @@ import java.util.List;
 public class Token {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GenericGenerator(name = "system-uuid", strategy = "uuid2")
+    @GeneratedValue(generator = "system-uuid")
+    private String id;
 
     @Column
     private Date createTime;
@@ -36,6 +38,6 @@ public class Token {
     private String refreshToken;
 
     @Column
-    private Long peopleId;
+    private String peopleId;
 
 }

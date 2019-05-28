@@ -8,6 +8,7 @@ import org.flyants.authorize.domain.service.PeopleService;
 import org.flyants.authorize.utils.JWTManager;
 import org.flyants.authorize.utils.ResponseDataUtils;
 import org.flyants.common.ResponseData;
+import org.flyants.common.annotation.Anonymous;
 import org.flyants.common.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -45,7 +46,7 @@ public class AccountController {
 
 
     @GetMapping("/{peopleId}")
-    public ResponseData<Object> get(@PathVariable("peopleId") Long id) {
+    public ResponseData<Object> get(@PathVariable("peopleId") String id) {
         log.info("id:{} ", id);
         Optional<People> people = peopleService.findPeopleById(id);
         if (people.isPresent()) {
@@ -58,9 +59,10 @@ public class AccountController {
     }
 
 
+    @Anonymous
     @PostMapping("/create")
     public ResponseData<Object> create(@RequestParam("phone") String phone,@RequestParam("nickName")String nickName) {
-        Long id = JWTManager.get();
+        String id = JWTManager.get();
         log.info("id:{} ", id);
         peopleService.createPeople(phone,nickName);
         return ResponseDataUtils.buildSuccess();
@@ -69,7 +71,7 @@ public class AccountController {
 
     @GetMapping("/info")
     public ResponseData<Object> info() {
-        Long id = JWTManager.get();
+        String id = JWTManager.get();
         log.info("id:{} ", id);
         Optional<People> people = peopleService.findPeopleById(id);
         if (people.isPresent()) {

@@ -29,9 +29,9 @@ public interface AuthorizeService {
 
     boolean checkAccessToken(String accessToken);
 
-    Optional<Long> findPeopleIdByOpenId(String accessToken, String openId);
+    Optional<String> findPeopleIdByOpenId(String accessToken, String openId);
 
-    OAuthUserAuthorize findOauthUserAuthorizeByClientIdAndUserId(String clientId, Long userId);
+    OAuthUserAuthorize findOauthUserAuthorizeByClientIdAndUserId(String clientId, String userId);
 
     OAuthAccessToken generatorAccessToken(String clientId, String code);
 }

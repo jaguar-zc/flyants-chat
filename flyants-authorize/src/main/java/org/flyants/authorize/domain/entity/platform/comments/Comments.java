@@ -1,4 +1,4 @@
-package org.flyants.authorize.domain.entity.platform.dynamic;
+package org.flyants.authorize.domain.entity.platform.comments;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -15,7 +15,8 @@ import java.util.Date;
 @Getter
 @Setter
 @Entity
-public class DynamicAssist {
+public class Comments {
+
 
     @Id
     @GenericGenerator(name = "system-uuid", strategy = "uuid2")
@@ -26,9 +27,31 @@ public class DynamicAssist {
     private Date createTime;
 
     @Column
-    private String dynamicId;
+    private String resourceId;
+
+    @Column
+    private Integer level;//深度，最多2层
+
+    @Column
+    private String commentsId; //跟评ID
+
+    @Column
+    private String text;
+
+    @Column
+    @Enumerated(value = EnumType.STRING)
+    private CommentsType commentsType;
 
     @Column
     private String peopleId;
+
+    @Column
+    private String nickName;
+
+    @Column
+    private String encodedPrincipal;
+
+
+
 
 }

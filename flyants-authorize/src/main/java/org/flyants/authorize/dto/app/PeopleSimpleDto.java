@@ -19,7 +19,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PeopleSimpleDto {
-    private Long id;
+    private String id;
     private String nickName;
     private String encodedPrincipal;
 }

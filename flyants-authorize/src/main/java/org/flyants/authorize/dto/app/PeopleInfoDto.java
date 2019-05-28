@@ -5,7 +5,6 @@ import lombok.Setter;
 import org.flyants.authorize.domain.Language;
 import org.flyants.authorize.domain.entity.PeopleSex;
 
-import javax.persistence.Column;
 import java.util.Date;
 
 /**
@@ -17,9 +16,9 @@ import java.util.Date;
 @Setter
 public class PeopleInfoDto {
 
-    private Long id;
+    private String id;
     private String peopleNo;
-    private Date creationDate;
+    private Date createTime;
     private String encodedPrincipal;
     private String nickName;
     private String phone;

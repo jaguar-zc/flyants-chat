@@ -13,8 +13,8 @@ import java.util.List;
  * @Version v1.0
  */
 @Repository
-public interface MenuRepository extends JpaRepository<Menu,Long>  , JpaSpecificationExecutor {
+public interface MenuRepository extends JpaRepository<Menu,String>  , JpaSpecificationExecutor {
 
-    List<Menu> findByParentId(Long parentId);
+    List<Menu> findByParentId(String parentId);
 
 }

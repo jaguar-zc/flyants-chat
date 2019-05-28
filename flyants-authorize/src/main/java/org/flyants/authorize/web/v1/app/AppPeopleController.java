@@ -23,24 +23,25 @@ public class AppPeopleController {
 
     @GetMapping("/info")
     public PeopleInfoDto info(){
-        Long peopleId = JWTManager.get();
+        String peopleId = JWTManager.get();
         return  peopleService.info(peopleId);
     }
 
-    @PostMapping("/updatePeopleInfo")
+    @PutMapping("/updatePeopleInfo")
     public void updatePeopleInfo(@RequestBody PeopleInfoDto peopleInfoDto){
-        peopleService.updatePeopleInfo(peopleInfoDto);
+        String peopleId = JWTManager.get();
+        peopleService.updatePeopleInfo(peopleId,peopleInfoDto);
     }
 
-    @PostMapping("/editPeopleIntroduction")
+    @PutMapping("/editPeopleIntroduction")
     public void editPeopleIntroduction(String introduction){
-        Long peopleId = JWTManager.get();
+        String peopleId = JWTManager.get();
         peopleService.editPeopleIntroduction(peopleId,introduction);
     }
 
-    @PostMapping("/assistPeople")
-    public void assistPeople(Long assistPeopleId){
-        Long peopleId = JWTManager.get();
+    @GetMapping("/assistPeople")
+    public void assistPeople(String assistPeopleId){
+        String peopleId = JWTManager.get();
         peopleService.assistPeople(peopleId,assistPeopleId);
     }
 

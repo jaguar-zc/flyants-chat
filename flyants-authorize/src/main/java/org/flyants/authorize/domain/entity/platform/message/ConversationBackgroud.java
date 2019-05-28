@@ -2,6 +2,7 @@ package org.flyants.authorize.domain.entity.platform.message;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
@@ -20,8 +21,9 @@ public class ConversationBackgroud {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GenericGenerator(name = "system-uuid", strategy = "uuid2")
+    @GeneratedValue(generator = "system-uuid")
+    private String id;
 
     @Column
     @Enumerated(value = EnumType.STRING)
@@ -32,7 +34,7 @@ public class ConversationBackgroud {
 
 
     @Column
-    private Long conversationId;
+    private String conversationId;
 
 
 

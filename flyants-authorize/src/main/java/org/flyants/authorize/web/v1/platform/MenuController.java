@@ -30,13 +30,13 @@ public class MenuController {
     private MenuService menuService;
 
     @GetMapping
-    public List<TreeDto> getTreeByParent(@RequestParam(required = false, name = "parentId") Long parentId) {
+    public List<TreeDto> getTreeByParent(@RequestParam(required = false, name = "parentId") String parentId) {
         List<Menu> rootMeuns = menuService.findListByParentId(parentId);
         return rootMeuns.stream().map(i -> new TreeDto(i.getName(), i.getId(),i.getParentId()!= null, new ArrayList<>())).collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
-    public Menu get(@PathVariable("id") Long id) {
+    public Menu get(@PathVariable("id") String id) {
         return menuService.get(id);
     }
 
@@ -52,7 +52,7 @@ public class MenuController {
 
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable("id") Long id) {
+    public void delete(@PathVariable("id") String id) {
         menuService.delete(id);
     }
 

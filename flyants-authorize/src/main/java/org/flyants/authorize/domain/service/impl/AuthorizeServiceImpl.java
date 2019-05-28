@@ -57,7 +57,7 @@ public class AuthorizeServiceImpl implements AuthorizeService {
     }
 
     @Override
-    public OAuthUserAuthorize findOauthUserAuthorizeByClientIdAndUserId(String clientId, Long userId) {
+    public OAuthUserAuthorize findOauthUserAuthorizeByClientIdAndUserId(String clientId, String userId) {
         return oAuthUserAuthorizeRepository.findByClientIdAndUserId(clientId,userId).orElseThrow(() -> new BusinessException("用户不存在"));
     }
 
@@ -139,7 +139,7 @@ public class AuthorizeServiceImpl implements AuthorizeService {
     }
 
     @Override
-    public Optional<Long> findPeopleIdByOpenId(String accessToken, String openId) {
+    public Optional<String> findPeopleIdByOpenId(String accessToken, String openId) {
         Optional<OAuthAccessToken> optionalOAuthAccessToken = oAuthAccessTokenRepository.findByToken(accessToken);
         if(optionalOAuthAccessToken.isPresent()){
             String clientId = optionalOAuthAccessToken.get().getClientId();

@@ -13,7 +13,7 @@ import java.util.Optional;
  * @Version v1.0
  */
 @Repository
-public interface PeopleRepository extends JpaRepository<People,Long>  , JpaSpecificationExecutor {
+public interface PeopleRepository extends JpaRepository<People,String>  , JpaSpecificationExecutor {
 
     Optional<People> findByPhone(String phone);
 }

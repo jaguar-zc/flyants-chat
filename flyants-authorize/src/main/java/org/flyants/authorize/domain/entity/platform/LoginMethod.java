@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
@@ -29,8 +30,9 @@ public class LoginMethod {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GenericGenerator(name = "system-uuid", strategy = "uuid2")
+    @GeneratedValue(generator = "system-uuid")
+    private String id;
 
     @Column
     @Enumerated(value = EnumType.STRING)
@@ -40,7 +42,7 @@ public class LoginMethod {
     private String mark;
 
     @Column
-    private Long peopleId;
+    private String peopleId;
 
     @Column
     @Enumerated(value = EnumType.STRING)

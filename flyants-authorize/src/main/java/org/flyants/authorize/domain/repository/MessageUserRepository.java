@@ -10,8 +10,8 @@ import org.springframework.stereotype.Repository;
  * @Version v1.0
  */
 @Repository
-public interface MessageUserRepository extends JpaRepository<MessageUser,Long> {
+public interface MessageUserRepository extends JpaRepository<MessageUser,String> {
 
 
-    MessageUser findByPeopleId(Long peopleId);
+    MessageUser findByPeopleId(String peopleId);
 }

@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
  * @Version v1.0
  */
 @Repository
-public interface ConversationBackgroudRepository extends JpaRepository<ConversationBackgroud,Long> {
+public interface ConversationBackgroudRepository extends JpaRepository<ConversationBackgroud,String> {
 
 }

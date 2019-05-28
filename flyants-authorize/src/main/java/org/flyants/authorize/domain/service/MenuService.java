@@ -14,15 +14,15 @@ public interface MenuService {
 
     public PageResult<Menu> findList(Integer page, Integer size, String searchBy, String keyWord);
 
-    public Menu get(Long id);
+    public Menu get(String id);
 
     public void add(Menu menu);
 
     public void update(Menu menu);
 
-    public void delete(Long id);
+    public void delete(String id);
 
     List<Menu> rootMeuns();
 
-    List<Menu> findListByParentId(Long parentId);
+    List<Menu> findListByParentId(String parentId);
 }

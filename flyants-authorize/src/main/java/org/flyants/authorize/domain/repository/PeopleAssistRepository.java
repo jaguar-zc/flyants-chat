@@ -12,12 +12,12 @@ import java.util.List;
  * @Version v1.0
  */
 @Repository
-public interface PeopleAssistRepository extends JpaRepository<PeopleAssist,Long> {
+public interface PeopleAssistRepository extends JpaRepository<PeopleAssist,String> {
 
 
-    int countByPeopleId(Long peopleId);
+    int countByPeopleId(String peopleId);
 
 
-    int countByPeopleIdAndInitiativePeopleId(Long peopleId,Long initiativePeopleId);
+    int countByPeopleIdAndInitiativePeopleId(String peopleId,String initiativePeopleId);
 
 }
