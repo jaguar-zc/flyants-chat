@@ -6,9 +6,9 @@ package org.flyants.authorize.domain.message;
  * @Version v1.0
  */
 public enum  MessageType {
-    TEXT(new TextMessageHandler());
-//    IAMGE,
-//    AUDIO,
+    TEXT(new TextMessageHandler()),
+    IAMGE(new ImageMessageHandler()),
+    AUDIO(new AudioMessageHandler());
 //    VIDEO;
 
     private MessageHandler messageHandler;
