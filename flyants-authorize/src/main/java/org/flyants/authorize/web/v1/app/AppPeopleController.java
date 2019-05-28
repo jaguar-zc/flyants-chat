@@ -3,6 +3,7 @@ package org.flyants.authorize.web.v1.app;
 import lombok.extern.slf4j.Slf4j;
 import org.flyants.authorize.domain.service.PeopleService;
 import org.flyants.authorize.dto.app.PeopleInfoDto;
+import org.flyants.authorize.dto.app.PeopleSimpleDto;
 import org.flyants.authorize.utils.JWTManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

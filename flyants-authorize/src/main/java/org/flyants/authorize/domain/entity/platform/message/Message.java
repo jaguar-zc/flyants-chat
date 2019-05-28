@@ -2,9 +2,13 @@ package org.flyants.authorize.domain.entity.platform.message;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.flyants.authorize.domain.message.MessageType;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.util.Date;
 
 /**
@@ -16,10 +20,6 @@ import java.util.Date;
 @Setter
 @Entity
 public class Message {
-
-    public enum MessageType{
-        TEXT,IAMGE,AUDIO,VIDEO
-    }
 
     @Id
     @GenericGenerator(name = "system-uuid", strategy = "uuid2")

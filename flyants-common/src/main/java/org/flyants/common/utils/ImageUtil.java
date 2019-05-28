@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
  */
 public class ImageUtil {
     public static void main(String[] args) throws IOException {
-        String name = "Juck";
+        String name = "王火鸡发";
         generateImg(name, name);
     }
 
@@ -36,7 +36,7 @@ public class ImageUtil {
         int width = 100;
         int height = 100;
         int nameLen = name.length();
-        String nameWritten;
+        String nameWritten ;
         //如果用户输入的姓名少于等于2个字符，不用截取
         if (nameLen <= 2) {
             nameWritten = name;
@@ -51,6 +51,7 @@ public class ImageUtil {
                 nameWritten = name.substring(0, 2).toUpperCase();
             }
         }
+
 
 //        String filename = "D:/opt" + File.separator + outputName + ".jpg";
 //        File file = new File(filename);

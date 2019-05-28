@@ -2,9 +2,11 @@ package org.flyants.authorize.domain.entity.platform.message;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.flyants.authorize.domain.ConversationType;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * @Author zhangchao
@@ -15,10 +17,6 @@ import javax.persistence.*;
 @Setter
 @Entity
 public class Conversation {
-
-    public enum ConversationType{
-        SINGLE,GROUP
-    }
 
     @Id
     @GenericGenerator(name = "system-uuid", strategy = "uuid2")
@@ -46,6 +44,11 @@ public class Conversation {
 
     @Column
     private String messageUserId;//会话拥有者
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "conversationId")
+    private List<ConversationUser> conversationUserList;
+
 
 
 

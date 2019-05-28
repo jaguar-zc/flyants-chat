@@ -2,15 +2,16 @@ package org.flyants.authorize.web.v1.app;
 
 import lombok.extern.slf4j.Slf4j;
 import org.flyants.authorize.domain.service.ConversationService;
+import org.flyants.authorize.dto.app.ConversationListDto;
 import org.flyants.authorize.dto.app.CreateConversationDto;
+import org.flyants.authorize.dto.app.CreateGroupConversationDto;
+import org.flyants.authorize.dto.app.EditConversationDto;
 import org.flyants.authorize.utils.JWTManager;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * App会话
@@ -28,15 +29,30 @@ public class AppConversationController {
     ConversationService conversationService;
 
 
-
-
-    @PostMapping("/publish")
-    public void createConversation(@Valid @RequestBody CreateConversationDto createConversationDto){
+    @PostMapping("/createSingleConversation")
+    public void createSingleConversation(@Valid @RequestBody CreateConversationDto createConversationDto){
         String peopleId = JWTManager.get();
-        conversationService.createConversation(peopleId,createConversationDto.getFirendsMessageUserId());
+        conversationService.createSingleConversation(peopleId,createConversationDto.getFirendsMessageUserId());
+    }
+
+    @PostMapping("/createGroupConversation")
+    public void createGroupConversation(@Valid @RequestBody CreateGroupConversationDto createConversationDto){
+        String peopleId = JWTManager.get();
+        conversationService.createGroupConversation(peopleId,createConversationDto.getMessageUserIds());
     }
 
 
+    @PostMapping("/editConversation/{conversationId}")
+    public void editConversation(@PathVariable("conversationId") String conversationId , @RequestBody EditConversationDto editConversationDto){
+        String peopleId = JWTManager.get();
+        conversationService.editConversation(peopleId,conversationId ,editConversationDto);
+    }
 
+
+    @PostMapping("/list")
+    public List<ConversationListDto> list(){
+        String peopleId = JWTManager.get();
+        return conversationService.list(peopleId);
+    }
 
 }

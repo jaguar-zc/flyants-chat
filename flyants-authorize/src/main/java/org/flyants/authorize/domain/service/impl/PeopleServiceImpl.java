@@ -9,6 +9,7 @@ import org.flyants.authorize.domain.entity.PeopleSex;
 import org.flyants.authorize.domain.entity.platform.*;
 import org.flyants.authorize.domain.entity.platform.message.MessageUser;
 import org.flyants.authorize.domain.repository.*;
+import org.flyants.authorize.domain.service.OssObjectServie;
 import org.flyants.authorize.domain.service.PeopleService;
 import org.flyants.authorize.dto.app.PeopleInfoDto;
 import org.flyants.common.exception.BusinessException;
@@ -38,7 +39,7 @@ public class PeopleServiceImpl implements PeopleService {
 
 
     @Autowired
-    ObjectManagerFactory objectManagerFactory;
+    OssObjectServie ossObjectServie;
 
     @Autowired
     private PeopleRepository peopleRepository;
@@ -164,17 +165,9 @@ public class PeopleServiceImpl implements PeopleService {
         messageUser.setPeopleId(people.getId());
         messageUserRepository.save(messageUser);
 
-        String imgName = "headimg/" + UUID.randomUUID().toString() + ".jpg";
-        try {
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            ImageUtil.generateImg(nickName, byteArrayOutputStream);
-            ByteArrayInputStream inputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
-            String path = objectManagerFactory.upload(inputStream, imgName);
-            people.setEncodedPrincipal(path);
-            peopleRepository.saveAndFlush(people);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        String path = ossObjectServie.generateIcon("headimg", nickName);
+        people.setEncodedPrincipal(path);
+        peopleRepository.saveAndFlush(people);
 
     }
 
