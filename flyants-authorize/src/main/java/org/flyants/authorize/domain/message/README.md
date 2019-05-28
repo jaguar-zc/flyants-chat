@@ -11,19 +11,18 @@ TEXT
 ``` json
 IMAGE
 {
-    "small":"http://small.jpg",//缩略图
-    "source":"http://source.jpg"//原图
+    "small":"http://small.jpg", // 缩略图
+    "source":"http://source.jpg" //原图
 }
 ```
 ### 语音消息
 ``` json
 AUDIO
 {
-    "url":"http://small.mp3",//语音地址
+    "url":"http://small.mp3", //语音地址
     "duration":16 //语音时长
 }
-```
-```
+``` 
 ### 好友申请消息
 ``` json
 FRIENDS_APPLY
