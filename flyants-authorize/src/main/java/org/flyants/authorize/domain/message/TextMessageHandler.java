@@ -32,7 +32,7 @@ public class TextMessageHandler implements MessageHandler {
 
     @Override
     public MessageHandler builder(String body) {
-        log.info("TextMessageHandler:{}",body);
+        log.info("{}",body);
         Map<String, Object> map = JSONUtils.parseJSON(body);
         this.value = map.getOrDefault(FIELD_NAME,"").toString();
         return this;

@@ -6,8 +6,9 @@ package org.flyants.authorize.domain.message;
  * @Version v1.0
  */
 public enum  MessageType {
+    FRIENDS_APPLY(new FriendsApplyMessageHandler()),
     TEXT(new TextMessageHandler()),
-    IAMGE(new ImageMessageHandler()),
+    IMAGE(new ImageMessageHandler()),
     AUDIO(new AudioMessageHandler());
 //    VIDEO;
 

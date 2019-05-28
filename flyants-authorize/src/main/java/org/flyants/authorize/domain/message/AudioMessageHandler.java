@@ -14,9 +14,11 @@ import java.util.Map;
 @Slf4j
 public class AudioMessageHandler implements MessageHandler {
 
-    private static String  FIELD_NAME = "url";
+    private static String  URL = "URL";//音频地址
+    private static String  DURATION = "DURATION";//音频时长
 
-    private String value;
+    private String url;
+    private Integer duration;
 
     @Override
     public MessageType getMessageType() {
@@ -26,7 +28,8 @@ public class AudioMessageHandler implements MessageHandler {
     @Override
     public String toBody() {
         Map<String,Object> map = new HashMap<>();
-        map.put(FIELD_NAME,value);
+        map.put(URL,url);
+        map.put(DURATION,duration);
         return JSONUtils.buildJSON(map);
     }
 
@@ -34,7 +37,8 @@ public class AudioMessageHandler implements MessageHandler {
     public MessageHandler builder(String body) {
         log.info("{}",body);
         Map<String, Object> map = JSONUtils.parseJSON(body);
-        this.value = map.getOrDefault(FIELD_NAME,"").toString();
+        this.url = map.getOrDefault(URL,"").toString();
+        this.duration = (Integer) map.getOrDefault(DURATION,0);
         return this;
     }
 

@@ -14,19 +14,19 @@ import java.util.Map;
 @Slf4j
 public class ImageMessageHandler implements MessageHandler {
 
-    private static String  FIELD_NAME = "url";
-
-    private String value;
+    private String small;
+    private String source;
 
     @Override
     public MessageType getMessageType() {
-        return MessageType.IAMGE;
+        return MessageType.IMAGE;
     }
 
     @Override
     public String toBody() {
         Map<String,Object> map = new HashMap<>();
-        map.put(FIELD_NAME,value);
+        map.put("small",small);
+        map.put("source",source);
         return JSONUtils.buildJSON(map);
     }
 
@@ -34,7 +34,8 @@ public class ImageMessageHandler implements MessageHandler {
     public MessageHandler builder(String body) {
         log.info("{}",body);
         Map<String, Object> map = JSONUtils.parseJSON(body);
-        this.value = map.getOrDefault(FIELD_NAME,"").toString();
+        this.small = map.getOrDefault("small","").toString();
+        this.source = map.getOrDefault("source","").toString();
         return this;
     }
 
