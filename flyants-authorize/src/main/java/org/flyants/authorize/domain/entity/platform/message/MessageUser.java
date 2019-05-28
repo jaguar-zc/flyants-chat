@@ -25,6 +25,12 @@ public class MessageUser {
     private String peopleId;
 
     @Column
+    private String encodedPrincipal;
+
+    @Column
+    private String nickName;
+
+    @Column
     private String token;
 
     @Column

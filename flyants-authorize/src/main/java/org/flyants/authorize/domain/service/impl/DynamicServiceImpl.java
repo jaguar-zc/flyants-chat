@@ -9,7 +9,7 @@ import org.flyants.authorize.domain.repository.*;
 import org.flyants.authorize.domain.service.DynamicService;
 import org.flyants.authorize.dto.app.DynamicAddDto;
 import org.flyants.authorize.dto.app.DynamicDto;
-import org.flyants.authorize.dto.app.PeopleSimpleDto;
+import org.flyants.authorize.dto.app.MessageUserSimpleInfoDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -108,13 +108,13 @@ public class DynamicServiceImpl implements DynamicService {
             dynamicDto.setVisibility(item.getVisibility());
 
 
-            List<PeopleSimpleDto> collect1 = dynamicAssistRepository.findAllByDynamicId(item.getId())
+            List<MessageUserSimpleInfoDto> collect1 = dynamicAssistRepository.findAllByDynamicId(item.getId())
                     .stream()
                     .map(i -> peopleRepository.findById(i.getPeopleId()))
                     .filter(i -> i.isPresent())
                     .map(i -> i.get())
                     .map(i ->
-                            new PeopleSimpleDto(i.getId(), i.getNickName(), i.getEncodedPrincipal())
+                            new MessageUserSimpleInfoDto(i.getId(), i.getNickName(), i.getEncodedPrincipal())
                     ).collect(Collectors.toList());
 
             dynamicDto.setAssistPeopleList(collect1);

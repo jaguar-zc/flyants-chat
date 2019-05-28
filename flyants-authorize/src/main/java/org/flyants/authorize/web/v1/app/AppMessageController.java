@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.flyants.authorize.configuration.PageResult;
 import org.flyants.authorize.domain.entity.platform.message.Message;
 import org.flyants.authorize.domain.service.MessageService;
-import org.flyants.authorize.dto.app.PeopleSimpleDto;
+import org.flyants.authorize.dto.app.MessageUserSimpleInfoDto;
 import org.flyants.authorize.dto.app.PublishMessageDto;
 import org.flyants.authorize.utils.JWTManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +25,10 @@ public class AppMessageController {
     private MessageService messageService;
 
 
-    @GetMapping("/getPeopleSimpleInfo")
-    public PeopleSimpleDto getPeopleSimpleInfo(String messageUserId){
+    @GetMapping("/getMessageUserSimpleInfo")
+    public MessageUserSimpleInfoDto getPeopleSimpleInfo(String messageUserId){
         return messageService.getPeopleSimpleInfo(messageUserId);
     }
-
 
 
     @PostMapping("/publish")

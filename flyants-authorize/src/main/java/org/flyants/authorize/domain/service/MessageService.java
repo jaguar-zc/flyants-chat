@@ -2,7 +2,7 @@ package org.flyants.authorize.domain.service;
 
 import org.flyants.authorize.configuration.PageResult;
 import org.flyants.authorize.domain.entity.platform.message.Message;
-import org.flyants.authorize.dto.app.PeopleSimpleDto;
+import org.flyants.authorize.dto.app.MessageUserSimpleInfoDto;
 import org.flyants.authorize.dto.app.PublishMessageDto;
 
 /**
@@ -15,5 +15,5 @@ public interface MessageService {
 
     PageResult<Message> list(Integer page, Integer size, String conversationId);
 
-    PeopleSimpleDto getPeopleSimpleInfo(String messageUserId);
+    MessageUserSimpleInfoDto getPeopleSimpleInfo(String messageUserId);
 }

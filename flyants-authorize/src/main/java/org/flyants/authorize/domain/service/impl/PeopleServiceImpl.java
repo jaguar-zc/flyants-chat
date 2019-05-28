@@ -85,7 +85,10 @@ public class PeopleServiceImpl implements PeopleService {
 
     @Override
     public void logout(String peopleId) {
-        tokenRepository.findByPeopleId(peopleId);
+        Optional<Token> tokenOptional = tokenRepository.findByPeopleId(peopleId);
+        if (tokenOptional.isPresent()) {
+            tokenRepository.deleteById(tokenOptional.get().getId());
+        }
     }
 
     private Optional<String> getLoginToken(Optional<LoginMethod> loginMethod) {
@@ -160,14 +163,16 @@ public class PeopleServiceImpl implements PeopleService {
         loginMethodRepository.save(phoneLogin);
         loginMethodRepository.save(pwdLogin);
 
-        //保存消息用户
-        MessageUser messageUser = new MessageUser();
-        messageUser.setPeopleId(people.getId());
-        messageUserRepository.save(messageUser);
-
         String path = ossObjectServie.generateIcon("headimg", nickName);
         people.setEncodedPrincipal(path);
         peopleRepository.saveAndFlush(people);
+
+        //保存消息用户
+        MessageUser messageUser = new MessageUser();
+        messageUser.setPeopleId(people.getId());
+        messageUser.setNickName(people.getNickName());
+        messageUser.setEncodedPrincipal(people.getEncodedPrincipal());
+        messageUserRepository.save(messageUser);
 
     }
 
@@ -257,7 +262,18 @@ public class PeopleServiceImpl implements PeopleService {
 
         if(StringUtils.isNotEmpty(peopleInfoDto.getEncodedPrincipal())){
             people.setEncodedPrincipal(peopleInfoDto.getEncodedPrincipal());
+            MessageUser messageUser = messageUserRepository.findByPeopleId(people.getId());
+            messageUser.setEncodedPrincipal(people.getEncodedPrincipal());
+            messageUserRepository.saveAndFlush(messageUser);
         }
+
+        if(StringUtils.isNotEmpty(peopleInfoDto.getNickName())) {
+            people.setNickName(peopleInfoDto.getNickName());
+            MessageUser messageUser = messageUserRepository.findByPeopleId(people.getId());
+            messageUser.setNickName(people.getNickName());
+            messageUserRepository.saveAndFlush(messageUser);
+        }
+
         if(StringUtils.isNotEmpty(peopleInfoDto.getPhone())){
             people.setPhone(peopleInfoDto.getPhone());
         }
@@ -273,9 +289,7 @@ public class PeopleServiceImpl implements PeopleService {
         if(peopleInfoDto.getLanguage() != null) {
             people.setLanguage(peopleInfoDto.getLanguage());
         }
-        if(StringUtils.isNotEmpty(peopleInfoDto.getNickName())) {
-            people.setNickName(peopleInfoDto.getNickName());
-        }
+
         if( peopleInfoDto.getSex() != null) {
             people.setSex(peopleInfoDto.getSex());
         }

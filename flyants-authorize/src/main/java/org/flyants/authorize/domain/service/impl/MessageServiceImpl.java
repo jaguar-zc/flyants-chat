@@ -4,7 +4,6 @@ import java.util.Date;
 
 import org.flyants.authorize.configuration.PageResult;
 import org.flyants.authorize.domain.entity.platform.People;
-import org.flyants.authorize.domain.entity.platform.dynamic.Dynamic;
 import org.flyants.authorize.domain.entity.platform.message.Conversation;
 import org.flyants.authorize.domain.entity.platform.message.Message;
 import org.flyants.authorize.domain.entity.platform.message.MessageUser;
@@ -15,8 +14,7 @@ import org.flyants.authorize.domain.repository.MessageRepository;
 import org.flyants.authorize.domain.repository.MessageUserRepository;
 import org.flyants.authorize.domain.repository.PeopleRepository;
 import org.flyants.authorize.domain.service.MessageService;
-import org.flyants.authorize.dto.app.DynamicDto;
-import org.flyants.authorize.dto.app.PeopleSimpleDto;
+import org.flyants.authorize.dto.app.MessageUserSimpleInfoDto;
 import org.flyants.authorize.dto.app.PublishMessageDto;
 import org.flyants.common.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +23,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -107,25 +104,17 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public PeopleSimpleDto getPeopleSimpleInfo(String messageUserId) {
+    public MessageUserSimpleInfoDto getPeopleSimpleInfo(String messageUserId) {
         Optional<MessageUser> messageUserOptional = messageUserRepository.findById(messageUserId);
         if(!messageUserOptional.isPresent()){
             throw new BusinessException("用户不存在");
         }
+        MessageUser messageUser = messageUserOptional.get();
 
-        String peopleId = messageUserOptional.get().getPeopleId();
-
-        Optional<People> peopleOptional = peopleRepository.findById(peopleId);
-        if(!peopleOptional.isPresent()){
-            throw new BusinessException("用户不存在");
-        }
-        People people = peopleOptional.get();
-
-
-        PeopleSimpleDto peopleSimpleDto = new PeopleSimpleDto();
-        peopleSimpleDto.setId(people.getId());
-        peopleSimpleDto.setNickName(people.getNickName());
-        peopleSimpleDto.setEncodedPrincipal(people.getEncodedPrincipal());
+        MessageUserSimpleInfoDto peopleSimpleDto = new MessageUserSimpleInfoDto();
+        peopleSimpleDto.setId(messageUser.getId());
+        peopleSimpleDto.setNickName(messageUser.getNickName());
+        peopleSimpleDto.setEncodedPrincipal(messageUser.getEncodedPrincipal());
         return peopleSimpleDto;
     }
 }

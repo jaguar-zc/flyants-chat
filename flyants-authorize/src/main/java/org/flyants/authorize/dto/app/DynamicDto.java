@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.flyants.authorize.domain.DynamicVisibility;
 
-import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
@@ -26,6 +25,6 @@ public class DynamicDto {
     private List<String> images;//List<String>
     private String location;//位置
     private DynamicVisibility visibility = DynamicVisibility.ALL;
-    private List<PeopleSimpleDto> assistPeopleList;//List<String>
+    private List<MessageUserSimpleInfoDto> assistPeopleList;//List<String>
     private Integer commentsCount;
 }

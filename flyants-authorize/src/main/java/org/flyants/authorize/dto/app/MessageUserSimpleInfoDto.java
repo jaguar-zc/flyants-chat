@@ -18,7 +18,7 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PeopleSimpleDto {
+public class MessageUserSimpleInfoDto {
     private String id;
     private String nickName;
     private String encodedPrincipal;
