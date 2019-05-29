@@ -22,7 +22,6 @@ public class MessageHandlerTest {
         message.setSendTime(new Date());
         message.setView(0);
 
-        System.out.println(message.getMessageHandler().toBody());
     }
 
 }

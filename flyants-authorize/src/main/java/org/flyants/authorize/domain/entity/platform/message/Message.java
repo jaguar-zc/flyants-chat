@@ -1,9 +1,7 @@
 package org.flyants.authorize.domain.entity.platform.message;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
-import org.flyants.authorize.domain.message.MessageHandler;
 import org.flyants.authorize.domain.message.MessageType;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -45,18 +43,5 @@ public class Message {
 
     @Column
     private Integer view;
-
-    @JsonIgnore
-    public MessageHandler getMessageHandler(){
-        Class<? extends MessageHandler> messageHandler = messageType.getMessageHandler();
-        MessageHandler messageHandler1 = null;
-        try {
-            messageHandler1 = messageHandler.newInstance();
-        } catch ( Exception e) {
-            e.printStackTrace();
-        }
-        messageHandler1.builder(body);
-        return messageHandler1;
-    }
 
 }
