@@ -7,11 +7,11 @@
         <artifactId>flyants-oauth2</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>flyants-chat</artifactId>
+    <artifactId>n-chat</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>flyants-chat</name>
+    <name>${project.artifactId}</name>
     <packaging>jar</packaging>
-    <description>Demo project for Spring Boot</description>
+    <description>${project.artifactId}</description>
 
     <properties>
         <java.version>1.8</java.version>

@@ -1,13 +1,9 @@
 package org.flyants.authorize.domain.service.impl;
-import java.util.ArrayList;
-import java.util.Date;
 
 import org.flyants.authorize.configuration.PageResult;
-import org.flyants.authorize.domain.entity.platform.People;
 import org.flyants.authorize.domain.entity.platform.message.Conversation;
 import org.flyants.authorize.domain.entity.platform.message.Message;
 import org.flyants.authorize.domain.entity.platform.message.MessageUser;
-import org.flyants.authorize.domain.message.MessageHandler;
 import org.flyants.authorize.domain.message.MessageType;
 import org.flyants.authorize.domain.repository.ConversationRepository;
 import org.flyants.authorize.domain.repository.MessageRepository;
@@ -28,6 +24,8 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -73,6 +71,8 @@ public class MessageServiceImpl implements MessageService {
         message.setSendTime(new Date());
         message.setView(0);
         messageRepository.save(message);
+
+
         // todo 推送消息
     }
 

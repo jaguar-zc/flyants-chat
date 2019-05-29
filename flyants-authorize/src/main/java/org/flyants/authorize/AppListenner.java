@@ -1,8 +1,5 @@
 package org.flyants.authorize;
 
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -13,9 +10,7 @@ import javax.annotation.PostConstruct;
  * @Version v1.0
  */
 @Component
-public class AppListenner implements ApplicationContextAware {
-
-    private static ApplicationContext applicationContext;
+public class AppListenner  {
 
     @PostConstruct
     public void ru() {
@@ -37,8 +32,4 @@ public class AppListenner implements ApplicationContextAware {
 //        });
     }
 
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        AppListenner.applicationContext = applicationContext;
-    }
 }
