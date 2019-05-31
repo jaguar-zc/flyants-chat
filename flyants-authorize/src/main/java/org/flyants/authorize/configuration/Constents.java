@@ -8,5 +8,6 @@ package org.flyants.authorize.configuration;
 public abstract class Constents {
 
     public static String DEFAUTL_PASSWORD  = "123456";
+    public static String DEFAUTL_SMSCODE  = "1234";
 
 }

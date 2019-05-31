@@ -3,6 +3,7 @@ package org.flyants.authorize.domain.service;
 import org.flyants.authorize.configuration.PageResult;
 import org.flyants.authorize.domain.entity.platform.People;
 import org.flyants.authorize.dto.app.PeopleInfoDto;
+import org.flyants.authorize.dto.app.SettingPasswordDto;
 
 import java.util.Optional;
 
@@ -33,4 +34,6 @@ public interface PeopleService {
     void assistPeople(String peopleId, String assistPeopleId);
 
     void updatePeopleInfo(String peopleId, PeopleInfoDto peopleInfoDto);
+
+    void setPassword(String peopleId, SettingPasswordDto settingPassword);
 }

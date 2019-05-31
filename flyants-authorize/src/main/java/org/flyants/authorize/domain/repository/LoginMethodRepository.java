@@ -14,6 +14,7 @@ import java.util.Optional;
 @Repository
 public interface LoginMethodRepository extends JpaRepository<LoginMethod,String> {
 
-    public Optional<LoginMethod> findByTypeAndMark(LoginMethod.LoginType loginType,String mark);
+    Optional<LoginMethod> findByTypeAndMark(LoginMethod.LoginType loginType,String mark);
+    Optional<LoginMethod> findByTypeAndPeopleId(LoginMethod.LoginType loginType,String peopleId);
 
 }

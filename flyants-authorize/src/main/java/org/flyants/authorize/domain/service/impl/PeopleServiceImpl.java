@@ -1,4 +1,6 @@
 package org.flyants.authorize.domain.service.impl;
+import org.flyants.authorize.domain.entity.platform.LoginMethod.LoginType;
+import org.flyants.authorize.domain.entity.platform.LoginMethod.LoginMethodStatus;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -11,7 +13,9 @@ import org.flyants.authorize.domain.entity.platform.message.MessageUser;
 import org.flyants.authorize.domain.repository.*;
 import org.flyants.authorize.domain.service.OssObjectServie;
 import org.flyants.authorize.domain.service.PeopleService;
+import org.flyants.authorize.domain.service.VerificationService;
 import org.flyants.authorize.dto.app.PeopleInfoDto;
+import org.flyants.authorize.dto.app.SettingPasswordDto;
 import org.flyants.common.exception.BusinessException;
 import org.flyants.common.file.ObjectManagerFactory;
 import org.flyants.common.utils.ImageUtil;
@@ -58,6 +62,9 @@ public class PeopleServiceImpl implements PeopleService {
     PeopleIntroductionRepository peopleIntroductionRepository;
     @Autowired
     PeopleAssistRepository peopleAssistRepository;
+
+    @Autowired
+    VerificationService verificationService;
 
 
     @Override
@@ -246,6 +253,27 @@ public class PeopleServiceImpl implements PeopleService {
         peopleAssist.setInitiativePeopleId(peopleId);
         peopleAssist.setPeopleId(assistPeopleId);
         peopleAssistRepository.saveAndFlush(peopleAssist);
+    }
+
+    @Override
+    public void setPassword(String peopleId, SettingPasswordDto settingPassword) {
+        People people = peopleRepository.findById(peopleId).get();
+        verificationService.check(people.getPhone(),settingPassword.getSmsCode());
+
+        Optional<LoginMethod> loginMethodOptional = loginMethodRepository.findByTypeAndPeopleId(LoginMethod.LoginType.PASSWORD, people.getId());
+
+        if(loginMethodOptional.isPresent()){
+            LoginMethod loginMethod = loginMethodOptional.get();
+            loginMethod.setMark(LoginMethod.buildPasswordMark(people.getPhone(),settingPassword.getPassword()));
+            loginMethodRepository.saveAndFlush(loginMethod);
+        }else{
+            LoginMethod loginMethod = new LoginMethod();
+            loginMethod.setType(LoginType.PASSWORD);
+            loginMethod.setMark(LoginMethod.buildPasswordMark(people.getPhone(),settingPassword.getPassword()));
+            loginMethod.setPeopleId(people.getId());
+            loginMethod.setStatus(LoginMethodStatus.ACTIVE);
+            loginMethodRepository.saveAndFlush(loginMethod);
+        }
     }
 
     @Override

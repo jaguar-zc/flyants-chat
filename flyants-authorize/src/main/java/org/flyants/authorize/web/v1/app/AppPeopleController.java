@@ -3,9 +3,12 @@ package org.flyants.authorize.web.v1.app;
 import lombok.extern.slf4j.Slf4j;
 import org.flyants.authorize.domain.service.PeopleService;
 import org.flyants.authorize.dto.app.PeopleInfoDto;
+import org.flyants.authorize.dto.app.SettingPasswordDto;
 import org.flyants.authorize.utils.JWTManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 /**
  * @Author zhangchao
@@ -25,6 +28,12 @@ public class AppPeopleController {
     public PeopleInfoDto info(){
         String peopleId = JWTManager.get();
         return  peopleService.info(peopleId);
+    }
+
+    @PutMapping("/setPassword")
+    public void setPassword(@RequestBody @Valid SettingPasswordDto settingPassword){
+        String peopleId = JWTManager.get();
+        peopleService.setPassword(peopleId,settingPassword);
     }
 
     @PutMapping("/updatePeopleInfo")
