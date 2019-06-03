@@ -3,7 +3,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>flyants-oauth2</artifactId>
+        <artifactId>flyants-parent</artifactId>
         <groupId>org.flyants</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
@@ -34,7 +34,7 @@
         </dependency>
         <dependency>
             <groupId>org.flyants</groupId>
-            <artifactId>flyants-common</artifactId>
+            <artifactId>flyants-chat-common</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

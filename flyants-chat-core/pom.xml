@@ -40,7 +40,7 @@
         </dependency>
         <dependency>
             <groupId>org.flyants</groupId>
-            <artifactId>flyants-common</artifactId>
+            <artifactId>flyants-chat-common</artifactId>
             <version>${project.version}</version>
         </dependency>
 
