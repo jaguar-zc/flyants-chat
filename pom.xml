@@ -9,15 +9,15 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>org.flyants</groupId>
-    <artifactId>flyants-oauth2</artifactId>
+    <artifactId>flyants-parent</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>${project.artifactId}</name>
     <packaging>pom</packaging>
     <description>org.flyants.oauth2</description>
 
     <modules>
-        <module>flyants-authorize</module>
-        <module>flyants-common</module>
+        <module>flyants-chat-core</module>
+        <module>flyants-chat-common</module>
         <module>flyants-clients</module>
     </modules>
 

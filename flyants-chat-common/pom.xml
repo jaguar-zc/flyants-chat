@@ -13,7 +13,7 @@
         <jackson.version>2.9.8</jackson.version>
     </properties>
 
-    <artifactId>flyants-common</artifactId>
+    <artifactId>flyants-chat-common</artifactId>
 
 
     <dependencies>

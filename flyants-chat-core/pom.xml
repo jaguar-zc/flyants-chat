@@ -4,10 +4,10 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.flyants</groupId>
-        <artifactId>flyants-oauth2</artifactId>
+        <artifactId>flyants-parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>n-chat</artifactId>
+    <artifactId>flyants-chat-core</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>${project.artifactId}</name>
     <packaging>jar</packaging>
