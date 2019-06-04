@@ -1,4 +1,5 @@
 spring:
   profiles:
     include: common
-    active: sandbox
+#    active: sandbox
+    active: debug
