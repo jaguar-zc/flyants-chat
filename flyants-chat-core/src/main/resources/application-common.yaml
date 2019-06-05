@@ -31,3 +31,6 @@ spring:
   jackson:
     serialization:
       write-dates-as-timestamps: true
+logging:
+  path: logs/chat.log
+  level: info
