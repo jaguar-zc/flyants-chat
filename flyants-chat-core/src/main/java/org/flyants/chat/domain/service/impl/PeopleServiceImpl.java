@@ -68,7 +68,7 @@ public class PeopleServiceImpl implements PeopleService {
     }
 
     @Override
-    public Optional<String> findByPhone(String phone) {
+    public Optional<String> loginByPhone(String phone) {
         Optional<LoginMethod> loginMethod = loginMethodRepository.findByTypeAndMark(LoginMethod.LoginType.PHONE, phone);
         if (!loginMethod.isPresent()) {
             throw new BusinessException("手机号不存在");

@@ -1,5 +1,7 @@
 package org.flyants.chat.web.v1.platform.dto;
 
+import org.flyants.chat.domain.entity.platform.LoginMethod;
+
 import javax.validation.constraints.NotNull;
 
 /**
@@ -10,24 +12,33 @@ import javax.validation.constraints.NotNull;
 public class LoginReq {
 
     @NotNull
-    private String username;
+    private LoginMethod.LoginType method;
     @NotNull
-    private String password;
+    private String phone;
+    @NotNull
+    private String mark;
 
-
-    public String getUsername() {
-        return username;
+    public LoginMethod.LoginType getMethod() {
+        return method;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setMethod(LoginMethod.LoginType method) {
+        this.method = method;
     }
 
-    public String getPassword() {
-        return password;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getMark() {
+        return mark;
+    }
+
+    public void setMark(String mark) {
+        this.mark = mark;
     }
 }

@@ -15,7 +15,7 @@ import java.util.Optional;
 public interface PeopleService {
     Optional<People> findPeopleById(String peopleId);
 
-    Optional<String> findByPhone(String phone);
+    Optional<String> loginByPhone(String phone);
 
     Optional<String> loginByPassword(String phone,String password);
 

@@ -1,6 +1,7 @@
 package org.flyants.chat.web.v1.app;
 
 import lombok.extern.slf4j.Slf4j;
+import org.flyants.chat.domain.entity.platform.LoginMethod;
 import org.flyants.chat.domain.service.PeopleService;
 import org.flyants.chat.utils.JWTManager;
 import org.flyants.chat.utils.ResponseDataUtils;
@@ -34,8 +35,17 @@ public class AppLoginController {
     @Anonymous
     @PostMapping("/login")
     public ResponseData<Object> login(@Valid @RequestBody LoginReq loginReq) {
-        log.info("login => username:{},password:{}", loginReq.getUsername(), loginReq.getPassword());
-        Optional<String> token = peopleService.loginByPassword(loginReq.getUsername(), loginReq.getPassword());
+        log.info("login =>method:{} username:{},password:{} ", loginReq.getMethod(), loginReq.getPhone(),loginReq.getMark());
+
+        Optional<String> token = null;
+        if(loginReq.getMethod() == LoginMethod.LoginType.PHONE){
+            token = peopleService.loginByPhone(loginReq.getPhone());
+        }else if(loginReq.getMethod() == LoginMethod.LoginType.PASSWORD){
+            token = peopleService.loginByPassword(loginReq.getPhone(), loginReq.getMark());
+        }else {
+            throw new BusinessException("不支持的登录方式");
+        }
+
         if (token.isPresent()) {
             log.info(token.get());
             return ResponseDataUtils.buildSuccess().addAttrs("token",token.get());
