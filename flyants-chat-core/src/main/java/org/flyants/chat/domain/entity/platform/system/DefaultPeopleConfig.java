@@ -31,7 +31,11 @@ public class DefaultPeopleConfig {
     @Column
     private Integer messageNotifyShake;//消息通知震动
     @Column
-    private Integer addMeMethod;//添加我的方式
+    private Integer usePhonePlusMe;//通过手机号添加我
+    @Column
+    private Integer useChatNoPlusMe;//通过ID添加我
+    @Column
+    private Integer useQrCodePlusMe;//通过二维码添加我
     @Column
     private Integer addMeVerify;//添加我需要验证
     @Column

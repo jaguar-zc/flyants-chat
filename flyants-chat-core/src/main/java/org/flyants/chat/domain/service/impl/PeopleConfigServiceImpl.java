@@ -50,9 +50,16 @@ public class PeopleConfigServiceImpl implements PeopleConfigService {
         PeopleConfig config = findFirstByPeopleId(peopleId);
 
 
-        if(peopleConfig.getAddMeMethod() == null){
-            config.setAddMeMethod(peopleConfig.getAddMeMethod());
+        if(peopleConfig.getUsePhonePlusMe() == null){
+            config.setUsePhonePlusMe(peopleConfig.getUsePhonePlusMe());
         }
+        if(peopleConfig.getUseChatNoPlusMe() == null){
+            config.setUseChatNoPlusMe(peopleConfig.getUseChatNoPlusMe());
+        }
+        if(peopleConfig.getUseQrCodePlusMe() == null){
+            config.setUseQrCodePlusMe(peopleConfig.getUseQrCodePlusMe());
+        }
+
         if(peopleConfig.getAddMeVerify() == null){
             config.setAddMeVerify(peopleConfig.getAddMeVerify());
         }
@@ -89,7 +96,9 @@ public class PeopleConfigServiceImpl implements PeopleConfigService {
                         defaultPeopleConfig.setChatRecordCloudStore(0);
                         defaultPeopleConfig.setMessageNotifyVoice(0);
                         defaultPeopleConfig.setMessageNotifyShake(0);
-                        defaultPeopleConfig.setAddMeMethod(0);
+                        defaultPeopleConfig.setUseChatNoPlusMe(0);
+                        defaultPeopleConfig.setUsePhonePlusMe(0);
+                        defaultPeopleConfig.setUseQrCodePlusMe(0);
                         defaultPeopleConfig.setAddMeVerify(0);
                         defaultPeopleConfig.setAllowTomeRecommendedGroup(0);
                         defaultPeopleConfig.setDynameicVideoPlayNet(0);
