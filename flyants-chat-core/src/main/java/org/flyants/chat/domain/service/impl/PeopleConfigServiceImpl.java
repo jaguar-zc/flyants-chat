@@ -50,32 +50,32 @@ public class PeopleConfigServiceImpl implements PeopleConfigService {
         PeopleConfig config = findFirstByPeopleId(peopleId);
 
 
-        if(peopleConfig.getUsePhonePlusMe() == null){
+        if(peopleConfig.getUsePhonePlusMe() != null){
             config.setUsePhonePlusMe(peopleConfig.getUsePhonePlusMe());
         }
-        if(peopleConfig.getUseChatNoPlusMe() == null){
+        if(peopleConfig.getUseChatNoPlusMe() != null){
             config.setUseChatNoPlusMe(peopleConfig.getUseChatNoPlusMe());
         }
-        if(peopleConfig.getUseQrCodePlusMe() == null){
+        if(peopleConfig.getUseQrCodePlusMe() != null){
             config.setUseQrCodePlusMe(peopleConfig.getUseQrCodePlusMe());
         }
 
-        if(peopleConfig.getAddMeVerify() == null){
+        if(peopleConfig.getAddMeVerify() != null){
             config.setAddMeVerify(peopleConfig.getAddMeVerify());
         }
-        if(peopleConfig.getAllowTomeRecommendedGroup() == null){
+        if(peopleConfig.getAllowTomeRecommendedGroup() != null){
             config.setAllowTomeRecommendedGroup(peopleConfig.getAllowTomeRecommendedGroup());
         }
-        if(peopleConfig.getChatRecordCloudStore() == null){
+        if(peopleConfig.getChatRecordCloudStore() != null){
             config.setChatRecordCloudStore(peopleConfig.getChatRecordCloudStore());
         }
-        if(peopleConfig.getDynameicVideoPlayNet() == null){
+        if(peopleConfig.getDynameicVideoPlayNet() != null){
             config.setDynameicVideoPlayNet(peopleConfig.getDynameicVideoPlayNet());
         }
-        if(peopleConfig.getMessageNotifyShake() == null){
+        if(peopleConfig.getMessageNotifyShake() != null){
             config.setMessageNotifyShake(peopleConfig.getMessageNotifyVoice());
         }
-        if(peopleConfig.getMessageNotifyVoice() == null){
+        if(peopleConfig.getMessageNotifyVoice() != null){
             config.setMessageNotifyVoice(peopleConfig.getMessageNotifyVoice());
         }
 
