@@ -4,6 +4,8 @@ import org.flyants.chat.configuration.PageResult;
 import org.flyants.chat.domain.entity.platform.People;
 import org.flyants.chat.dto.app.PeopleInfoDto;
 import org.flyants.chat.dto.app.SettingPasswordDto;
+import org.flyants.chat.dto.app.SimplePeopleInfoDto;
+import org.flyants.chat.web.v1.platform.dto.LoginReq;
 
 import java.util.Optional;
 
@@ -15,11 +17,10 @@ import java.util.Optional;
 public interface PeopleService {
     Optional<People> findPeopleById(String peopleId);
 
-    Optional<String> loginByPhone(String phone);
+    Optional<String> login(LoginReq loginReq);
 
-    Optional<String> loginByPassword(String phone,String password);
 
-    Optional<People> findByPassword(String phone,String password);
+    Optional<People> findPeopleByPassword(String phone,String password);
 
     PageResult<People> findList(Integer page, Integer size, String searchBy, String keyWord);
 
@@ -36,4 +37,6 @@ public interface PeopleService {
     void updatePeopleInfo(String peopleId, PeopleInfoDto peopleInfoDto);
 
     void setPassword(String peopleId, SettingPasswordDto settingPassword);
+
+    PageResult<SimplePeopleInfoDto> listSearch(Integer page, Integer size, String peopleId, String word);
 }

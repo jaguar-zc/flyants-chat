@@ -99,7 +99,7 @@ public class AuthorizeCodeController {
         }
 
         if("0".equals(login)){//未登录
-            Optional<People> optional = peopleService.findByPassword(username, password);
+            Optional<People> optional = peopleService.findPeopleByPassword(username, password);
             People people = optional.orElseThrow(() -> new BusinessException("用户名密码错误"));
             ResourceUtils.setLoginPeople(people);
         }

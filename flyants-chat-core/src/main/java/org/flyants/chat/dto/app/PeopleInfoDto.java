@@ -29,5 +29,6 @@ public class PeopleInfoDto {
     private String city;
     private String introduction;
     private Integer peopleAssistCount;
+    private String messageUserId;
 
 }

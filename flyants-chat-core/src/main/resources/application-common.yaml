@@ -32,5 +32,6 @@ spring:
     serialization:
       write-dates-as-timestamps: true
 logging:
-  path: logs/chat.log
+  path: logs
+  file: flyantschat.log
   level: info

@@ -1,7 +1,7 @@
 logging:
   level:
     root: INFO
-    org.flyants.authorize: DEBUG
+    org.flyants.chat: INFO
     org.springframework.web: TRACE
 spring:
   datasource:

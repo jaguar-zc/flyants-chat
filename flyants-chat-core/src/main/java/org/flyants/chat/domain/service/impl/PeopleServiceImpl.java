@@ -1,4 +1,5 @@
 package org.flyants.chat.domain.service.impl;
+import java.util.Date;
 import org.flyants.chat.domain.entity.platform.LoginMethod.LoginType;
 import org.flyants.chat.domain.entity.platform.LoginMethod.LoginMethodStatus;
 
@@ -16,6 +17,8 @@ import org.flyants.chat.domain.service.PeopleService;
 import org.flyants.chat.domain.service.VerificationService;
 import org.flyants.chat.dto.app.PeopleInfoDto;
 import org.flyants.chat.dto.app.SettingPasswordDto;
+import org.flyants.chat.dto.app.SimplePeopleInfoDto;
+import org.flyants.chat.web.v1.platform.dto.LoginReq;
 import org.flyants.common.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,6 +28,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @Author zhangchao
@@ -38,7 +42,7 @@ public class PeopleServiceImpl implements PeopleService {
 
 
     @Autowired
-    OssObjectServie ossObjectServie;
+    private OssObjectServie ossObjectServie;
 
     @Autowired
     private PeopleRepository peopleRepository;
@@ -49,17 +53,17 @@ public class PeopleServiceImpl implements PeopleService {
     @Autowired
     private TokenRepository tokenRepository;
 
-
     @Autowired
     private MessageUserRepository messageUserRepository;
 
     @Autowired
-    PeopleIntroductionRepository peopleIntroductionRepository;
-    @Autowired
-    PeopleAssistRepository peopleAssistRepository;
+    private PeopleIntroductionRepository peopleIntroductionRepository;
 
     @Autowired
-    VerificationService verificationService;
+    private PeopleAssistRepository peopleAssistRepository;
+
+    @Autowired
+    private VerificationService verificationService;
 
 
     @Override
@@ -68,21 +72,24 @@ public class PeopleServiceImpl implements PeopleService {
     }
 
     @Override
-    public Optional<String> loginByPhone(String phone) {
-        Optional<LoginMethod> loginMethod = loginMethodRepository.findByTypeAndMark(LoginMethod.LoginType.PHONE, phone);
-        if (!loginMethod.isPresent()) {
-            throw new BusinessException("手机号不存在");
-        }
-        return getLoginToken(loginMethod);
-    }
+    public Optional<String> login(LoginReq loginReq) {
 
-    @Override
-    public Optional<String> loginByPassword(String phone, String password) {
-        Optional<LoginMethod> loginMethod = loginMethodRepository.findByTypeAndMark(LoginMethod.LoginType.PASSWORD, LoginMethod.buildPasswordMark(phone, password));
-        if (!loginMethod.isPresent()) {
-            throw new BusinessException("用户名或者密码错误");
+        if(loginReq.getMethod() == LoginType.PHONE){
+            verificationService.check(loginReq.getPhone(),loginReq.getMark());
+            Optional<LoginMethod> loginMethod = loginMethodRepository.findByTypeAndMark(LoginMethod.LoginType.PHONE, loginReq.getPhone());
+            if (!loginMethod.isPresent()) {
+                throw new BusinessException("手机号不存在");
+            }
+            return getLoginToken(loginMethod);
+        }else if(loginReq.getMethod() == LoginType.PASSWORD){
+            Optional<LoginMethod> loginMethod = loginMethodRepository.findByTypeAndMark(LoginMethod.LoginType.PASSWORD, LoginMethod.buildPasswordMark(loginReq.getPhone(), loginReq.getMark()));
+            if (!loginMethod.isPresent()) {
+                throw new BusinessException("用户名或者密码错误");
+            }
+            return getLoginToken(loginMethod);
         }
-        return getLoginToken(loginMethod);
+
+        throw new BusinessException("不支持的登录方式");
     }
 
     @Override
@@ -106,7 +113,7 @@ public class PeopleServiceImpl implements PeopleService {
     }
 
     @Override
-    public Optional<People> findByPassword(String phone, String password) {
+    public Optional<People> findPeopleByPassword(String phone, String password) {
         Optional<LoginMethod> loginMethod = loginMethodRepository.findByTypeAndMark(LoginMethod.LoginType.PASSWORD, LoginMethod.buildPasswordMark(phone, password));
         if (!loginMethod.isPresent()) {
             throw new BusinessException("用户名或者密码错误");
@@ -211,6 +218,8 @@ public class PeopleServiceImpl implements PeopleService {
         int peopleAssistCount = peopleAssistRepository.countByPeopleId(peopleId);
         peopleInfo.setPeopleAssistCount(peopleAssistCount);
 
+        MessageUser messageUser = messageUserRepository.findByPeopleId(peopleId);
+        peopleInfo.setMessageUserId(messageUser.getId());
         return peopleInfo;
     }
 
@@ -317,5 +326,23 @@ public class PeopleServiceImpl implements PeopleService {
             people.setSex(peopleInfoDto.getSex());
         }
         peopleRepository.saveAndFlush(people);
+    }
+
+
+    @Override
+    public PageResult<SimplePeopleInfoDto> listSearch(Integer page, Integer size, String peopleId, String word) {
+        PageRequest of = PageRequest.of(page - 1, size);
+        Specification specification = JpaSpecification.getSpecification(Arrays.asList("peopleNo","nickName","phone"), word);
+        Page<People> all = peopleRepository.findAll(specification, of);
+        List<SimplePeopleInfoDto> collect = all.getContent().stream().map(item -> {
+            SimplePeopleInfoDto simplePeopleInfoDto = new SimplePeopleInfoDto();
+            simplePeopleInfoDto.setId(item.getId());
+            simplePeopleInfoDto.setPeopleNo(item.getPeopleNo());
+            simplePeopleInfoDto.setEncodedPrincipal(item.getEncodedPrincipal());
+            simplePeopleInfoDto.setNickName(item.getNickName());
+            simplePeopleInfoDto.setLocation(String.format("%s %s %s", item.getCountry(), item.getProvince(), item.getCity()));
+            return simplePeopleInfoDto;
+        }).collect(Collectors.toList());
+        return new PageResult<>(all.getTotalElements(),collect);
     }
 }

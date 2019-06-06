@@ -31,5 +31,18 @@ public class JpaSpecification {
         };
     }
 
+    public static Specification getSpecification(List<String> searchBys, String keyWord){
+        return new Specification() {
+            @Override
+            public Predicate toPredicate(Root root, CriteriaQuery query, CriteriaBuilder cb) {
+                List<Predicate> pr = new ArrayList<>();
+                for (String searchBy : searchBys) {
+                    pr.add( cb.like(root.get(searchBy).as(String.class), "%" + keyWord + "%"));
+                }
+                return cb.or(pr.toArray(new Predicate[pr.size()]));
+            }
+        };
+    }
+
 
 }

@@ -36,21 +36,12 @@ public class AppLoginController {
     @PostMapping("/login")
     public ResponseData<Object> login(@Valid @RequestBody LoginReq loginReq) {
         log.info("login =>method:{} username:{},password:{} ", loginReq.getMethod(), loginReq.getPhone(),loginReq.getMark());
-
-        Optional<String> token = null;
-        if(loginReq.getMethod() == LoginMethod.LoginType.PHONE){
-            token = peopleService.loginByPhone(loginReq.getPhone());
-        }else if(loginReq.getMethod() == LoginMethod.LoginType.PASSWORD){
-            token = peopleService.loginByPassword(loginReq.getPhone(), loginReq.getMark());
-        }else {
-            throw new BusinessException("不支持的登录方式");
-        }
-
+        Optional<String> token = peopleService.login(loginReq);
         if (token.isPresent()) {
             log.info(token.get());
             return ResponseDataUtils.buildSuccess().addAttrs("token",token.get());
         } else {
-            throw new BusinessException("用户名密码不存在");
+            throw new BusinessException("用户名和密码不匹配");
         }
     }
 

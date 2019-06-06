@@ -1,19 +1,24 @@
 package org.flyants.chat.domain.service.impl;
+import org.flyants.chat.domain.message.MessageType;
+import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
 import org.flyants.chat.domain.ConversationType;
 import org.flyants.chat.domain.entity.platform.People;
 import org.flyants.chat.domain.entity.platform.message.Conversation;
 import org.flyants.chat.domain.entity.platform.message.ConversationUser;
+import org.flyants.chat.domain.entity.platform.message.Message;
 import org.flyants.chat.domain.entity.platform.message.MessageUser;
 import org.flyants.chat.domain.repository.ConversationRepository;
 import org.flyants.chat.domain.repository.ConversationUserRepository;
+import org.flyants.chat.domain.repository.MessageRepository;
 import org.flyants.chat.domain.repository.MessageUserRepository;
 import org.flyants.chat.domain.service.ConversationService;
 import org.flyants.chat.domain.service.OssObjectServie;
 import org.flyants.chat.domain.service.PeopleService;
 import org.flyants.chat.dto.app.ConversationListDto;
 import org.flyants.chat.dto.app.EditConversationDto;
+import org.flyants.chat.dto.app.MessageDto;
 import org.flyants.common.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,6 +44,9 @@ public class ConversationServiceImpl implements ConversationService {
 
     @Autowired
     MessageUserRepository messageUserRepository;
+
+    @Autowired
+    MessageRepository messageRepository;
 
     @Autowired
     PeopleService peopleService;
@@ -174,6 +182,16 @@ public class ConversationServiceImpl implements ConversationService {
             conversationListDto.setTop(item.getTop());
             conversationListDto.setDontDisturb(item.getDontDisturb());
             conversationListDto.setMessageUserId(item.getMessageUserId());
+            Message lastMessage = messageRepository.findFirstByConversationIdOrderBySendTimeDesc(item.getId());
+            if(lastMessage != null){
+                MessageDto messageDto = new MessageDto();
+                messageDto.setId(lastMessage.getId());
+                messageDto.setMessageType(lastMessage.getMessageType());
+                messageDto.setBody(lastMessage.getBody());
+                messageDto.setSendTime(lastMessage.getSendTime());
+                messageDto.setView(lastMessage.getView());
+                conversationListDto.setLastMessage(messageDto);
+            }
             return conversationListDto;
         }).collect(Collectors.toList());
 

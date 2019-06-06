@@ -21,5 +21,6 @@ public class ConversationListDto {
     private Integer top;//置顶
     private Integer dontDisturb;//免打扰
     private String messageUserId;//会话拥有者
+    private MessageDto lastMessage;//最后一条消息
 
 }

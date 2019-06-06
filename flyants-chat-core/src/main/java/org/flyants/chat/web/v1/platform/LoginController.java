@@ -35,7 +35,7 @@ public class LoginController {
     @PostMapping
     public ResponseData<Object> login(@RequestBody LoginReq loginReq) {
         log.info("username:{},password:{}", loginReq.getPhone(), loginReq.getMark());
-        Optional<String> people = peopleService.loginByPassword(loginReq.getPhone(), loginReq.getMark());
+        Optional<String> people = peopleService.login(loginReq);
         if (people.isPresent()) {
             log.info(people.get());
             return ResponseDataUtils.buildSuccess().addAttrs("token",people.get());
