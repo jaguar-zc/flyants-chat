@@ -50,7 +50,7 @@ public class AppFriendsController {
     @GetMapping("/getFriendsList")
     public List<MessageUserSimpleInfoDto> getFriendsList(){
         String peopleId = JWTManager.get();
-        return friendsService.getFriendsList();
+        return friendsService.getFriendsList(peopleId);
     }
 
 
