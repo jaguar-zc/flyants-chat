@@ -6,6 +6,7 @@ import org.flyants.chat.domain.ConversationType;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -41,6 +42,12 @@ public class Conversation {
 
     @Column
     private Integer dontDisturb;//免打扰
+
+    @Column
+    private Date createTime;//创建时间
+
+    @Column
+    private Date lastUpdateTime;//最后更新时间
 
     @Column
     private String messageUserId;//会话拥有者

@@ -4,6 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 import org.flyants.chat.domain.ConversationType;
 
+import javax.persistence.Column;
+import java.util.Date;
+
 /**
  * @Author zhangchao
  * @Date 2019/5/28 15:34
@@ -22,5 +25,7 @@ public class ConversationListDto {
     private Integer dontDisturb;//免打扰
     private String messageUserId;//会话拥有者
     private MessageDto lastMessage;//最后一条消息
+    private Date createTime;//创建时间
+    private Date lastUpdateTime;//最后更新时间
 
 }

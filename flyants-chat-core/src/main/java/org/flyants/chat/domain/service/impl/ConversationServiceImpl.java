@@ -74,6 +74,8 @@ public class ConversationServiceImpl implements ConversationService {
         conversation.setTop(0);
         conversation.setDontDisturb(0);
         conversation.setMessageUserId(slefMessageUserId);
+        conversation.setCreateTime(new Date());
+        conversation.setLastUpdateTime(new Date());
 
         conversationRepository.save(conversation);
 
@@ -99,6 +101,7 @@ public class ConversationServiceImpl implements ConversationService {
         if(conversationOptional.isPresent()){
             Conversation conversation = conversationOptional.get();
             conversation.setType(ConversationType.GROUP);
+            conversation.setLastUpdateTime(new Date());
 
             List<ConversationUser> conversationUserList = conversation.getConversationUserList();
 
