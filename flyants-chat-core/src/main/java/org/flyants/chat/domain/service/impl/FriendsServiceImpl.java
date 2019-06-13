@@ -77,7 +77,7 @@ public class FriendsServiceImpl implements FriendsService {
     public List<FriendsApplyRecordDto> getFriendsApplyList(String peopleId) {
         MessageUser messageUser = messageUserRepository.findByPeopleId(peopleId);
 
-        List<FriendsApplyRecord> list = friendsApplyRecordRepository.findAllByMessageUserIdAndOrderByApplyTimeDesc(messageUser.getId());
+        List<FriendsApplyRecord> list = friendsApplyRecordRepository.findAllByMessageUserIdOrderByApplyTimeDesc(messageUser.getId());
         List<FriendsApplyRecordDto> collect = list.stream().map(item -> {
 
             MessageUser applyMessageUser = messageUserRepository.findByPeopleId(item.getApplyMessageUserId());

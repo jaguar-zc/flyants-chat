@@ -12,5 +12,5 @@ import java.util.List;
  * @Version v1.0
  */
 public interface FriendsApplyRecordRepository  extends JpaRepository<FriendsApplyRecord,String>, JpaSpecificationExecutor {
-    List<FriendsApplyRecord> findAllByMessageUserIdAndOrderByApplyTimeDesc(String messageUserId);
+    List<FriendsApplyRecord> findAllByMessageUserIdOrderByApplyTimeDesc(String messageUserId);
 }
