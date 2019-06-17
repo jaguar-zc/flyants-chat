@@ -1,4 +1,6 @@
 package org.flyants.chat.domain.service.impl;
+import org.apache.catalina.authenticator.Constants;
+import org.flyants.chat.configuration.Constents;
 import org.flyants.chat.domain.message.MessageType;
 import java.util.Date;
 
@@ -180,7 +182,7 @@ public class ConversationServiceImpl implements ConversationService {
             conversationListDto.setId(item.getId());
             conversationListDto.setType(item.getType());
             conversationListDto.setName(item.getName());
-            conversationListDto.setIcon(item.getIcon());
+            conversationListDto.setIcon(item.getIcon() + Constents.IMAGE_STYLE_96);
             conversationListDto.setTags(item.getTags());
             conversationListDto.setTop(item.getTop());
             conversationListDto.setDontDisturb(item.getDontDisturb());

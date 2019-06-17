@@ -23,6 +23,7 @@ public class DynamicDto {
     private String encodedPrincipal;
     private String text;
     private List<String> images;//List<String>
+    private List<String> smallImages;//List<String>
     private String location;//位置
     private DynamicVisibility visibility = DynamicVisibility.ALL;
     private List<MessageUserSimpleInfoDto> assistPeopleList;//List<String>

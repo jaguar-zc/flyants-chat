@@ -1,5 +1,7 @@
 package org.flyants.chat.domain.service.impl;
 import java.util.Date;
+
+import org.flyants.chat.configuration.Constents;
 import org.flyants.chat.domain.entity.platform.message.FriendsApplyRecord.Status;
 
 import org.flyants.chat.domain.entity.platform.message.FriendsApplyRecord;
@@ -68,7 +70,7 @@ public class FriendsServiceImpl implements FriendsService {
 
         return messageFirends.stream().map(item ->{
             MessageUser friendsMessageUser = messageUserRepository.findByPeopleId(item.getFirendsMessageUserId());
-            return new MessageUserSimpleInfoDto(friendsMessageUser.getId(),friendsMessageUser.getNickName(),friendsMessageUser.getEncodedPrincipal());
+            return new MessageUserSimpleInfoDto(friendsMessageUser.getId(),friendsMessageUser.getNickName(),friendsMessageUser.getEncodedPrincipal() + Constents.IMAGE_STYLE_96);
         }).collect(Collectors.toList());
     }
 
@@ -86,7 +88,7 @@ public class FriendsServiceImpl implements FriendsService {
             record.setId(item.getId());
             record.setApplyMessageUserId(item.getApplyMessageUserId());
             record.setApplyMessageNickName(applyMessageUser.getNickName());
-            record.setApplyMessageEncodedPrincipal(applyMessageUser.getEncodedPrincipal());
+            record.setApplyMessageEncodedPrincipal(applyMessageUser.getEncodedPrincipal() + Constents.IMAGE_STYLE_96);
             record.setMessageUserId(item.getMessageUserId());
             record.setApplyTime(item.getApplyTime());
             record.setHandlerTime(item.getHandlerTime());

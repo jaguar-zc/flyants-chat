@@ -1,5 +1,6 @@
 package org.flyants.chat.domain.service.impl;
 
+import org.flyants.chat.configuration.Constents;
 import org.flyants.chat.configuration.PageResult;
 import org.flyants.chat.domain.entity.platform.People;
 import org.flyants.chat.domain.entity.platform.comments.CommentsType;
@@ -30,6 +31,8 @@ import java.util.stream.Collectors;
  */
 @Service
 public class DynamicServiceImpl implements DynamicService {
+
+
 
     @Autowired
     DynamicRepository dynamicRepository;
@@ -104,9 +107,9 @@ public class DynamicServiceImpl implements DynamicService {
             dynamicDto.setEncodedPrincipal(people.get().getEncodedPrincipal());
             dynamicDto.setText(item.getText());
             dynamicDto.setImages(Arrays.asList(item.getImages().split("@")));
+            dynamicDto.setSmallImages(dynamicDto.getImages().stream().map(str -> str + Constents.IMAGE_STYLE_SMALL).collect(Collectors.toList()));
             dynamicDto.setLocation(item.getLocation());
             dynamicDto.setVisibility(item.getVisibility());
-
 
             List<MessageUserSimpleInfoDto> collect1 = dynamicAssistRepository.findAllByDynamicId(item.getId())
                     .stream()
