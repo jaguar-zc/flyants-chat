@@ -11,6 +11,8 @@ spring:
     password: sa
     type: com.zaxxer.hikari.HikariDataSource
     platform: h2
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
   h2:
     console:
       settings:
