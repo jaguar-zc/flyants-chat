@@ -61,14 +61,12 @@ public class People {
     @Column
     private String city;
 
-    @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.REFRESH)
-    @JoinColumn(name = "people_id")
+    @JoinColumn(name="message_user_id", unique=true)
+    @OneToOne(fetch=FetchType.LAZY)
     private MessageUser messageUser;
 
     @OneToMany(mappedBy = "peopleId",fetch = FetchType.LAZY,cascade = CascadeType.REFRESH)
     private List<LoginMethod> loginMethodList = new ArrayList<>();
-
-
 
 
 
