@@ -88,7 +88,7 @@ public class FriendsServiceImpl implements FriendsService {
             record.setId(item.getId());
             record.setApplyMessageUserId(item.getApplyMessageUserId());
             record.setApplyMessageNickName(applyMessageUser.getNickName());
-            record.setApplyMessageEncodedPrincipal(applyMessageUser.getEncodedPrincipal() + Constents.IMAGE_STYLE_96);
+            record.setApplyMessageEncodedPrincipal(applyMessageUser.getEncodedPrincipal());
             record.setMessageUserId(item.getMessageUserId());
             record.setApplyTime(item.getApplyTime());
             record.setHandlerTime(item.getHandlerTime());

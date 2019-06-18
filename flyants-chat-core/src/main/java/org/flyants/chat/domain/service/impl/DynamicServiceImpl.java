@@ -107,7 +107,6 @@ public class DynamicServiceImpl implements DynamicService {
             dynamicDto.setEncodedPrincipal(people.get().getEncodedPrincipal()+ Constents.IMAGE_STYLE_SMALL);
             dynamicDto.setText(item.getText());
             dynamicDto.setImages(Arrays.asList(item.getImages().split("@")));
-            dynamicDto.setSmallImages(dynamicDto.getImages().stream().map(str -> str + Constents.IMAGE_STYLE_SMALL).collect(Collectors.toList()));
             dynamicDto.setLocation(item.getLocation());
             dynamicDto.setVisibility(item.getVisibility());
 

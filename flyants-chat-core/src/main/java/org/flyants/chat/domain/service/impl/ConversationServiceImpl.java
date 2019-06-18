@@ -182,7 +182,7 @@ public class ConversationServiceImpl implements ConversationService {
             conversationListDto.setId(item.getId());
             conversationListDto.setType(item.getType());
             conversationListDto.setName(item.getName());
-            conversationListDto.setIcon(item.getIcon() + Constents.IMAGE_STYLE_96);
+            conversationListDto.setIcon(item.getIcon());
             conversationListDto.setTags(item.getTags());
             conversationListDto.setTop(item.getTop());
             conversationListDto.setDontDisturb(item.getDontDisturb());
