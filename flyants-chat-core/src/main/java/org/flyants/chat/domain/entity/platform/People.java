@@ -61,8 +61,7 @@ public class People {
     @Column
     private String city;
 
-    @OneToOne
-    @JoinColumn(name="peopleId")
+    @OneToOne(mappedBy = "peopleId",fetch = FetchType.LAZY,cascade = CascadeType.REFRESH)
     private MessageUser messageUser;
 
     @OneToMany(mappedBy = "peopleId",fetch = FetchType.LAZY,cascade = CascadeType.REFRESH)
