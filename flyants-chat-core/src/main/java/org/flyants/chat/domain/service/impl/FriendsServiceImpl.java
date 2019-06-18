@@ -70,7 +70,7 @@ public class FriendsServiceImpl implements FriendsService {
 
         return messageFirends.stream().map(item ->{
             MessageUser friendsMessageUser = messageUserRepository.findByPeopleId(item.getFirendsMessageUserId());
-            return new MessageUserSimpleInfoDto(friendsMessageUser.getId(),friendsMessageUser.getNickName(),friendsMessageUser.getEncodedPrincipal() + Constents.IMAGE_STYLE_96);
+            return new MessageUserSimpleInfoDto(friendsMessageUser.getId(),friendsMessageUser.getNickName(),friendsMessageUser.getEncodedPrincipal() );
         }).collect(Collectors.toList());
     }
 
