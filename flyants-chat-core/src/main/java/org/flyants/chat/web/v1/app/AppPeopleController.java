@@ -2,16 +2,20 @@ package org.flyants.chat.web.v1.app;
 
 import lombok.extern.slf4j.Slf4j;
 import org.flyants.chat.configuration.PageResult;
+import org.flyants.chat.domain.entity.platform.People;
 import org.flyants.chat.domain.service.PeopleService;
 import org.flyants.chat.dto.app.DynamicDto;
 import org.flyants.chat.dto.app.PeopleInfoDto;
 import org.flyants.chat.dto.app.SettingPasswordDto;
 import org.flyants.chat.dto.app.SimplePeopleInfoDto;
 import org.flyants.chat.utils.JWTManager;
+import org.flyants.chat.utils.ResponseDataUtils;
+import org.flyants.common.ResponseData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 /**
  * @Author zhangchao
@@ -55,6 +59,15 @@ public class AppPeopleController {
     public void assistPeople(String assistPeopleId){
         String peopleId = JWTManager.get();
         peopleService.assistPeople(peopleId,assistPeopleId);
+    }
+
+    @GetMapping("/{peopleId}/info")
+    public ResponseData<People> getPeople(@PathVariable("peopleId") String peopleId){
+        Optional<People> people = peopleService.findPeopleById(peopleId);
+        if(people.isPresent()){
+            return ResponseDataUtils.buildSuccess(people.get());
+        }
+        return ResponseDataUtils.buildError("用户不存在");
     }
 
     @GetMapping("/list/search")

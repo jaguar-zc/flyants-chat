@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.flyants.chat.domain.Language;
 import org.flyants.chat.domain.entity.PeopleSex;
+import org.flyants.chat.domain.entity.platform.message.MessageUser;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -59,6 +60,10 @@ public class People {
 
     @Column
     private String city;
+
+    @OneToOne
+    @JoinColumn(name="peopleId")
+    private MessageUser messageUser;
 
     @OneToMany(mappedBy = "peopleId",fetch = FetchType.LAZY,cascade = CascadeType.REFRESH)
     private List<LoginMethod> loginMethodList = new ArrayList<>();
