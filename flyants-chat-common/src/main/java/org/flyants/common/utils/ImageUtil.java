@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
  */
 public class ImageUtil {
     public static void main(String[] args) throws IOException {
-        String name = "王火鸡发";
+        String name = "王火";
         generateImg(name, name);
     }
 
@@ -33,8 +33,8 @@ public class ImageUtil {
 
     public static void generateImg(String name, OutputStream output)
             throws IOException {
-        int width = 100;
-        int height = 100;
+        int width = 200;
+        int height = 200;
         int nameLen = name.length();
         String nameWritten ;
         //如果用户输入的姓名少于等于2个字符，不用截取
@@ -73,7 +73,7 @@ public class ImageUtil {
         Font font = null;
         //两个字及以上
         if(nameWritten.length() >= 2) {
-            font = new Font("微软雅黑", Font.PLAIN, 30);
+            font = new Font("微软雅黑", Font.PLAIN, 50);
             g2.setFont(font);
 
             String firstWritten = nameWritten.substring(0, 1);
@@ -81,11 +81,11 @@ public class ImageUtil {
 
             //两个中文 如 言曌
             if (isChinese(firstWritten) && isChinese(secondWritten)) {
-                g2.drawString(nameWritten, 20, 60);
+                g2.drawString(nameWritten, width/2-50, height/2);
             }
             //首中次英 如 罗Q
             else if (isChinese(firstWritten) && !isChinese(secondWritten)) {
-                g2.drawString(nameWritten, 27, 60);
+                g2.drawString(nameWritten, width/2-50, height/2);
 
                 //首英,如 AB
             } else {
@@ -97,20 +97,20 @@ public class ImageUtil {
         if(nameWritten.length() ==1) {
             //中文
             if(isChinese(nameWritten)) {
-                font = new Font("微软雅黑", Font.PLAIN, 50);
+                font = new Font("微软雅黑", Font.PLAIN, 60);
                 g2.setFont(font);
-                g2.drawString(nameWritten, 25, 70);
+                g2.drawString(nameWritten, width/2-20, height/2+20);
             }
             //英文
             else {
                 font = new Font("微软雅黑", Font.PLAIN, 55);
                 g2.setFont(font);
-                g2.drawString(nameWritten.toUpperCase(), 33, 67);
+                g2.drawString(nameWritten.toUpperCase(), width/2-20, height/2+20);
             }
 
         }
 
-        BufferedImage rounded = makeRoundedCorner(bi, 99);
+        BufferedImage rounded = makeRoundedCorner(bi, 200);
         ImageIO.write(rounded, "png", output);
     }
 
