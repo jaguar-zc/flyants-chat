@@ -117,7 +117,7 @@ public class MessageServiceImpl implements MessageService {
 
 
         //todo 要删除的
-        if(peopleSimpleDto.getEncodedPrincipal().contains("-")){
+        if(peopleSimpleDto.getEncodedPrincipal().contains("@")){
             String path = ossObjectServie.generateIcon("headimg", peopleSimpleDto.getNickName());
             messageUser.setEncodedPrincipal(path);
             messageUserRepository.saveAndFlush(messageUser);

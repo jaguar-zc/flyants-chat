@@ -199,7 +199,7 @@ public class ConversationServiceImpl implements ConversationService {
             }
 
             //todo 要删除的
-            if(item.getIcon().contains("-")){
+            if(item.getIcon().contains("@")){
                 String path = ossObjectServie.generateIcon("conversation", item.getName());
                 item.setIcon(path);
                 conversationRepository.saveAndFlush(item);
