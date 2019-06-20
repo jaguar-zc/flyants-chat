@@ -1,6 +1,7 @@
 package org.flyants.chat.domain.service.impl;
 
 import org.flyants.chat.configuration.PageResult;
+import org.flyants.chat.domain.entity.platform.People;
 import org.flyants.chat.domain.entity.platform.message.Conversation;
 import org.flyants.chat.domain.entity.platform.message.Message;
 import org.flyants.chat.domain.entity.platform.message.MessageUser;
@@ -10,6 +11,7 @@ import org.flyants.chat.domain.repository.MessageRepository;
 import org.flyants.chat.domain.repository.MessageUserRepository;
 import org.flyants.chat.domain.repository.PeopleRepository;
 import org.flyants.chat.domain.service.MessageService;
+import org.flyants.chat.domain.service.OssObjectServie;
 import org.flyants.chat.dto.app.MessageUserSimpleInfoDto;
 import org.flyants.chat.dto.app.PublishMessageDto;
 import org.flyants.common.exception.BusinessException;
@@ -48,6 +50,10 @@ public class MessageServiceImpl implements MessageService {
 
     @Autowired
     MessageUserRepository messageUserRepository;
+
+
+    @Autowired
+    OssObjectServie ossObjectServie;
 
     @Override
     public void publishMessage(String peopleId, PublishMessageDto publishMessage) {
@@ -108,6 +114,21 @@ public class MessageServiceImpl implements MessageService {
         peopleSimpleDto.setId(messageUser.getId());
         peopleSimpleDto.setNickName(messageUser.getNickName());
         peopleSimpleDto.setEncodedPrincipal(messageUser.getEncodedPrincipal());
+
+
+        //todo 要删除的
+        if(peopleSimpleDto.getEncodedPrincipal().contains("-")){
+            String path = ossObjectServie.generateIcon("headimg", peopleSimpleDto.getNickName());
+            messageUser.setEncodedPrincipal(path);
+            messageUserRepository.saveAndFlush(messageUser);
+            Optional<People> optionalPeople = peopleRepository.findById(messageUser.getPeopleId());
+            People people = optionalPeople.get();
+            people.setEncodedPrincipal(path);
+            peopleRepository.saveAndFlush(people);
+        }
+
+
+
         return peopleSimpleDto;
     }
 }

@@ -197,6 +197,14 @@ public class ConversationServiceImpl implements ConversationService {
                 messageDto.setView(lastMessage.getView());
                 conversationListDto.setLastMessage(messageDto);
             }
+
+            //todo 要删除的
+            if(item.getIcon().contains("-")){
+                String path = ossObjectServie.generateIcon("conversation", item.getName());
+                item.setIcon(path);
+                conversationRepository.saveAndFlush(item);
+            }
+
             return conversationListDto;
         }).collect(Collectors.toList());
 
