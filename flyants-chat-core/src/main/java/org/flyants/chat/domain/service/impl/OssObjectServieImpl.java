@@ -32,7 +32,7 @@ public class OssObjectServieImpl implements OssObjectServie {
             prefix = prefix_;
         }
 
-        String imgName = prefix + "/" + UUID.randomUUID().toString() + ".jpg";
+        String imgName = prefix + "/" + UUID.randomUUID().toString().replace("-","") + ".jpg";
         try {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             ImageUtil.generateImg(name, byteArrayOutputStream);
