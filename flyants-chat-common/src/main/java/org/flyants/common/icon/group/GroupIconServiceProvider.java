@@ -27,22 +27,24 @@ public class GroupIconServiceProvider implements IconServiceProvider<List<String
     private static final int PIC_WIDTH = 400; // 这是画板的宽高
     private static final int PIC_HEIGHT = 400; // 这是画板的高度
 
-//    public static void main(String[] args) throws IOException {
-//        String destPath = "/opt/";
-//        List<String> sourcePics = new ArrayList<>();
-//        sourcePics.add("https://flyants.oss-cn-shanghai.aliyuncs.com/headimg/20f75e41469d435c9a6f36db63ccab22.jpg");
-//        sourcePics.add("https://flyants.oss-cn-shanghai.aliyuncs.com/headimg/210500fa2d6a4239b0f399aa8a6cad14.jpg");
-//        sourcePics.add("https://flyants.oss-cn-shanghai.aliyuncs.com/headimg/48edaf2dd174459d94d8a81fef085049.jpg");
-//        sourcePics.add("https://flyants.oss-cn-shanghai.aliyuncs.com/headimg/a608241fb2a842d79c5c0593443c8582.jpg");
-//        sourcePics.add("https://flyants.oss-cn-shanghai.aliyuncs.com/headimg/a608241fb2a842d79c5c0593443c8582.jpg");
-//        sourcePics.add("https://flyants.oss-cn-shanghai.aliyuncs.com/headimg/a608241fb2a842d79c5c0593443c8582.jpg");
-//        sourcePics.add("https://flyants.oss-cn-shanghai.aliyuncs.com/headimg/a608241fb2a842d79c5c0593443c8582.jpg");
-//        sourcePics.add("https://flyants.oss-cn-shanghai.aliyuncs.com/headimg/a608241fb2a842d79c5c0593443c8582.jpg");
-//        sourcePics.add("https://flyants.oss-cn-shanghai.aliyuncs.com/headimg/a608241fb2a842d79c5c0593443c8582.jpg");
-//        for(int i = 1; i <= sourcePics.size(); i++){
-//            getGroupAvatar(sourcePics.subList(0, i), destPath + "out" + i + ".jpg");
-//        }
-//    }
+    public static void main(String[] args) throws IOException {
+        GroupIconServiceProvider provider = new GroupIconServiceProvider();
+        String destPath = "/opt/";
+        List<String> sourcePics = new ArrayList<>();
+        sourcePics.add("https://flyants.oss-cn-shanghai.aliyuncs.com/headimg/02a7ebddc4a94d04abeaec642394297b.jpg");
+        sourcePics.add("https://flyants.oss-cn-shanghai.aliyuncs.com/headimg/1f4b6b59608c41478885290199f90078.jpg");
+        sourcePics.add("https://flyants.oss-cn-shanghai.aliyuncs.com/headimg/72c28ff0e2ad4e06a09d02b40b877e48.jpg");
+        sourcePics.add("https://flyants.oss-cn-shanghai.aliyuncs.com/headimg/e75b706f133b421287ca579996bc030a.jpg");
+        sourcePics.add("https://flyants.oss-cn-shanghai.aliyuncs.com/headimg/e75b706f133b421287ca579996bc030a.jpg");
+        sourcePics.add("https://flyants.oss-cn-shanghai.aliyuncs.com/headimg/e75b706f133b421287ca579996bc030a.jpg");
+        sourcePics.add("https://flyants.oss-cn-shanghai.aliyuncs.com/headimg/e75b706f133b421287ca579996bc030a.jpg");
+        sourcePics.add("https://flyants.oss-cn-shanghai.aliyuncs.com/headimg/e75b706f133b421287ca579996bc030a.jpg");
+        sourcePics.add("https://flyants.oss-cn-shanghai.aliyuncs.com/headimg/e75b706f133b421287ca579996bc030a.jpg");
+        sourcePics.add("https://flyants.oss-cn-shanghai.aliyuncs.com/headimg/e75b706f133b421287ca579996bc030a.jpg");
+        for(int i = 1; i <= sourcePics.size(); i++){
+            provider.generate(sourcePics.subList(0, i), destPath + "out" + i + ".jpg");
+        }
+    }
 
     @Override
     public void generate(List<String> userAvatars, OutputStream out) throws IOException {

@@ -1,6 +1,8 @@
 package org.flyants.common.icon.user;
 
 import org.flyants.common.icon.IconServiceProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -21,6 +23,8 @@ import java.util.regex.Pattern;
  */
 public class UserIconServiceProvider implements IconServiceProvider<String> {
 
+    Logger logger = LoggerFactory.getLogger(getClass());
+
 
     public static void main(String[] args) throws IOException {
         UserIconServiceProvider userIconServiceProvider = new UserIconServiceProvider();
@@ -39,6 +43,7 @@ public class UserIconServiceProvider implements IconServiceProvider<String> {
     public void generate(String name, OutputStream output)  throws IOException{
         int width = 500;
         int height = 500;
+        logger.info("name:{}",name);
         int nameLen = name.length();
         String nameWritten ;
         //如果用户输入的姓名少于等于2个字符，不用截取
@@ -55,7 +60,7 @@ public class UserIconServiceProvider implements IconServiceProvider<String> {
                 nameWritten = name.substring(0, 2).toUpperCase();
             }
         }
-
+        logger.info("nameWritten:{}",nameWritten);
 
 //        String filename = "D:/opt" + File.separator + outputName + ".jpg";
 //        File file = new File(filename);
