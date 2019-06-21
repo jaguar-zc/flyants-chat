@@ -1,6 +1,7 @@
 package org.flyants.chat.web.v1.app;
 
 import lombok.extern.slf4j.Slf4j;
+import org.flyants.chat.domain.entity.platform.message.Conversation;
 import org.flyants.chat.domain.service.ConversationService;
 import org.flyants.chat.dto.app.ConversationListDto;
 import org.flyants.chat.dto.app.CreateConversationDto;
@@ -53,6 +54,12 @@ public class AppConversationController {
     public List<ConversationListDto> list(){
         String peopleId = JWTManager.get();
         return conversationService.list(peopleId);
+    }
+
+    @GetMapping("/getConversation")
+    public Conversation getConversation(@RequestParam("conversationId") String conversationId){
+        String peopleId = JWTManager.get();
+        return conversationService.getConversation(conversationId);
     }
 
 }

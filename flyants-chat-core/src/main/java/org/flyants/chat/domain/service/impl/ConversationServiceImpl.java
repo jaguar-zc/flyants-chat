@@ -196,24 +196,6 @@ public class ConversationServiceImpl implements ConversationService {
 
 
         conversationList.stream().forEach(item->{
-
-            if(item.getType() == ConversationType.GROUP){
-                //todo 要删除的
-                if(item.getIcon().contains("@")){
-                    Conversation conversation = item;
-                    List<String> userAvatars = conversation.getConversationUserList().stream().map(citem -> citem.getMessageUserId())
-                            .map(id -> messageUserRepository.findById(id))
-                            .map(citem -> citem.get())
-                            .map(citem -> citem.getPeopleId())
-                            .map(id -> peopleService.findPeopleById(id).get())
-                            .map(p ->  p.getEncodedPrincipal() )
-                            .collect(Collectors.toList());
-                    String icon = ossObjectServie.generateGroupIcon("conversation",userAvatars);
-                    item.setIcon(icon);
-                    conversationRepository.saveAndFlush(item);
-                }
-            }
-
             if(item.getType() == ConversationType.SINGLE){
                 List<ConversationUser> conversationUserList = item.getConversationUserList();
                 //拉对方的头像
@@ -294,8 +276,30 @@ public class ConversationServiceImpl implements ConversationService {
         if(editConversationDto.getDontDisturb() != null){
             conversation.setDontDisturb(editConversationDto.getDontDisturb());
         }
-
         conversationRepository.saveAndFlush(conversation);
+    }
 
+
+    @Override
+    public Conversation getConversation(String conversationId) {
+        Optional<Conversation> optionalConversation = conversationRepository.findById(conversationId);
+        Conversation item = optionalConversation.get();
+        if(item.getType() == ConversationType.GROUP){
+            //todo 要删除的
+            if(item.getIcon().contains("@")){
+                Conversation conversation = item;
+                List<String> userAvatars = conversation.getConversationUserList().stream().map(citem -> citem.getMessageUserId())
+                        .map(id -> messageUserRepository.findById(id))
+                        .map(citem -> citem.get())
+                        .map(citem -> citem.getPeopleId())
+                        .map(id -> peopleService.findPeopleById(id).get())
+                        .map(p ->  p.getEncodedPrincipal() )
+                        .collect(Collectors.toList());
+                String icon = ossObjectServie.generateGroupIcon("conversation",userAvatars);
+                item.setIcon(icon);
+                conversationRepository.saveAndFlush(item);
+            }
+        }
+        return item;
     }
 }
