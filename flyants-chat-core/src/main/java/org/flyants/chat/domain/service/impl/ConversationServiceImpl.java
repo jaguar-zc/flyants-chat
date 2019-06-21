@@ -162,9 +162,7 @@ public class ConversationServiceImpl implements ConversationService {
         String slefMessageUserId = slefMessageUser.getId();
         List<String> conversationIds = conversationUserRepository.findAllByMessageUserId(slefMessageUserId).stream().map(i -> i.getConversationId()).collect(Collectors.toList());
 
-
         List<Conversation> conversationList = conversationRepository.findAllById(conversationIds);
-
         conversationList.stream().forEach(item ->{
             List<ConversationUser> conversationUserList = item.getConversationUserList();
             //拉对方的头像
@@ -174,23 +172,29 @@ public class ConversationServiceImpl implements ConversationService {
                     .map(id -> messageUserRepository.findById(id))
                     .map(mu -> peopleService.findPeopleById(mu.get().getPeopleId()).get()).findFirst();
 
+
+            conversationUserList.stream().map(i->i.getMessageUserId())
+                    .map(i -> messageUserRepository.findById(i).get().getPeopleId())
+                    .map(i -> peopleService.findPeopleById(i).get())
+                    .forEach(people ->{
+                        //todo 要删除的
+                        if(people.getEncodedPrincipal().contains("@")){
+                            String path = ossObjectServie.generateUserIcon("headimg", people.getNickName());
+                            people.setEncodedPrincipal(path);
+                            PeopleInfoDto peopleInfoDto = new PeopleInfoDto();
+                            peopleInfoDto.setEncodedPrincipal(path);
+                            peopleService.updatePeopleInfo(people.getId(),peopleInfoDto);
+
+                            MessageUser messageUser = messageUserRepository.findByPeopleId(people.getId());
+                            messageUser.setEncodedPrincipal(path);
+                            messageUserRepository.saveAndFlush(messageUser);
+                        }
+                    });
+
             if(optionalPeople.isPresent()){
                 People people = optionalPeople.get();
                 item.setName(people.getNickName());
                 item.setIcon(people.getEncodedPrincipal());
-
-                //todo 要删除的
-                if(people.getEncodedPrincipal().contains("@")){
-                    String path = ossObjectServie.generateUserIcon("headimg", people.getNickName());
-                    people.setEncodedPrincipal(path);
-                    PeopleInfoDto peopleInfoDto = new PeopleInfoDto();
-                    peopleInfoDto.setEncodedPrincipal(path);
-                    peopleService.updatePeopleInfo(people.getId(),peopleInfoDto);
-
-                    MessageUser messageUser = messageUserRepository.findByPeopleId(people.getId());
-                    messageUser.setEncodedPrincipal(path);
-                    messageUserRepository.saveAndFlush(messageUser);
-                }
             }
         });
 
