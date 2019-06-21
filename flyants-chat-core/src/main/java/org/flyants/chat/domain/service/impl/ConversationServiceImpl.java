@@ -2,6 +2,8 @@ package org.flyants.chat.domain.service.impl;
 import org.apache.catalina.authenticator.Constants;
 import org.flyants.chat.configuration.Constents;
 import org.flyants.chat.domain.message.MessageType;
+
+import java.util.ArrayList;
 import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
@@ -107,21 +109,25 @@ public class ConversationServiceImpl implements ConversationService {
 
             List<ConversationUser> conversationUserList = conversation.getConversationUserList();
 
+            List<String> userAvatars = new ArrayList<>();
 
             List<String> collect = conversationUserList.stream().map(item -> item.getMessageUserId())
                     .map(id -> messageUserRepository.findById(id))
                     .map(item -> item.get())
                     .map(item -> item.getPeopleId())
-                    .map(id -> peopleService.findPeopleById(id).get()).map(p -> p.getNickName()).collect(Collectors.toList());
+                    .map(id -> peopleService.findPeopleById(id).get())
+                    .map(p -> {
+                        userAvatars.add(p.getEncodedPrincipal());
+                        return p.getNickName();
+                    })
+                    .collect(Collectors.toList());
 
             String groupName = String.join("@", collect);
             if(groupName.length() > 20){
                 groupName = groupName.substring(0,20);
             }
 
-
-            String icon = ossObjectServie.generateIcon("conversation",groupName);
-
+            String icon = ossObjectServie.generateGroupIcon("conversation",userAvatars);
             conversation.setIcon(icon);
             conversation.setName(groupName);
             conversationRepository.saveAndFlush(conversation);
@@ -200,9 +206,21 @@ public class ConversationServiceImpl implements ConversationService {
 
             //todo 要删除的
             if(item.getIcon().contains("@")){
-                String path = ossObjectServie.generateIcon("conversation", item.getName());
-                item.setIcon(path);
-                conversationRepository.saveAndFlush(item);
+                Optional<Conversation> conversationOptional = conversationRepository.findById(conversationListDto.getId());
+                if (conversationOptional.isPresent()) {
+                    Conversation conversation = conversationOptional.get();
+
+                    List<String> userAvatars = conversation.getConversationUserList().stream().map(citem -> citem.getMessageUserId())
+                            .map(id -> messageUserRepository.findById(id))
+                            .map(citem -> citem.get())
+                            .map(citem -> citem.getPeopleId())
+                            .map(id -> peopleService.findPeopleById(id).get())
+                            .map(p ->  p.getEncodedPrincipal() )
+                            .collect(Collectors.toList());
+                    String icon = ossObjectServie.generateGroupIcon("conversation",userAvatars);
+                    item.setIcon(icon);
+                    conversationRepository.saveAndFlush(item);
+                }
             }
 
             return conversationListDto;

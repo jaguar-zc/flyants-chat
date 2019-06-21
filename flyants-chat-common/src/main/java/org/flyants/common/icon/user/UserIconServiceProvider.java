@@ -1,10 +1,13 @@
-package org.flyants.common.utils;
+package org.flyants.common.icon.user;
+
+import org.flyants.common.icon.IconServiceProvider;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -14,25 +17,22 @@ import java.util.regex.Pattern;
  * @Date 2019/5/23 17:26
  * @Version v1.0
  */
-public class ImageUtil {
-    public static void main(String[] args) throws IOException {
-        String name = "王火";
-        generateImg(name, name);
-    }
+public class UserIconServiceProvider implements IconServiceProvider<String> {
+//    public static void main(String[] args) throws IOException {
+//        String name = "王火";
+//        generateImg(name, name);
+//    }
+
+//    public void generateImg(String name, String outputName) throws IOException{
+//        String filename = "D:/opt" + File.separator + outputName + ".jpg";
+//        File file = new File(filename);
+//        FileOutputStream fileOutputStream = new FileOutputStream(file);
+//        generateImg(name,fileOutputStream);
+//    }
 
 
-    public static void generateImg(String name, String outputName) throws IOException{
-        String filename = "D:/opt" + File.separator + outputName + ".jpg";
-        File file = new File(filename);
-        FileOutputStream fileOutputStream = new FileOutputStream(file);
-        generateImg(name,fileOutputStream);
-    }
-
-
-
-
-    public static void generateImg(String name, OutputStream output)
-            throws IOException {
+    @Override
+    public void generate(String name, OutputStream output)  throws IOException{
         int width = 200;
         int height = 200;
         int nameLen = name.length();
@@ -110,7 +110,7 @@ public class ImageUtil {
 
         }
 
-        BufferedImage rounded = makeRoundedCorner(bi, 200);
+        BufferedImage rounded = makeRoundedCorner(bi, 0);
         ImageIO.write(rounded, "png", output);
     }
 
@@ -120,7 +120,7 @@ public class ImageUtil {
      * @param str
      * @return
      */
-    public static boolean isChinese(String str) {
+    public  boolean isChinese(String str) {
         String regEx = "[\\u4e00-\\u9fa5]+";
         Pattern p = Pattern.compile(regEx);
         Matcher m = p.matcher(str);
@@ -134,7 +134,7 @@ public class ImageUtil {
      * 获得随机颜色
      * @return
      */
-    private static Color getRandomColor() {
+    private  Color getRandomColor() {
         String[] beautifulColors =
                 new String[]{"232,221,203", "205,179,128", "3,101,100", "3,54,73", "3,22,52",
                         "237,222,139", "251,178,23", "96,143,159", "1,77,103", "254,67,101", "252,157,154",
@@ -166,7 +166,7 @@ public class ImageUtil {
      * @param cornerRadius
      * @return
      */
-    public static BufferedImage makeRoundedCorner(BufferedImage image, int cornerRadius) {
+    public  BufferedImage makeRoundedCorner(BufferedImage image, int cornerRadius) {
         int w = image.getWidth();
         int h = image.getHeight();
         BufferedImage output = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
