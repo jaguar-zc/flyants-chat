@@ -172,7 +172,7 @@ public class PeopleServiceImpl implements PeopleService {
         loginMethodRepository.save(phoneLogin);
         loginMethodRepository.save(pwdLogin);
 
-        String path = ossObjectServie.generateIcon("headimg", nickName);
+        String path = ossObjectServie.generateUserIcon("headimg", nickName);
         people.setEncodedPrincipal(path);
         peopleRepository.saveAndFlush(people);
 

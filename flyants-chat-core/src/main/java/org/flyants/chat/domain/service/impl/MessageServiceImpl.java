@@ -116,16 +116,6 @@ public class MessageServiceImpl implements MessageService {
         peopleSimpleDto.setEncodedPrincipal(messageUser.getEncodedPrincipal());
 
 
-        //todo 要删除的
-        if(peopleSimpleDto.getEncodedPrincipal().contains("-")){
-            String path = ossObjectServie.generateIcon("headimg", peopleSimpleDto.getNickName());
-            messageUser.setEncodedPrincipal(path);
-            messageUserRepository.saveAndFlush(messageUser);
-            Optional<People> optionalPeople = peopleRepository.findById(messageUser.getPeopleId());
-            People people = optionalPeople.get();
-            people.setEncodedPrincipal(path);
-            peopleRepository.saveAndFlush(people);
-        }
 
 
 

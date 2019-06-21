@@ -15,7 +15,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @Version v1.0
  */
 @Configuration
-public class WebMvcConfig implements WebMvcConfigurer {
+public class WebMvcConfiguration implements WebMvcConfigurer {
 
 
     @Autowired
@@ -31,9 +31,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
     }
 
 
-    @Bean
-    public AliyunOssObjectManagerFactory getAliyunOssObjectManagerFactory(){
-        return new AliyunOssObjectManagerFactory();
-    }
+
 
 }

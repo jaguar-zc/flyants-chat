@@ -1,10 +1,17 @@
-package org.flyants.common.utils;
+package org.flyants.common.icon.user;
+
+import org.flyants.common.icon.IconServiceProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -14,27 +21,29 @@ import java.util.regex.Pattern;
  * @Date 2019/5/23 17:26
  * @Version v1.0
  */
-public class ImageUtil {
-    public static void main(String[] args) throws IOException {
-        String name = "王火";
-        generateImg(name, name);
-    }
+public class UserIconServiceProvider implements IconServiceProvider<String> {
+
+    Logger logger = LoggerFactory.getLogger(getClass());
 
 
-    public static void generateImg(String name, String outputName) throws IOException{
+//    public static void main(String[] args) throws IOException {
+//        UserIconServiceProvider userIconServiceProvider = new UserIconServiceProvider();
+//        String name = "王王";
+//        userIconServiceProvider.generateImg(name,name);
+//    }
+
+    public void generateImg(String name, String outputName) throws IOException{
         String filename = "D:/opt" + File.separator + outputName + ".jpg";
         File file = new File(filename);
-        FileOutputStream fileOutputStream = new FileOutputStream(file);
-        generateImg(name,fileOutputStream);
+        generate(name,new FileOutputStream(file));
     }
 
 
-
-
-    public static void generateImg(String name, OutputStream output)
-            throws IOException {
+    @Override
+    public void generate(String name, OutputStream output)  throws IOException{
         int width = 500;
         int height = 500;
+        logger.info("name:{}",name);
         int nameLen = name.length();
         String nameWritten ;
         //如果用户输入的姓名少于等于2个字符，不用截取
@@ -51,7 +60,7 @@ public class ImageUtil {
                 nameWritten = name.substring(0, 2).toUpperCase();
             }
         }
-
+        logger.info("nameWritten:{}",nameWritten);
 
 //        String filename = "D:/opt" + File.separator + outputName + ".jpg";
 //        File file = new File(filename);
@@ -73,7 +82,9 @@ public class ImageUtil {
         Font font = null;
         //两个字及以上
         if(nameWritten.length() >= 2) {
-            font = new Font("微软雅黑", Font.PLAIN, 120);
+            int fontSize = 200;
+
+            font = new Font("微软雅黑", Font.PLAIN, fontSize);
             g2.setFont(font);
 
             String firstWritten = nameWritten.substring(0, 1);
@@ -81,11 +92,11 @@ public class ImageUtil {
 
             //两个中文 如 言曌
             if (isChinese(firstWritten) && isChinese(secondWritten)) {
-                g2.drawString(nameWritten, width/2-100, height/2);
+                g2.drawString(nameWritten, width/2-fontSize, height/2+(fontSize/3));
             }
             //首中次英 如 罗Q
             else if (isChinese(firstWritten) && !isChinese(secondWritten)) {
-                g2.drawString(nameWritten, width/2-100, height/2);
+                g2.drawString(nameWritten, width/2-fontSize, height/2+(fontSize/3));
 
                 //首英,如 AB
             } else {
@@ -95,22 +106,23 @@ public class ImageUtil {
         }
         //一个字
         if(nameWritten.length() ==1) {
+            int fontSize = 300;
             //中文
             if(isChinese(nameWritten)) {
-                font = new Font("微软雅黑", Font.PLAIN, 120);
+                font = new Font("微软雅黑", Font.PLAIN, fontSize);
                 g2.setFont(font);
-                g2.drawString(nameWritten, width/2-60, height/2+20);
+                g2.drawString(nameWritten, width/2-(fontSize/2), height/2+(fontSize/3));
             }
             //英文
             else {
-                font = new Font("微软雅黑", Font.PLAIN, 120);
+                font = new Font("微软雅黑", Font.PLAIN, fontSize);
                 g2.setFont(font);
-                g2.drawString(nameWritten.toUpperCase(), width/2-60, height/2+20);
+                g2.drawString(nameWritten.toUpperCase(), width/2-(fontSize/2), height/2+(fontSize/3));
             }
 
         }
 
-        BufferedImage rounded = makeRoundedCorner(bi, 500);
+        BufferedImage rounded = makeRoundedCorner(bi, 0);
         ImageIO.write(rounded, "png", output);
     }
 
@@ -120,7 +132,7 @@ public class ImageUtil {
      * @param str
      * @return
      */
-    public static boolean isChinese(String str) {
+    public  boolean isChinese(String str) {
         String regEx = "[\\u4e00-\\u9fa5]+";
         Pattern p = Pattern.compile(regEx);
         Matcher m = p.matcher(str);
@@ -134,7 +146,7 @@ public class ImageUtil {
      * 获得随机颜色
      * @return
      */
-    private static Color getRandomColor() {
+    private  Color getRandomColor() {
         String[] beautifulColors =
                 new String[]{"232,221,203", "205,179,128", "3,101,100", "3,54,73", "3,22,52",
                         "237,222,139", "251,178,23", "96,143,159", "1,77,103", "254,67,101", "252,157,154",
@@ -166,7 +178,7 @@ public class ImageUtil {
      * @param cornerRadius
      * @return
      */
-    public static BufferedImage makeRoundedCorner(BufferedImage image, int cornerRadius) {
+    public  BufferedImage makeRoundedCorner(BufferedImage image, int cornerRadius) {
         int w = image.getWidth();
         int h = image.getHeight();
         BufferedImage output = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);

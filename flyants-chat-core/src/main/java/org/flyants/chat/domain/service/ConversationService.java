@@ -1,5 +1,6 @@
 package org.flyants.chat.domain.service;
 
+import org.flyants.chat.domain.entity.platform.message.Conversation;
 import org.flyants.chat.dto.app.ConversationListDto;
 import org.flyants.chat.dto.app.EditConversationDto;
 
@@ -21,4 +22,6 @@ public interface ConversationService {
     List<ConversationListDto> list(String peopleId);
 
     void editConversation(String peopleId, String conversationId, EditConversationDto editConversationDto);
+
+    Conversation getConversation(String conversationId);
 }

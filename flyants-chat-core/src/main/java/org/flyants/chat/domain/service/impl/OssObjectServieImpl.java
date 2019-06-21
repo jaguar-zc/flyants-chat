@@ -3,13 +3,17 @@ package org.flyants.chat.domain.service.impl;
 import org.apache.commons.lang3.StringUtils;
 import org.flyants.chat.domain.service.OssObjectServie;
 import org.flyants.common.file.ObjectManagerFactory;
-import org.flyants.common.utils.ImageUtil;
+import org.flyants.common.icon.IconServiceProvider;
+import org.flyants.common.icon.group.GroupIconServiceProvider;
+import org.flyants.common.icon.user.UserIconServiceProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -23,25 +27,45 @@ public class OssObjectServieImpl implements OssObjectServie {
     @Autowired
     ObjectManagerFactory objectManagerFactory;
 
+    @Resource(type = UserIconServiceProvider.class)
+    IconServiceProvider<String> userIconServiceProvider;
+
+    @Resource(type = GroupIconServiceProvider.class)
+    IconServiceProvider<List<String>> groupIconServiceProvider;
+
 
     @Override
-    public String generateIcon(String prefix_,String name) {
-
-        String prefix = "default" ;
-        if(StringUtils.isNotEmpty(prefix_)){
-            prefix = prefix_;
-        }
-
-        String imgName = prefix + "/" + UUID.randomUUID().toString().replace("-","") + ".jpg";
+    public String generateUserIcon(String prefix_,String name) {
         try {
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            ImageUtil.generateImg(name, byteArrayOutputStream);
-            ByteArrayInputStream inputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
-            String path = objectManagerFactory.upload(inputStream, imgName);
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            userIconServiceProvider.generate(name, outputStream);
+            String path = objectManagerFactory.upload(new ByteArrayInputStream(outputStream.toByteArray()), getOssImageName(prefix_));
             return path;
         } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public String generateGroupIcon(String prefix_, List<String> userAvatars) {
+        try {
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            groupIconServiceProvider.generate(userAvatars, byteArrayOutputStream);
+            String path = objectManagerFactory.upload(new ByteArrayInputStream(byteArrayOutputStream.toByteArray()), getOssImageName(prefix_));
+            return path;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private String getOssImageName(String prefix_){
+        String prefix = "default" ;
+        if(StringUtils.isNotEmpty(prefix_)){
+            prefix = prefix_;
+        }
+
+        return prefix + "/" + UUID.randomUUID().toString().replace("-","") + ".jpg";
     }
 }
