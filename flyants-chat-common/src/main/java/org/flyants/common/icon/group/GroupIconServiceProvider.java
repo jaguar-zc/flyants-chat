@@ -46,7 +46,7 @@ public class GroupIconServiceProvider implements IconServiceProvider<List<String
 
     @Override
     public void generate(List<String> userAvatars, OutputStream out) throws IOException {
-        if(userAvatars.size()>0){
+        if(userAvatars.size() > 9){
             userAvatars = userAvatars.subList(0,9);
         }
         int totalPicNum = userAvatars.size();
