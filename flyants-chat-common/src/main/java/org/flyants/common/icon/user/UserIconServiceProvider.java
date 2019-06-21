@@ -26,11 +26,11 @@ public class UserIconServiceProvider implements IconServiceProvider<String> {
     Logger logger = LoggerFactory.getLogger(getClass());
 
 
-    public static void main(String[] args) throws IOException {
-        UserIconServiceProvider userIconServiceProvider = new UserIconServiceProvider();
-        String name = "王王";
-        userIconServiceProvider.generateImg(name,name);
-    }
+//    public static void main(String[] args) throws IOException {
+//        UserIconServiceProvider userIconServiceProvider = new UserIconServiceProvider();
+//        String name = "王王";
+//        userIconServiceProvider.generateImg(name,name);
+//    }
 
     public void generateImg(String name, String outputName) throws IOException{
         String filename = "D:/opt" + File.separator + outputName + ".jpg";

@@ -23,6 +23,7 @@ import org.flyants.chat.domain.service.PeopleService;
 import org.flyants.chat.dto.app.ConversationListDto;
 import org.flyants.chat.dto.app.EditConversationDto;
 import org.flyants.chat.dto.app.MessageDto;
+import org.flyants.chat.dto.app.PeopleInfoDto;
 import org.flyants.common.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -164,7 +165,55 @@ public class ConversationServiceImpl implements ConversationService {
 
         List<Conversation> conversationList = conversationRepository.findAllById(conversationIds);
 
+        conversationList.stream().forEach(item ->{
+            List<ConversationUser> conversationUserList = item.getConversationUserList();
+            //拉对方的头像
+            Optional<People> optionalPeople = conversationUserList.stream()
+                    .filter(i -> !StringUtils.equals(i.getMessageUserId(), slefMessageUserId))
+                    .map(i -> i.getMessageUserId())
+                    .map(id -> messageUserRepository.findById(id))
+                    .map(mu -> peopleService.findPeopleById(mu.get().getPeopleId()).get()).findFirst();
+
+            if(optionalPeople.isPresent()){
+                People people = optionalPeople.get();
+                item.setName(people.getNickName());
+                item.setIcon(people.getEncodedPrincipal());
+
+                //todo 要删除的
+                if(people.getEncodedPrincipal().contains("@")){
+                    String path = ossObjectServie.generateUserIcon("headimg", people.getNickName());
+                    people.setEncodedPrincipal(path);
+                    PeopleInfoDto peopleInfoDto = new PeopleInfoDto();
+                    peopleInfoDto.setEncodedPrincipal(path);
+                    peopleService.updatePeopleInfo(people.getId(),peopleInfoDto);
+
+                    MessageUser messageUser = messageUserRepository.findByPeopleId(people.getId());
+                    messageUser.setEncodedPrincipal(path);
+                    messageUserRepository.saveAndFlush(messageUser);
+                }
+            }
+        });
+
+
         conversationList.stream().forEach(item->{
+
+            if(item.getType() == ConversationType.GROUP){
+                //todo 要删除的
+                if(item.getIcon().contains("@")){
+                    Conversation conversation = item;
+                    List<String> userAvatars = conversation.getConversationUserList().stream().map(citem -> citem.getMessageUserId())
+                            .map(id -> messageUserRepository.findById(id))
+                            .map(citem -> citem.get())
+                            .map(citem -> citem.getPeopleId())
+                            .map(id -> peopleService.findPeopleById(id).get())
+                            .map(p ->  p.getEncodedPrincipal() )
+                            .collect(Collectors.toList());
+                    String icon = ossObjectServie.generateGroupIcon("conversation",userAvatars);
+                    item.setIcon(icon);
+                    conversationRepository.saveAndFlush(item);
+                }
+            }
+
             if(item.getType() == ConversationType.SINGLE){
                 List<ConversationUser> conversationUserList = item.getConversationUserList();
                 //拉对方的头像
@@ -202,25 +251,6 @@ public class ConversationServiceImpl implements ConversationService {
                 messageDto.setSendTime(lastMessage.getSendTime());
                 messageDto.setView(lastMessage.getView());
                 conversationListDto.setLastMessage(messageDto);
-            }
-
-            //todo 要删除的
-            if(item.getIcon().contains("@")){
-                Optional<Conversation> conversationOptional = conversationRepository.findById(conversationListDto.getId());
-                if (conversationOptional.isPresent()) {
-                    Conversation conversation = conversationOptional.get();
-
-                    List<String> userAvatars = conversation.getConversationUserList().stream().map(citem -> citem.getMessageUserId())
-                            .map(id -> messageUserRepository.findById(id))
-                            .map(citem -> citem.get())
-                            .map(citem -> citem.getPeopleId())
-                            .map(id -> peopleService.findPeopleById(id).get())
-                            .map(p ->  p.getEncodedPrincipal() )
-                            .collect(Collectors.toList());
-                    String icon = ossObjectServie.generateGroupIcon("conversation",userAvatars);
-                    item.setIcon(icon);
-                    conversationRepository.saveAndFlush(item);
-                }
             }
 
             return conversationListDto;
