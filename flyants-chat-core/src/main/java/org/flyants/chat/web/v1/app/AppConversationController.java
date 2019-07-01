@@ -8,6 +8,8 @@ import org.flyants.chat.dto.app.CreateConversationDto;
 import org.flyants.chat.dto.app.CreateGroupConversationDto;
 import org.flyants.chat.dto.app.EditConversationDto;
 import org.flyants.chat.utils.JWTManager;
+import org.flyants.chat.utils.ResponseDataUtils;
+import org.flyants.common.ResponseData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,15 +33,17 @@ public class AppConversationController {
 
 
     @PostMapping("/createSingleConversation")
-    public void createSingleConversation(@Valid @RequestBody CreateConversationDto createConversationDto){
+    public ResponseData createSingleConversation(@Valid @RequestBody CreateConversationDto createConversationDto){
         String peopleId = JWTManager.get();
-        conversationService.createSingleConversation(peopleId,createConversationDto.getFirendsMessageUserId());
+        String conversationId = conversationService.createSingleConversation(peopleId, createConversationDto.getFirendsMessageUserId());
+        return ResponseDataUtils.buildSuccess(conversationId);
     }
 
     @PostMapping("/createGroupConversation")
-    public void createGroupConversation(@Valid @RequestBody CreateGroupConversationDto createConversationDto){
+    public ResponseData createGroupConversation(@Valid @RequestBody CreateGroupConversationDto createConversationDto){
         String peopleId = JWTManager.get();
-        conversationService.createGroupConversation(peopleId,createConversationDto.getMessageUserIds());
+        String conversationId = conversationService.createGroupConversation(peopleId,createConversationDto.getMessageUserIds());
+        return ResponseDataUtils.buildSuccess(conversationId);
     }
 
 
@@ -58,7 +62,6 @@ public class AppConversationController {
 
     @GetMapping("/getConversation")
     public Conversation getConversation(@RequestParam("conversationId") String conversationId){
-        String peopleId = JWTManager.get();
         return conversationService.getConversation(conversationId);
     }
 
