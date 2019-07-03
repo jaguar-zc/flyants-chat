@@ -7,27 +7,8 @@ import java.util.List;
  * @author jx on 2018/4/12.
  */
 
-public class Province {
-    private String code;
-    private String name;
+public class Province  extends Area{
     private List<City> cityList;
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public List<City> getCityList() {
         return cityList;
     }

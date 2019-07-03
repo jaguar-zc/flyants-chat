@@ -17,19 +17,21 @@ import java.util.List;
 @Service
 public class AreaServiceImpl implements AreaService {
 
-    private List<Province> provinces = new ArrayList<>();
+    private List<Province> provinces;
 
     @Override
     public List<Province> listAll() {
-        if(provinces.size() == 0 ){
+        if(provinces == null){
             try {
-                InputStream resourceAsStream = AreaServiceImpl.class.getClassLoader().getResourceAsStream("area_data/location.json");
+                InputStream resourceAsStream = getClass().getClassLoader().getResourceAsStream("area_data/location.json");
                 int available = resourceAsStream.available();
                 byte[] bytes = new byte[available];
                 resourceAsStream.read(bytes);
+                provinces = new ArrayList<>();
                 provinces = JsonUtils.json2list(new String(bytes), Province.class);
             }catch (Exception e){
                 e.printStackTrace();
+                provinces = null;
             }
         }
         return provinces;
