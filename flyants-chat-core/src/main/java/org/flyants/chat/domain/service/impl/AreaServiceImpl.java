@@ -17,7 +17,7 @@ import java.util.List;
 @Service
 public class AreaServiceImpl implements AreaService {
 
-    private static List<Province> provinces = new ArrayList<>();
+    private List<Province> provinces = new ArrayList<>();
 
     @Override
     public List<Province> listAll() {
