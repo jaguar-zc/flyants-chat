@@ -9,7 +9,7 @@ import java.util.List;
  * @Date 2019/7/1 14:35
  * @Version v1.0
  */
-public interface AreaService {
+public interface AreaService extends BaseService {
 
 
     List<Province> listAll();

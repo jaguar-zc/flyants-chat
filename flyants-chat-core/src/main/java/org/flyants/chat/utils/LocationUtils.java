@@ -88,9 +88,11 @@ public class LocationUtils {
 
     public static void main(String[] args) {
 //        System.out.println(geoconv("30.573256015777588", "103.9844799041748"));
-//        System.out.println(getLocationAddress("30.57629700765519","103.99329785274806"));
-        List<Address> stringList = searchLocation("30.57629700765519", "103.99329785274806");
-        System.out.println(JsonUtils.obj2json(stringList));
+//        System.out.println(getLocationAddress("30.530164550350616","104.05377212583299"));
+//        List<Address> stringList = searchLocation("30.57629700765519", "103.99329785274806");
+//        System.out.println(JsonUtils.obj2json(stringList));
+//        System.out.println(geoconv("30.52637645", "104.04488526"));
+        System.out.println(getLocationAddress("41.1519065091","89.5230473379"));
     }
 
 
