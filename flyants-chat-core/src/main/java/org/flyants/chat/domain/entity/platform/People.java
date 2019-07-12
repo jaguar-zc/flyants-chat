@@ -53,13 +53,16 @@ public class People {
     private Language language = Language.zh_CN;
 
     @Column
-    private String country;
-
-    @Column
     private String province;
 
     @Column
     private String city;
+
+    @Column
+    private String country;
+
+    @Column
+    private String street;
 
     @JoinColumn(name="message_user_id", unique=true)
     @OneToOne(fetch=FetchType.LAZY)

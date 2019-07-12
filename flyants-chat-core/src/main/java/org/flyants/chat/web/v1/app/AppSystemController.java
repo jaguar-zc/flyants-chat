@@ -1,14 +1,12 @@
 package org.flyants.chat.web.v1.app;
 
 import lombok.extern.slf4j.Slf4j;
-import org.flyants.chat.domain.service.AreaService;
 import org.flyants.chat.dto.Address;
-import org.flyants.chat.dto.Province;
-import org.flyants.chat.dto.app.SendSmsCodeDto;
 import org.flyants.chat.utils.LocationUtils;
 import org.flyants.common.annotation.Anonymous;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -22,21 +20,10 @@ import java.util.List;
 @Slf4j
 public class AppSystemController {
 
-    @Autowired
-    private AreaService areaService;
-
-
     @Anonymous
     @GetMapping("/sendSmsCode")
     public void sendSmsCode(String phone){
         log.info("sendSmsCode:phone:{}"+phone);
-    }
-
-
-    @Anonymous
-    @GetMapping("/area/listAll")
-    public List<Province> listAll(){
-        return areaService.listAll();
     }
 
     @Anonymous
