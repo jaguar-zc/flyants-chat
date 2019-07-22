@@ -11,9 +11,12 @@ import org.flyants.chat.dto.app.PublishMessageDto;
  * @Version v1.0
  */
 public interface MessageService {
+
     void publishMessage(String peopleId, PublishMessageDto dynamic);
 
     PageResult<Message> list(Integer page, Integer size, String conversationId);
 
     MessageUserSimpleInfoDto getPeopleSimpleInfo(String messageUserId);
+
+    MessageUserSimpleInfoDto getPeopleSimpleInfoByPeopleId(String peopleId);
 }

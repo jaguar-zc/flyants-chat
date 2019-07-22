@@ -25,6 +25,12 @@ public class AppMessageController {
     private MessageService messageService;
 
 
+    @GetMapping("/getPeopleSimpleInfoByPeopleId")
+    public MessageUserSimpleInfoDto getPeopleSimpleInfoByPeopleId(String peopleId){
+        return messageService.getPeopleSimpleInfoByPeopleId(peopleId);
+    }
+
+
     @GetMapping("/getMessageUserSimpleInfo")
     public MessageUserSimpleInfoDto getPeopleSimpleInfo(String messageUserId){
         return messageService.getPeopleSimpleInfo(messageUserId);

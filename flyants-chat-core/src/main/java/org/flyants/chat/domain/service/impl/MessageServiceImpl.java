@@ -114,11 +114,12 @@ public class MessageServiceImpl implements MessageService {
         peopleSimpleDto.setId(messageUser.getId());
         peopleSimpleDto.setNickName(messageUser.getNickName());
         peopleSimpleDto.setEncodedPrincipal(messageUser.getEncodedPrincipal());
-
-
-
-
-
         return peopleSimpleDto;
+    }
+
+    @Override
+    public MessageUserSimpleInfoDto getPeopleSimpleInfoByPeopleId(String peopleId) {
+        MessageUser messageUser = messageUserRepository.findByPeopleId(peopleId);
+        return getPeopleSimpleInfo(messageUser.getId());
     }
 }

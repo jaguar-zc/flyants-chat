@@ -56,14 +56,14 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         //检查有没有需要用户权限的注解
         // 执行认证
         if (StringUtils.isEmpty(token)) {
-            throw new TokenExpireException("401","token expire");
+            throw new TokenExpireException("401","登录超时");
         }
         // 获取 token 中的 user id
 
         Optional<Token> accessToken = tokenRepository.findByAccessToken(token);
 
         if(!accessToken.isPresent()){
-            throw new TokenExpireException("401","token expire");
+            throw new TokenExpireException("401","登录超时");
         }
 
         String peopleId = accessToken.get().getPeopleId();

@@ -16,4 +16,6 @@ public interface MessageFirendsRepository extends JpaRepository<MessageFirends,S
 
     List<MessageFirends> findAllByMyMessageUserId(String myMessageUserId);
 
+    Boolean existsByMyMessageUserIdAndFirendsMessageUserId(String myMessageUserId,String firendsMessageUserId);
+
 }
