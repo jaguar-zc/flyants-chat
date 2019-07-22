@@ -57,17 +57,27 @@ public class FriendsServiceImpl implements FriendsService {
         Optional<FriendsApplyRecord> friendsApplyRecordOptional = friendsApplyRecordRepository.findById(id);
         if(friendsApplyRecordOptional.isPresent()){
             FriendsApplyRecord friendsApplyRecord = friendsApplyRecordOptional.get();
+
+            Assert.isTrue(friendsApplyRecord.getStatus() == Status.APPLY,"请求已处理");
+
             friendsApplyRecord.setStatus(status);
             friendsApplyRecord.setHandlerTime(new Date());
             friendsApplyRecordRepository.saveAndFlush(friendsApplyRecord);
             // todo  推送消息给  friendsApplyRecord.getApplyMessageUserId()
 
-            if(status == Status.AGREE
-                    && !messageFirendsRepository.existsByMyMessageUserIdAndFirendsMessageUserId(friendsApplyRecord.getApplyMessageUserId(),friendsApplyRecord.getMessageUserId())){
-                MessageFirends messageFirends = new MessageFirends();
-                messageFirends.setMyMessageUserId(friendsApplyRecord.getApplyMessageUserId());
-                messageFirends.setFirendsMessageUserId(friendsApplyRecord.getMessageUserId());
-                messageFirendsRepository.save(messageFirends);
+            if(status == Status.AGREE ){
+                if(!messageFirendsRepository.existsByMyMessageUserIdAndFirendsMessageUserId(friendsApplyRecord.getApplyMessageUserId(),friendsApplyRecord.getMessageUserId())){
+                    MessageFirends messageFirends = new MessageFirends();
+                    messageFirends.setMyMessageUserId(friendsApplyRecord.getApplyMessageUserId());
+                    messageFirends.setFirendsMessageUserId(friendsApplyRecord.getMessageUserId());
+                    messageFirendsRepository.save(messageFirends);
+                }
+                if(!messageFirendsRepository.existsByMyMessageUserIdAndFirendsMessageUserId(friendsApplyRecord.getMessageUserId(),friendsApplyRecord.getApplyMessageUserId())){
+                    MessageFirends messageFirends = new MessageFirends();
+                    messageFirends.setMyMessageUserId(friendsApplyRecord.getMessageUserId());
+                    messageFirends.setFirendsMessageUserId(friendsApplyRecord.getApplyMessageUserId());
+                    messageFirendsRepository.save(messageFirends);
+                }
             }
         }
     }
