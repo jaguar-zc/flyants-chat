@@ -1,1 +1,0 @@
-package org.flyants.chat.domain.entity;

@@ -1,0 +1,13 @@
+spring:
+  profiles:
+    active: common,dev
+  servlet:
+    multipart:
+      max-file-size: 1024MB
+      max-request-size: 1024MB
+logging:
+  level:
+    root: INFO
+    io.sufeng: INFO
+    org.springframework.web: TRACE
+#    org.springframework.web: INFO
