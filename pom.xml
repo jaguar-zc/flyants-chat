@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.sufeng</groupId>
-    <artifactId>base-parent</artifactId>
+    <artifactId>fly-parent</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>${project.artifactId}</name>
     <packaging>pom</packaging>
@@ -48,10 +48,10 @@
 
 
     <modules>
-        <module>user-service</module>
-        <module>base-common</module>
-        <module>web-restful</module>
-        <module>im-impl-websocket</module>
+        <module>fly-base-common</module>
+        <module>fly-imimpl-netty</module>
+        <module>fly-servcie-core</module>
+        <module>fly-unified-webapi</module>
     </modules>
 
     <build>
