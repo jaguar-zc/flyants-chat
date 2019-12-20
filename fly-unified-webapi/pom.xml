@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <version>${parent.version}</version>
-    <artifactId>web-restful</artifactId>
+    <artifactId>fly-unified-webapi</artifactId>
 
     <properties>
         <java.version>1.8</java.version>
@@ -23,7 +23,7 @@
         <!-- https://mvnrepository.com/artifact/org.apache.oltu.oauth2/org.apache.oltu.oauth2.authzserver -->
         <dependency>
             <groupId>io.sufeng</groupId>
-            <artifactId>user-service</artifactId>
+            <artifactId>fly-servcie-core</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
