@@ -1,8 +1,7 @@
-package io.sufeng.impl.websocket.config;
+package io.sufeng.imimpl.netty.config;
 
 
 import io.netty.util.AttributeKey;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
@@ -12,23 +11,23 @@ import java.util.Map;
  * @Date 2019/3/21 13:08
  * @Version 1.0
  */
-@Component
 public class Config {
+    public static final String DEFAULT_API_GATEWAY = "/app/even/if/the/communication/gateway";
 
     public static final AttributeKey<Map<String, List<String>>> URI_PARAMS = AttributeKey.valueOf("URI_PARAMS") ;
 
-    private String websocketUri;
-    private int port;
-    private int maxThreads;
-    private int maxFrameLength;
-    private int allIdelTime;
+    private String apiGateway = DEFAULT_API_GATEWAY;
+    private int port = 7002;
+    private int maxThreads = 100;
+    private int maxFrameLength = 65535;
+    private int allIdelTime = 30;
 
-    public String getWebsocketUri() {
-        return websocketUri;
+    public Config(int port) {
+        this.port = port;
     }
 
-    public void setWebsocketUri(String websocketUri) {
-        this.websocketUri = websocketUri;
+    public String getApiGateway() {
+        return apiGateway;
     }
 
     public int getPort() {

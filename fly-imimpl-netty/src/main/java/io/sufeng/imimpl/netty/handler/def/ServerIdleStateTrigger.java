@@ -1,4 +1,4 @@
-package io.sufeng.impl.websocket.handler.def;
+package io.sufeng.imimpl.netty.handler.def;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;

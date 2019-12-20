@@ -1,13 +1,13 @@
-package io.sufeng.impl.websocket.handler.def;
+package io.sufeng.imimpl.netty.handler.def;
 
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
-import io.sufeng.impl.websocket.GlobalChannelManager;
-import io.sufeng.impl.websocket.ImUserService;
-import io.sufeng.impl.websocket.config.Config;
+import io.sufeng.imimpl.netty.config.Config;
+import io.sufeng.imimpl.netty.GlobalChannelManager;
+import io.sufeng.imimpl.netty.ImUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +36,7 @@ public class AuthorizeHandler extends SimpleChannelInboundHandler<FullHttpReques
     protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest request) throws Exception {
         Map<String, List<String>> attr = ctx.channel().attr(Config.URI_PARAMS).get();
         List<String> token = attr.get("token");
-        if (token.size() == 0 || !imUserService.checked(token.get(0))) {
+        if (token == null || token.size() == 0 || !imUserService.checked(token.get(0))) {
             logger.error("鉴权失败 Token错误 关闭连接:{}", token);
             ctx.channel().writeAndFlush(new TextWebSocketFrame("Token错误"));
             ctx.channel().close();

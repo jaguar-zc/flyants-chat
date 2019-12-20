@@ -1,4 +1,4 @@
-package io.sufeng.impl.websocket.message;
+package io.sufeng.imimpl.netty.message;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -14,15 +14,15 @@ import java.util.Date;
  */
 @Getter
 @Setter
-public class Msg {
+public class NettyMessage {
 
     private String id;
 
-    private String conversationId;
+    private String toId;
 
-    private String messageUserId;
+    private String sendId;
 
-    private String messageType;
+    private String type;
 
     private String body;
 

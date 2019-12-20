@@ -39,7 +39,7 @@ public class FriendsServiceImpl implements FriendsService {
     @Override
     public void applyFriends(String peopleId,String messageUserId) {
 
-        MessageUser messageUser = messageUserRepository.findByPeopleId(peopleId);
+        MessageUser messageUser = messageUserRepository.findByPeopleId(peopleId).get();
         FriendsApplyRecord friendsApplyRecord = new FriendsApplyRecord();
         friendsApplyRecord.setApplyMessageUserId(messageUser.getId());
         friendsApplyRecord.setMessageUserId(messageUserId);
@@ -82,7 +82,7 @@ public class FriendsServiceImpl implements FriendsService {
 
     @Override
     public List<MessageUserSimpleInfoDto> getFriendsList(String peopleId) {
-        MessageUser messageUser = messageUserRepository.findByPeopleId(peopleId);
+        MessageUser messageUser = messageUserRepository.findByPeopleId(peopleId).get();
         Assert.notNull(messageUser,"message user is null");
         List<MessageFirends> messageFirends = messageFirendsRepository.findAllByMyMessageUserId(messageUser.getId());
 
@@ -95,7 +95,7 @@ public class FriendsServiceImpl implements FriendsService {
 
     @Override
     public List<FriendsApplyRecordDto> getFriendsApplyList(String peopleId) {
-        MessageUser messageUser = messageUserRepository.findByPeopleId(peopleId);
+        MessageUser messageUser = messageUserRepository.findByPeopleId(peopleId).get();
 
         Assert.notNull(messageUser,"message user is null");
 

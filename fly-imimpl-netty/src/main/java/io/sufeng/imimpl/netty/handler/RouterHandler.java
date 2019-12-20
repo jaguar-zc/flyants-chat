@@ -1,4 +1,4 @@
-package io.sufeng.impl.websocket.handler;
+package io.sufeng.imimpl.netty.handler;
 
 import com.google.gson.Gson;
 import io.netty.buffer.ByteBuf;
@@ -10,10 +10,11 @@ import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpUtil;
 import io.netty.handler.codec.http.websocketx.*;
 import io.netty.util.CharsetUtil;
-import io.sufeng.impl.websocket.GlobalChannelManager;
-import io.sufeng.impl.websocket.ImUserService;
-import io.sufeng.impl.websocket.message.ErrorMsg;
-import io.sufeng.impl.websocket.message.Msg;
+import io.sufeng.common.utils.JsonUtils;
+import io.sufeng.imimpl.netty.GlobalChannelManager;
+import io.sufeng.imimpl.netty.ImUserService;
+import io.sufeng.imimpl.netty.message.ErrorMsg;
+import io.sufeng.imimpl.netty.message.NettyMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,12 +96,14 @@ public class RouterHandler extends SimpleChannelInboundHandler<Object> {
         logger.info("{}",((TextWebSocketFrame) frame).text());
 
         try{
-            String msg = ((TextWebSocketFrame) frame).text();
-            Msg msg1 = new Gson().fromJson(msg.toString(), Msg.class);
-            logger.info("{}",msg1);
+            String messageString = ((TextWebSocketFrame) frame).text();
+            NettyMessage message = JsonUtils.json2pojo(messageString, NettyMessage.class);
+            logger.info("{}",message);
+            String toChannelId = imUserService.getChannelIdByUserId(message.getToId());
+            imUserService.sendMessage(toChannelId,message);
         }catch (Exception e){
             logger.error("{}",e.getMessage());
-            ctx.writeAndFlush(new TextWebSocketFrame(new ErrorMsg(e.getMessage()).toString()));
+            ctx.writeAndFlush(new TextWebSocketFrame(JsonUtils.obj2json(new ErrorMsg(e.getMessage()))));
         }
 
     }

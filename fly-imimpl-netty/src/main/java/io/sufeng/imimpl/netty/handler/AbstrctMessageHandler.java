@@ -1,9 +1,9 @@
-package io.sufeng.impl.websocket.handler;
+package io.sufeng.imimpl.netty.handler;
 
 import com.google.gson.Gson;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.sufeng.impl.websocket.message.Msg;
+import io.sufeng.imimpl.netty.message.NettyMessage;
 
 import java.util.Iterator;
 import java.util.ServiceLoader;
@@ -28,7 +28,7 @@ public abstract class AbstrctMessageHandler extends ChannelInboundHandlerAdapter
         try{
             while(messageHandlerServiceLoader.hasNext()) {
                 MessageHandler messageHandler = messageHandlerServiceLoader.next();
-                Msg msg1 = new Gson().fromJson(msg.toString(), Msg.class);
+                NettyMessage msg1 = new Gson().fromJson(msg.toString(), NettyMessage.class);
                 boolean result = messageHandler.onMessage(ctx, msg1);
                 if(result){
                     break;

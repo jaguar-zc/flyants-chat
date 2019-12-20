@@ -60,7 +60,7 @@ public class ConversationServiceImpl implements ConversationService {
 
     @Override
     public String createSingleConversation(String peopleId, String firendsMessageUserId) {
-        MessageUser slefMessageUser = messageUserRepository.findByPeopleId(peopleId);
+        MessageUser slefMessageUser = messageUserRepository.findByPeopleId(peopleId).get();
         String slefMessageUserId = slefMessageUser.getId();
         if(StringUtils.equals(slefMessageUserId,firendsMessageUserId)){
             return null;
@@ -155,7 +155,7 @@ public class ConversationServiceImpl implements ConversationService {
 
     @Override
     public List<ConversationListDto> list(String peopleId) {
-        MessageUser slefMessageUser = messageUserRepository.findByPeopleId(peopleId);
+        MessageUser slefMessageUser = messageUserRepository.findByPeopleId(peopleId).get();
         String slefMessageUserId = slefMessageUser.getId();
         List<String> conversationIds = conversationUserRepository.findAllByMessageUserId(slefMessageUserId).stream().map(i -> i.getConversationId()).collect(Collectors.toList());
 
@@ -182,7 +182,7 @@ public class ConversationServiceImpl implements ConversationService {
                             peopleInfoDto.setEncodedPrincipal(path);
                             peopleService.updatePeopleInfo(people.getId(),peopleInfoDto);
 
-                            MessageUser messageUser = messageUserRepository.findByPeopleId(people.getId());
+                            MessageUser messageUser = messageUserRepository.findByPeopleId(people.getId()).get();
                             messageUser.setEncodedPrincipal(path);
                             messageUserRepository.saveAndFlush(messageUser);
                         }
@@ -244,7 +244,7 @@ public class ConversationServiceImpl implements ConversationService {
 
     @Override
     public void editConversation(String peopleId, String conversationId, EditConversationDto editConversationDto) {
-        MessageUser slefMessageUser = messageUserRepository.findByPeopleId(peopleId);
+        MessageUser slefMessageUser = messageUserRepository.findByPeopleId(peopleId).get();
         String slefMessageUserId = slefMessageUser.getId();
 
         Optional<Conversation> conversationOptional = conversationRepository.findById(conversationId);

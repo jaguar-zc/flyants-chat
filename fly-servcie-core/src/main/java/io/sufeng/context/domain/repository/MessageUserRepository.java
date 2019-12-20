@@ -4,6 +4,8 @@ import io.sufeng.context.domain.entity.message.MessageUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 /**
  * @Author zhangchao
  * @Date 2019/4/25 15:33
@@ -12,5 +14,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MessageUserRepository extends JpaRepository<MessageUser,String> {
 
-    MessageUser findByPeopleId(String peopleId);
+    Optional<MessageUser> findByPeopleId(String peopleId);
 }

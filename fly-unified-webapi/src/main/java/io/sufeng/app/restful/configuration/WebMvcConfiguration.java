@@ -1,8 +1,7 @@
 package io.sufeng.app.restful.configuration;
 
 import io.sufeng.app.restful.app.AppVersion;
-import io.sufeng.context.AppConfiguration;
-import io.sufeng.impl.websocket.config.Config;
+import io.sufeng.imimpl.netty.config.Config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,18 +24,6 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authenticationInterceptor).addPathPatterns(AppVersion.version + "/**");    // 拦截所有请求，通过判断是否有 @Anonymous 注解 决定是否需要登录
-    }
-
-
-    @Bean
-    public Config getConfig(){
-        Config config = new Config();
-        config.setWebsocketUri("/app/gateway");
-        config.setPort(7002);
-        config.setMaxThreads(100);
-        config.setMaxFrameLength(65535);
-        config.setAllIdelTime(30);
-        return  config;
     }
 
 }

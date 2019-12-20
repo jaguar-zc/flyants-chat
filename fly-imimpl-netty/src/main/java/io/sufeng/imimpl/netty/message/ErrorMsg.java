@@ -1,4 +1,4 @@
-package io.sufeng.impl.websocket.message;
+package io.sufeng.imimpl.netty.message;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -14,14 +14,14 @@ import java.util.UUID;
 @Builder
 @Setter
 @Getter
-public class ErrorMsg extends Msg {
+public class ErrorMsg extends NettyMessage {
     public ErrorMsg() {
-        this.setMessageType("ERROR_MSG");
+        this.setType("ERROR_MSG");
         this.setId(UUID.randomUUID().toString());
         this.setSendTime(System.currentTimeMillis());
         this.setBody("");
-        this.setConversationId("");
-        this.setMessageUserId("");
+        this.setSendId("");
+        this.setToId("");
         this.setView(0);
     }
 

@@ -30,6 +30,12 @@
             <scope>compile</scope>
         </dependency>
 
+        <dependency>
+            <groupId>io.sufeng</groupId>
+            <artifactId>fly-base-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
     </dependencies>
 
 

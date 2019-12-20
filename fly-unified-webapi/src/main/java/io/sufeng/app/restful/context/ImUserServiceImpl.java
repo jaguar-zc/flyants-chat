@@ -4,7 +4,7 @@ import io.sufeng.context.domain.entity.Token;
 import io.sufeng.context.domain.entity.message.MessageUser;
 import io.sufeng.context.domain.repository.MessageUserRepository;
 import io.sufeng.context.domain.repository.TokenRepository;
-import io.sufeng.impl.websocket.ImUserService;
+import io.sufeng.imimpl.netty.ImUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -29,28 +29,43 @@ public class ImUserServiceImpl implements ImUserService {
         return tokenRepository.findByAccessToken(token).isPresent();
     }
 
+
+
+
+    @Override
+    public String getChannelIdByUserId(String userId) {
+        Optional<MessageUser> optionalMessageUser = messageUserRepository.findByPeopleId(userId);
+        return optionalMessageUser.orElse(new MessageUser()).getChannelId();
+    }
+
     @Override
     public String getMessageUserId(String token) {
         Optional<Token> tokenOptional = tokenRepository.findByAccessToken(token);
-        MessageUser messageUser = messageUserRepository.findByPeopleId(tokenOptional.get().getPeopleId());
-        return messageUser.getId();
+        Optional<MessageUser> optionalMessageUser = messageUserRepository.findByPeopleId(tokenOptional.get().getPeopleId());
+        return optionalMessageUser.orElse(new MessageUser()).getId();
     }
 
     @Override
-    public void online(String host,String token) {
+    public void online(String host, String token) {
         Optional<Token> tokenOptional = tokenRepository.findByAccessToken(token);
-        MessageUser messageUser = messageUserRepository.findByPeopleId(tokenOptional.get().getPeopleId());
-        messageUser.setStatus(MessageUser.Status.ONLINE);
-        messageUser.setHost(host);
-        messageUserRepository.saveAndFlush(messageUser);
+        Optional<MessageUser> optionalMessageUser = messageUserRepository.findByPeopleId(tokenOptional.get().getPeopleId());
+        if (optionalMessageUser.isPresent()) {
+            MessageUser messageUser = optionalMessageUser.get();
+            messageUser.setStatus(MessageUser.Status.ONLINE);
+            messageUser.setHost(host);
+            messageUserRepository.saveAndFlush(messageUser);
+        }
     }
 
     @Override
-    public void offline(String host,String token) {
+    public void offline(String host, String token) {
         Optional<Token> tokenOptional = tokenRepository.findByAccessToken(token);
-        MessageUser messageUser = messageUserRepository.findByPeopleId(tokenOptional.get().getPeopleId());
-        messageUser.setStatus(MessageUser.Status.OFFLINE);
-        messageUser.setHost(host);
-        messageUserRepository.saveAndFlush(messageUser);
+        Optional<MessageUser> optionalMessageUser = messageUserRepository.findByPeopleId(tokenOptional.get().getPeopleId());
+        if (optionalMessageUser.isPresent()) {
+            MessageUser messageUser = optionalMessageUser.get();
+            messageUser.setStatus(MessageUser.Status.OFFLINE);
+            messageUser.setHost(host);
+            messageUserRepository.saveAndFlush(messageUser);
+        }
     }
 }

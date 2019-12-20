@@ -216,7 +216,7 @@ public class PeopleServiceImpl implements PeopleService {
         int peopleAssistCount = peopleAssistRepository.countByPeopleId(peopleId);
         peopleInfo.setPeopleAssistCount(peopleAssistCount);
 
-        MessageUser messageUser = messageUserRepository.findByPeopleId(peopleId);
+        MessageUser messageUser = messageUserRepository.findByPeopleId(peopleId).get();
         peopleInfo.setMessageUserId(messageUser.getId());
         return peopleInfo;
     }
@@ -292,14 +292,14 @@ public class PeopleServiceImpl implements PeopleService {
 
         if(StringUtils.isNotEmpty(peopleInfoDto.getEncodedPrincipal())){
             people.setEncodedPrincipal(peopleInfoDto.getEncodedPrincipal());
-            MessageUser messageUser = messageUserRepository.findByPeopleId(people.getId());
+            MessageUser messageUser = messageUserRepository.findByPeopleId(people.getId()).get();
             messageUser.setEncodedPrincipal(people.getEncodedPrincipal());
             messageUserRepository.saveAndFlush(messageUser);
         }
 
         if(StringUtils.isNotEmpty(peopleInfoDto.getNickName())) {
             people.setNickName(peopleInfoDto.getNickName());
-            MessageUser messageUser = messageUserRepository.findByPeopleId(people.getId());
+            MessageUser messageUser = messageUserRepository.findByPeopleId(people.getId()).get();
             messageUser.setNickName(people.getNickName());
             messageUserRepository.saveAndFlush(messageUser);
         }

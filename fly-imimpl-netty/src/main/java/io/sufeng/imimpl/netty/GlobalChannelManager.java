@@ -1,17 +1,10 @@
-package io.sufeng.impl.websocket;
+package io.sufeng.imimpl.netty;
 
-import com.google.gson.Gson;
 import io.netty.channel.Channel;
-import io.netty.channel.group.ChannelGroup;
-import io.netty.channel.group.DefaultChannelGroup;
-import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
-import io.netty.util.concurrent.GlobalEventExecutor;
-import io.sufeng.impl.websocket.message.Msg;
 
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Stream;
 
 /**
  * @Author zhangchao
@@ -28,16 +21,16 @@ public class GlobalChannelManager {
         tokenChannelIdMaps.put(token,channelId);
     }
 
-    public static String findChannelIdByToken(String token){
-        return tokenChannelIdMaps.get(token);
+    public static Optional<String> findChannelIdByToken(String token){
+        return Optional.ofNullable(tokenChannelIdMaps.get(token));
     }
 
     public static void addChannelIdAndChannel(String channelId,Channel channel){
         channelIdChannelMaps.put(channelId,channel);
     }
 
-    public static Channel findChannelByChannelId(String channelId){
-        return channelIdChannelMaps.get(channelId);
+    public static Optional<Channel> findChannelByChannelId(String channelId){
+        return Optional.ofNullable(channelIdChannelMaps.get(channelId));
     }
 
     public static void remove(String channelId){
@@ -50,7 +43,6 @@ public class GlobalChannelManager {
 
         channelIdChannelMaps.remove(channelId);
     }
-
 
 //    public static void publisher(String userId,Msg msg){
 //        Channel channel = userChannelMap.get(userId);

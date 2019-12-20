@@ -56,7 +56,7 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public void publishMessage(String peopleId, PublishMessageDto publishMessage) {
-        MessageUser messageUser = messageUserRepository.findByPeopleId(peopleId);
+        MessageUser messageUser = messageUserRepository.findByPeopleId(peopleId).get();
         String selfMessageUserId = messageUser.getId();
 
         Optional<Conversation> conversationOptional = conversationRepository.findById(publishMessage.getConversationId());
@@ -118,7 +118,7 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public MessageUserSimpleInfoDto getPeopleSimpleInfoByPeopleId(String peopleId) {
-        MessageUser messageUser = messageUserRepository.findByPeopleId(peopleId);
+        MessageUser messageUser = messageUserRepository.findByPeopleId(peopleId).get();
         return getPeopleSimpleInfo(messageUser.getId());
     }
 }
