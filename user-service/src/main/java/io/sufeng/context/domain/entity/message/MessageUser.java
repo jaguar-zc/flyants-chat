@@ -16,6 +16,10 @@ import javax.persistence.*;
 @Entity
 public class MessageUser {
 
+    public enum Status {
+        ONLINE, OFFLINE
+    }
+
     @Id
     @GenericGenerator(name = "system-uuid", strategy = "uuid2")
     @GeneratedValue(generator = "system-uuid")
@@ -38,5 +42,8 @@ public class MessageUser {
 
     @Column
     private String host;
+
+    @Column
+    private Status status;
 
 }

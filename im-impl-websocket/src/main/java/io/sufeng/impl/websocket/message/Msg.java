@@ -17,11 +17,17 @@ import java.util.Date;
 public class Msg {
 
     private String id;
+
     private String conversationId;
+
     private String messageUserId;
+
     private String messageType;
+
     private String body;
+
     private long sendTime;
+
     private Integer view;
 
 }

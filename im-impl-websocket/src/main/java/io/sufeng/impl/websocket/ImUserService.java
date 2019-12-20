@@ -11,10 +11,10 @@ public interface ImUserService {
         return false;
     }
 
-    String getUserId(String token);
+    default String getMessageUserId(String token){return "DEFAULT";}
 
-    void online(String token);
+    default void online(String host,String token){};
 
-    void offline(String token);
+    default void offline(String host,String token){};
 
 }

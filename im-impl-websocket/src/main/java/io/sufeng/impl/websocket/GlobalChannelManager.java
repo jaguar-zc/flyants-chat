@@ -9,7 +9,9 @@ import io.netty.util.concurrent.GlobalEventExecutor;
 import io.sufeng.impl.websocket.message.Msg;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Stream;
 
 /**
  * @Author zhangchao
@@ -18,26 +20,42 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class GlobalChannelManager {
 
-    private static Map<String,Channel> userChannelMap = new ConcurrentHashMap<>();
-    private static Map<Channel,String> channeUserlMap = new ConcurrentHashMap<>();
+    private static Map<String,String> tokenChannelIdMaps = new ConcurrentHashMap<String,String>();
+    private static Map<String,Channel> channelIdChannelMaps = new ConcurrentHashMap<String,Channel>();
 
 
-    public static void add(String userId,Channel channel){
-        userChannelMap.put(userId,channel);
-        channeUserlMap.put(channel,userId);
+    public static void addTokenAndChannelId(String token,String channelId){
+        tokenChannelIdMaps.put(token,channelId);
+    }
+
+    public static String findChannelIdByToken(String token){
+        return tokenChannelIdMaps.get(token);
+    }
+
+    public static void addChannelIdAndChannel(String channelId,Channel channel){
+        channelIdChannelMaps.put(channelId,channel);
+    }
+
+    public static Channel findChannelByChannelId(String channelId){
+        return channelIdChannelMaps.get(channelId);
+    }
+
+    public static void remove(String channelId){
+
+        tokenChannelIdMaps.forEach((k,v) ->{
+            if(v.equals(channelId)){
+                tokenChannelIdMaps.remove(k);
+            }
+        });
+
+        channelIdChannelMaps.remove(channelId);
     }
 
 
-    public static void remove(Channel channel){
-        String userId = channeUserlMap.get(channel);
-        userChannelMap.remove(userId);
-        channeUserlMap.remove(channel);
-    }
+//    public static void publisher(String userId,Msg msg){
+//        Channel channel = userChannelMap.get(userId);
+//        channel.writeAndFlush(new TextWebSocketFrame(new Gson().toJson(msg)));
+//    }
 
-
-    public static void publicsh(String userId,Msg msg){
-        Channel channel = userChannelMap.get(userId);
-        channel.writeAndFlush(new TextWebSocketFrame(new Gson().toJson(msg)));
-    }
 
 }

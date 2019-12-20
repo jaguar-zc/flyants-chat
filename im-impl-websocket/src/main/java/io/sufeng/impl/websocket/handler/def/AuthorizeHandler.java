@@ -1,10 +1,11 @@
-package io.sufeng.impl.websocket.handler;
+package io.sufeng.impl.websocket.handler.def;
 
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
+import io.sufeng.impl.websocket.GlobalChannelManager;
 import io.sufeng.impl.websocket.ImUserService;
 import io.sufeng.impl.websocket.config.Config;
 import org.slf4j.Logger;
@@ -41,6 +42,7 @@ public class AuthorizeHandler extends SimpleChannelInboundHandler<FullHttpReques
             ctx.channel().close();
             return;
         }
+        GlobalChannelManager.addTokenAndChannelId(token.get(0),ctx.channel().id().asLongText());
         logger.info("鉴权成功:{}", token);
         ctx.fireChannelRead(request.retain());
     }

@@ -126,17 +126,19 @@ public class RouterHandler extends SimpleChannelInboundHandler<Object> {
         logger.info("exceptionCaught");
         cause.printStackTrace();
         ctx.close();
+        GlobalChannelManager.remove(ctx.channel().id().asLongText());
     }
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception { // (5)
         logger.info("channelActive");
-//        GlobalChannelManager.add(ctx.channel());
+        String channelId = ctx.channel().id().asLongText();
+        GlobalChannelManager.addChannelIdAndChannel(channelId,ctx.channel());
     }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception { // (6)
         logger.info("channelInactive");
-        GlobalChannelManager.remove(ctx.channel());
+        GlobalChannelManager.remove(ctx.channel().id().asLongText());
     }
 }
