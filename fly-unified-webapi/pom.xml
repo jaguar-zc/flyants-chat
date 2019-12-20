@@ -4,11 +4,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>io.sufeng</groupId>
-        <artifactId>base-parent</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <artifactId>fly-parent</artifactId>
+        <version>1.0.0-RELEASE</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-
+    <version>${parent.version}</version>
     <artifactId>web-restful</artifactId>
 
     <properties>
@@ -37,9 +37,9 @@
             <version>2.6.1</version>
         </dependency>
         <dependency>
-            <artifactId>im-impl-websocket</artifactId>
             <groupId>io.sufeng</groupId>
-            <version>0.0.1-SNAPSHOT</version>
+            <artifactId>fly-imimpl-netty</artifactId>
+            <version>${project.version}</version>
         </dependency>
 
     </dependencies>

@@ -4,12 +4,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>io.sufeng</groupId>
-        <artifactId>base-parent</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <artifactId>fly-parent</artifactId>
+        <version>1.0.0-RELEASE</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>base-common</artifactId>
-
+    <artifactId>fly-base-common</artifactId>
+    <version>${parent.version}</version>
     <properties>
         <jackson.version>2.9.8</jackson.version>
     </properties>
@@ -39,6 +39,12 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>${jackson.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.8.6</version>
         </dependency>
 
     </dependencies>

@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.sufeng</groupId>
     <artifactId>fly-parent</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0-RELEASE</version>
     <name>${project.artifactId}</name>
     <packaging>pom</packaging>
     <description>io.sufeng.base</description>

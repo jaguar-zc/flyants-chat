@@ -4,11 +4,11 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>io.sufeng</groupId>
-        <artifactId>base-parent</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <artifactId>fly-parent</artifactId>
+        <version>1.0.0-RELEASE</version>
     </parent>
     <artifactId>user-service</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>${parent.version}</version>
     <name>${project.artifactId}</name>
     <packaging>jar</packaging>
     <description>${project.artifactId}</description>
@@ -61,7 +61,7 @@
         </dependency>
         <dependency>
             <groupId>io.sufeng</groupId>
-            <artifactId>base-common</artifactId>
+            <artifactId>fly-base-common</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
