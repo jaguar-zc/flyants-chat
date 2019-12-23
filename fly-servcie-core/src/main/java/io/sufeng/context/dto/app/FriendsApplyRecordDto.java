@@ -17,10 +17,10 @@ import java.util.Date;
 public class FriendsApplyRecordDto {
 
     private String id;
-    private String applyMessageUserId;
-    private String applyMessageNickName;
+    private String applyUserId;
+    private String applyNickName;
     private String applyMessageEncodedPrincipal;
-    private String messageUserId;
+    private String peopleId;
     private Date applyTime;
     private Date handlerTime;
     private String status;

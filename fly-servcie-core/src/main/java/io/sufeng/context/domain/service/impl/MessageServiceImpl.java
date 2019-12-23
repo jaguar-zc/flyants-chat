@@ -1,5 +1,6 @@
 package io.sufeng.context.domain.service.impl;
 
+import io.sufeng.context.domain.entity.message.ConversationUser;
 import io.sufeng.context.domain.service.OssObjectServie;
 import io.sufeng.context.configuration.PageResult;
 import io.sufeng.context.domain.entity.message.Conversation;
@@ -14,6 +15,8 @@ import io.sufeng.context.domain.service.MessageService;
 import io.sufeng.context.dto.app.MessageUserSimpleInfoDto;
 import io.sufeng.context.dto.app.PublishMessageDto;
 import io.sufeng.common.exception.BusinessException;
+import io.sufeng.imimpl.netty.ImUserService;
+import io.sufeng.imimpl.netty.message.NettyMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -50,13 +53,15 @@ public class MessageServiceImpl implements MessageService {
     @Autowired
     MessageUserRepository messageUserRepository;
 
+    @Autowired
+    ImUserService imUserService;
 
     @Autowired
     OssObjectServie ossObjectServie;
 
     @Override
     public void publishMessage(String peopleId, PublishMessageDto publishMessage) {
-        MessageUser messageUser = messageUserRepository.findByPeopleId(peopleId).get();
+        MessageUser messageUser = messageUserRepository.findById(peopleId).get();
         String selfMessageUserId = messageUser.getId();
 
         Optional<Conversation> conversationOptional = conversationRepository.findById(publishMessage.getConversationId());
@@ -77,8 +82,29 @@ public class MessageServiceImpl implements MessageService {
         message.setView(0);
         messageRepository.save(message);
 
+        List<ConversationUser> conversationUserList = conversation.getConversationUserList();
+        conversationUserList.stream().filter(item -> !item.getMessageUserId().equals(peopleId)).forEach(item ->{
 
-        // todo 推送消息
+            String messageUserId = item.getMessageUserId();
+
+            Optional<MessageUser> optionalMessageUser = messageUserRepository.findById(messageUserId);
+            if(optionalMessageUser.isPresent()){
+                MessageUser messageUser1 = optionalMessageUser.get();
+
+                // todo 推送消息
+                NettyMessage nettyMessage = new NettyMessage();
+                nettyMessage.setId(message.getId());
+                nettyMessage.setToId(messageUser1.getId());
+                nettyMessage.setSendId(selfMessageUserId);
+                nettyMessage.setType(message.getMessageType().name());
+                nettyMessage.setBody(message.getBody());
+                nettyMessage.setSendTime(message.getSendTime().getTime());
+                nettyMessage.setView(0);
+                imUserService.sendMessage(messageUser1.getChannelId(),nettyMessage);
+            }
+        });
+
+
     }
 
 
@@ -118,7 +144,7 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public MessageUserSimpleInfoDto getPeopleSimpleInfoByPeopleId(String peopleId) {
-        MessageUser messageUser = messageUserRepository.findByPeopleId(peopleId).get();
+        MessageUser messageUser = messageUserRepository.findById(peopleId).get();
         return getPeopleSimpleInfo(messageUser.getId());
     }
 }

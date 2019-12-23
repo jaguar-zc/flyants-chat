@@ -176,7 +176,7 @@ public class PeopleServiceImpl implements PeopleService {
 
         //保存消息用户
         MessageUser messageUser = new MessageUser();
-        messageUser.setPeopleId(people.getId());
+        messageUser.setId(people.getId());
         messageUser.setNickName(people.getNickName());
         messageUser.setEncodedPrincipal(people.getEncodedPrincipal());
         messageUserRepository.save(messageUser);
@@ -216,8 +216,7 @@ public class PeopleServiceImpl implements PeopleService {
         int peopleAssistCount = peopleAssistRepository.countByPeopleId(peopleId);
         peopleInfo.setPeopleAssistCount(peopleAssistCount);
 
-        MessageUser messageUser = messageUserRepository.findByPeopleId(peopleId).get();
-        peopleInfo.setMessageUserId(messageUser.getId());
+        MessageUser messageUser = messageUserRepository.findById(peopleId).get();
         return peopleInfo;
     }
 
@@ -292,14 +291,14 @@ public class PeopleServiceImpl implements PeopleService {
 
         if(StringUtils.isNotEmpty(peopleInfoDto.getEncodedPrincipal())){
             people.setEncodedPrincipal(peopleInfoDto.getEncodedPrincipal());
-            MessageUser messageUser = messageUserRepository.findByPeopleId(people.getId()).get();
+            MessageUser messageUser = messageUserRepository.findById(people.getId()).get();
             messageUser.setEncodedPrincipal(people.getEncodedPrincipal());
             messageUserRepository.saveAndFlush(messageUser);
         }
 
         if(StringUtils.isNotEmpty(peopleInfoDto.getNickName())) {
             people.setNickName(peopleInfoDto.getNickName());
-            MessageUser messageUser = messageUserRepository.findByPeopleId(people.getId()).get();
+            MessageUser messageUser = messageUserRepository.findById(people.getId()).get();
             messageUser.setNickName(people.getNickName());
             messageUserRepository.saveAndFlush(messageUser);
         }

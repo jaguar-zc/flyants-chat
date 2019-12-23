@@ -38,8 +38,7 @@ public class FriendsServiceImpl implements FriendsService {
 
     @Override
     public void applyFriends(String peopleId,String messageUserId) {
-
-        MessageUser messageUser = messageUserRepository.findByPeopleId(peopleId).get();
+        MessageUser messageUser = messageUserRepository.findById(peopleId).get();
         FriendsApplyRecord friendsApplyRecord = new FriendsApplyRecord();
         friendsApplyRecord.setApplyMessageUserId(messageUser.getId());
         friendsApplyRecord.setMessageUserId(messageUserId);
@@ -64,16 +63,16 @@ public class FriendsServiceImpl implements FriendsService {
             // todo  推送消息给  friendsApplyRecord.getApplyMessageUserId()
 
             if(status == Status.AGREE ){
-                if(!messageFirendsRepository.existsByMyMessageUserIdAndFirendsMessageUserId(friendsApplyRecord.getApplyMessageUserId(),friendsApplyRecord.getMessageUserId())){
+                if(!messageFirendsRepository.existsByMyPeopleIdAndFirendsPeopleId(friendsApplyRecord.getApplyMessageUserId(),friendsApplyRecord.getMessageUserId())){
                     MessageFirends messageFirends = new MessageFirends();
-                    messageFirends.setMyMessageUserId(friendsApplyRecord.getApplyMessageUserId());
-                    messageFirends.setFirendsMessageUserId(friendsApplyRecord.getMessageUserId());
+                    messageFirends.setMyPeopleId(friendsApplyRecord.getApplyMessageUserId());
+                    messageFirends.setFirendsPeopleId(friendsApplyRecord.getMessageUserId());
                     messageFirendsRepository.save(messageFirends);
                 }
-                if(!messageFirendsRepository.existsByMyMessageUserIdAndFirendsMessageUserId(friendsApplyRecord.getMessageUserId(),friendsApplyRecord.getApplyMessageUserId())){
+                if(!messageFirendsRepository.existsByMyPeopleIdAndFirendsPeopleId(friendsApplyRecord.getMessageUserId(),friendsApplyRecord.getApplyMessageUserId())){
                     MessageFirends messageFirends = new MessageFirends();
-                    messageFirends.setMyMessageUserId(friendsApplyRecord.getMessageUserId());
-                    messageFirends.setFirendsMessageUserId(friendsApplyRecord.getApplyMessageUserId());
+                    messageFirends.setMyPeopleId(friendsApplyRecord.getMessageUserId());
+                    messageFirends.setFirendsPeopleId(friendsApplyRecord.getApplyMessageUserId());
                     messageFirendsRepository.save(messageFirends);
                 }
             }
@@ -82,12 +81,12 @@ public class FriendsServiceImpl implements FriendsService {
 
     @Override
     public List<MessageUserSimpleInfoDto> getFriendsList(String peopleId) {
-        MessageUser messageUser = messageUserRepository.findByPeopleId(peopleId).get();
+        MessageUser messageUser = messageUserRepository.findById(peopleId).get();
         Assert.notNull(messageUser,"message user is null");
-        List<MessageFirends> messageFirends = messageFirendsRepository.findAllByMyMessageUserId(messageUser.getId());
+        List<MessageFirends> messageFirends = messageFirendsRepository.findAllByMyPeopleId(messageUser.getId());
 
         return messageFirends.stream().map(item ->{
-            MessageUser friendsMessageUser = messageUserRepository.findById(item.getFirendsMessageUserId()).get();
+            MessageUser friendsMessageUser = messageUserRepository.findById(item.getFirendsPeopleId()).get();
             return new MessageUserSimpleInfoDto(friendsMessageUser.getId(),friendsMessageUser.getNickName(),friendsMessageUser.getEncodedPrincipal() );
         }).collect(Collectors.toList());
     }
@@ -95,7 +94,7 @@ public class FriendsServiceImpl implements FriendsService {
 
     @Override
     public List<FriendsApplyRecordDto> getFriendsApplyList(String peopleId) {
-        MessageUser messageUser = messageUserRepository.findByPeopleId(peopleId).get();
+        MessageUser messageUser = messageUserRepository.findById(peopleId).get();
 
         Assert.notNull(messageUser,"message user is null");
 
@@ -106,10 +105,10 @@ public class FriendsServiceImpl implements FriendsService {
 
             FriendsApplyRecordDto record = new FriendsApplyRecordDto();
             record.setId(item.getId());
-            record.setApplyMessageUserId(item.getApplyMessageUserId());
-            record.setApplyMessageNickName(applyMessageUser.getNickName());
+            record.setApplyUserId(item.getApplyMessageUserId());
+            record.setApplyNickName(applyMessageUser.getNickName());
             record.setApplyMessageEncodedPrincipal(applyMessageUser.getEncodedPrincipal());
-            record.setMessageUserId(item.getMessageUserId());
+            record.setPeopleId(item.getMessageUserId());
             record.setApplyTime(item.getApplyTime());
             record.setHandlerTime(item.getHandlerTime());
             record.setStatus(item.getStatus().name());

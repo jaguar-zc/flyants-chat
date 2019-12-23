@@ -93,16 +93,16 @@ public class RouterHandler extends SimpleChannelInboundHandler<Object> {
 
         // 返回应答消息
 //        String request = ((TextWebSocketFrame) frame).text();
-        logger.info("{}",((TextWebSocketFrame) frame).text());
+        String messageString = ((TextWebSocketFrame) frame).text();
 
         try{
-            String messageString = ((TextWebSocketFrame) frame).text();
+            logger.info("{}",((TextWebSocketFrame) frame).text());
             NettyMessage message = JsonUtils.json2pojo(messageString, NettyMessage.class);
             logger.info("{}",message);
             String toChannelId = imUserService.getChannelIdByUserId(message.getToId());
             imUserService.sendMessage(toChannelId,message);
         }catch (Exception e){
-            logger.error("{}",e.getMessage());
+            logger.error("消息解码失败{}",messageString);
             ctx.writeAndFlush(new TextWebSocketFrame(JsonUtils.obj2json(new ErrorMsg(e.getMessage()))));
         }
 

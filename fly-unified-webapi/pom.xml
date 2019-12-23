@@ -36,11 +36,6 @@
             <artifactId>springfox-swagger-ui</artifactId>
             <version>2.6.1</version>
         </dependency>
-        <dependency>
-            <groupId>io.sufeng</groupId>
-            <artifactId>fly-imimpl-netty</artifactId>
-            <version>${project.version}</version>
-        </dependency>
 
     </dependencies>
 

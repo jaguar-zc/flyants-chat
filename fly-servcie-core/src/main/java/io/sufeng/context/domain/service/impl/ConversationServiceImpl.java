@@ -60,7 +60,7 @@ public class ConversationServiceImpl implements ConversationService {
 
     @Override
     public String createSingleConversation(String peopleId, String firendsMessageUserId) {
-        MessageUser slefMessageUser = messageUserRepository.findByPeopleId(peopleId).get();
+        MessageUser slefMessageUser = messageUserRepository.findById(peopleId).get();
         String slefMessageUserId = slefMessageUser.getId();
         if(StringUtils.equals(slefMessageUserId,firendsMessageUserId)){
             return null;
@@ -75,7 +75,7 @@ public class ConversationServiceImpl implements ConversationService {
         conversation.setType(ConversationType.SINGLE);
         conversation.setTop(0);
         conversation.setDontDisturb(0);
-        conversation.setMessageUserId(slefMessageUserId);
+        conversation.setOwnerPeopleId(slefMessageUserId);
         conversation.setCreateTime(new Date());
         conversation.setLastUpdateTime(new Date());
 
@@ -112,7 +112,7 @@ public class ConversationServiceImpl implements ConversationService {
             List<String> collect = conversationUserList.stream().map(item -> item.getMessageUserId())
                     .map(id -> messageUserRepository.findById(id))
                     .map(item -> item.get())
-                    .map(item -> item.getPeopleId())
+                    .map(item -> item.getId())
                     .map(id -> peopleService.findPeopleById(id).get())
                     .map(p -> {
                         userAvatars.add(p.getEncodedPrincipal());
@@ -155,7 +155,7 @@ public class ConversationServiceImpl implements ConversationService {
 
     @Override
     public List<ConversationListDto> list(String peopleId) {
-        MessageUser slefMessageUser = messageUserRepository.findByPeopleId(peopleId).get();
+        MessageUser slefMessageUser = messageUserRepository.findById(peopleId).get();
         String slefMessageUserId = slefMessageUser.getId();
         List<String> conversationIds = conversationUserRepository.findAllByMessageUserId(slefMessageUserId).stream().map(i -> i.getConversationId()).collect(Collectors.toList());
 
@@ -167,11 +167,11 @@ public class ConversationServiceImpl implements ConversationService {
                     .filter(i -> !StringUtils.equals(i.getMessageUserId(), slefMessageUserId))
                     .map(i -> i.getMessageUserId())
                     .map(id -> messageUserRepository.findById(id))
-                    .map(mu -> peopleService.findPeopleById(mu.get().getPeopleId()).get()).findFirst();
+                    .map(mu -> peopleService.findPeopleById(mu.get().getId()).get()).findFirst();
 
 
             conversationUserList.stream().map(i->i.getMessageUserId())
-                    .map(i -> messageUserRepository.findById(i).get().getPeopleId())
+                    .map(i -> messageUserRepository.findById(i).get().getId())
                     .map(i -> peopleService.findPeopleById(i).get())
                     .forEach(people ->{
                         //todo 要删除的
@@ -182,7 +182,7 @@ public class ConversationServiceImpl implements ConversationService {
                             peopleInfoDto.setEncodedPrincipal(path);
                             peopleService.updatePeopleInfo(people.getId(),peopleInfoDto);
 
-                            MessageUser messageUser = messageUserRepository.findByPeopleId(people.getId()).get();
+                            MessageUser messageUser = messageUserRepository.findById(people.getId()).get();
                             messageUser.setEncodedPrincipal(path);
                             messageUserRepository.saveAndFlush(messageUser);
                         }
@@ -204,7 +204,7 @@ public class ConversationServiceImpl implements ConversationService {
                         .filter(i -> !StringUtils.equals(i.getMessageUserId(), slefMessageUserId))
                         .map(i -> i.getMessageUserId())
                         .map(id -> messageUserRepository.findById(id))
-                        .map(mu -> peopleService.findPeopleById(mu.get().getPeopleId()).get()).findFirst();
+                        .map(mu -> peopleService.findPeopleById(mu.get().getId()).get()).findFirst();
 
                 if(optionalPeople.isPresent()){
                     People people = optionalPeople.get();
@@ -224,7 +224,7 @@ public class ConversationServiceImpl implements ConversationService {
             conversationListDto.setTags(item.getTags());
             conversationListDto.setTop(item.getTop());
             conversationListDto.setDontDisturb(item.getDontDisturb());
-            conversationListDto.setMessageUserId(item.getMessageUserId());
+            conversationListDto.setOwnerPeopleId(item.getOwnerPeopleId());
             Message lastMessage = messageRepository.findFirstByConversationIdOrderBySendTimeDesc(item.getId());
             if(lastMessage != null){
                 MessageDto messageDto = new MessageDto();
@@ -244,7 +244,7 @@ public class ConversationServiceImpl implements ConversationService {
 
     @Override
     public void editConversation(String peopleId, String conversationId, EditConversationDto editConversationDto) {
-        MessageUser slefMessageUser = messageUserRepository.findByPeopleId(peopleId).get();
+        MessageUser slefMessageUser = messageUserRepository.findById(peopleId).get();
         String slefMessageUserId = slefMessageUser.getId();
 
         Optional<Conversation> conversationOptional = conversationRepository.findById(conversationId);
@@ -253,7 +253,7 @@ public class ConversationServiceImpl implements ConversationService {
         }
 
         Conversation conversation = conversationOptional.get();
-        if(!StringUtils.equals(conversation.getMessageUserId(),slefMessageUserId)){
+        if(!StringUtils.equals(conversation.getOwnerPeopleId(),slefMessageUserId)){
             throw new BusinessException("只能由群主修改");
         }
 
@@ -292,7 +292,7 @@ public class ConversationServiceImpl implements ConversationService {
                 List<String> userAvatars = conversation.getConversationUserList().stream().map(citem -> citem.getMessageUserId())
                         .map(id -> messageUserRepository.findById(id))
                         .map(citem -> citem.get())
-                        .map(citem -> citem.getPeopleId())
+                        .map(citem -> citem.getId())
                         .map(id -> peopleService.findPeopleById(id).get())
                         .map(p ->  p.getEncodedPrincipal() )
                         .collect(Collectors.toList());

@@ -21,12 +21,7 @@ public class MessageUser {
     }
 
     @Id
-    @GenericGenerator(name = "system-uuid", strategy = "uuid2")
-    @GeneratedValue(generator = "system-uuid")
     private String id;
-
-    @Column
-    private String peopleId;
 
     @Column
     private String encodedPrincipal;

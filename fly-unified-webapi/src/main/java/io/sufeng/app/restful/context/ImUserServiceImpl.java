@@ -34,21 +34,21 @@ public class ImUserServiceImpl implements ImUserService {
 
     @Override
     public String getChannelIdByUserId(String userId) {
-        Optional<MessageUser> optionalMessageUser = messageUserRepository.findByPeopleId(userId);
+        Optional<MessageUser> optionalMessageUser = messageUserRepository.findById(userId);
         return optionalMessageUser.orElse(new MessageUser()).getChannelId();
     }
 
     @Override
     public String getMessageUserId(String token) {
         Optional<Token> tokenOptional = tokenRepository.findByAccessToken(token);
-        Optional<MessageUser> optionalMessageUser = messageUserRepository.findByPeopleId(tokenOptional.get().getPeopleId());
+        Optional<MessageUser> optionalMessageUser = messageUserRepository.findById(tokenOptional.get().getPeopleId());
         return optionalMessageUser.orElse(new MessageUser()).getId();
     }
 
     @Override
     public void online(String host, String token) {
         Optional<Token> tokenOptional = tokenRepository.findByAccessToken(token);
-        Optional<MessageUser> optionalMessageUser = messageUserRepository.findByPeopleId(tokenOptional.get().getPeopleId());
+        Optional<MessageUser> optionalMessageUser = messageUserRepository.findById(tokenOptional.get().getPeopleId());
         if (optionalMessageUser.isPresent()) {
             MessageUser messageUser = optionalMessageUser.get();
             messageUser.setStatus(MessageUser.Status.ONLINE);
@@ -60,7 +60,7 @@ public class ImUserServiceImpl implements ImUserService {
     @Override
     public void offline(String host, String token) {
         Optional<Token> tokenOptional = tokenRepository.findByAccessToken(token);
-        Optional<MessageUser> optionalMessageUser = messageUserRepository.findByPeopleId(tokenOptional.get().getPeopleId());
+        Optional<MessageUser> optionalMessageUser = messageUserRepository.findById(tokenOptional.get().getPeopleId());
         if (optionalMessageUser.isPresent()) {
             MessageUser messageUser = optionalMessageUser.get();
             messageUser.setStatus(MessageUser.Status.OFFLINE);

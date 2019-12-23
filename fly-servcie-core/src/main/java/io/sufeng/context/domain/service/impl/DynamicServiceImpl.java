@@ -140,7 +140,7 @@ public class DynamicServiceImpl implements DynamicService {
     public PageResult<DynamicDto> listFriend(Integer page, Integer size, String peopleId) {
         List<String> peopleIds = new ArrayList<>();
         peopleIds.add(peopleId);
-        MessageUser myMessageUser = messageUserRepository.findByPeopleId(peopleId).get();
+        MessageUser myMessageUser = messageUserRepository.findById(peopleId).get();
         //查询我的朋友 并且将其转换为 peopleId 数组
         List<String> collect = messageFirendsRepository.findAllByMyMessageUserId(myMessageUser.getId())
                 .stream()
@@ -148,7 +148,7 @@ public class DynamicServiceImpl implements DynamicService {
                 .map(id -> messageUserRepository.findById(id))
                 .filter(item -> item.isPresent())
                 .map(item -> item.get())
-                .map(item -> item.getPeopleId()).collect(Collectors.toList());
+                .map(item -> item.getId()).collect(Collectors.toList());
 
         peopleIds.addAll(collect);
         return list(page, size, peopleIds);

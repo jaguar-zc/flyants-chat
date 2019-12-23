@@ -23,9 +23,9 @@ public class MessageFirends {
     private String id;
 
     @Column
-    private String myMessageUserId;
+    private String myPeopleId;
 
     @Column
-    private String firendsMessageUserId;
+    private String firendsPeopleId;
 
 }

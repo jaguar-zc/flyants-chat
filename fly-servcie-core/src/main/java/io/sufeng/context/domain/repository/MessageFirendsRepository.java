@@ -14,8 +14,8 @@ import java.util.List;
 @Repository
 public interface MessageFirendsRepository extends JpaRepository<MessageFirends,String> {
 
-    List<MessageFirends> findAllByMyMessageUserId(String myMessageUserId);
+    List<MessageFirends> findAllByMyPeopleId(String myMessageUserId);
 
-    Boolean existsByMyMessageUserIdAndFirendsMessageUserId(String myMessageUserId,String firendsMessageUserId);
+    Boolean existsByMyPeopleIdAndFirendsPeopleId(String myPeopleId,String firendsPeopleId);
 
 }

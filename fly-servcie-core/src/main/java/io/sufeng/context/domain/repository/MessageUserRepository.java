@@ -14,5 +14,5 @@ import java.util.Optional;
 @Repository
 public interface MessageUserRepository extends JpaRepository<MessageUser,String> {
 
-    Optional<MessageUser> findByPeopleId(String peopleId);
+    Optional<MessageUser> findById(String peopleId);
 }

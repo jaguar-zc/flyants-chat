@@ -50,7 +50,7 @@ public class Conversation {
     private Date lastUpdateTime;//最后更新时间
 
     @Column
-    private String messageUserId;//会话拥有者
+    private String ownerPeopleId;//会话拥有者
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "conversationId")

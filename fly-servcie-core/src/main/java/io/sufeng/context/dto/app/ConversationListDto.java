@@ -22,7 +22,7 @@ public class ConversationListDto {
     private String tags;//标签
     private Integer top;//置顶
     private Integer dontDisturb;//免打扰
-    private String messageUserId;//会话拥有者
+    private String ownerPeopleId;//会话拥有者
     private MessageDto lastMessage;//最后一条消息
     private Date createTime;//创建时间
     private Date lastUpdateTime;//最后更新时间
