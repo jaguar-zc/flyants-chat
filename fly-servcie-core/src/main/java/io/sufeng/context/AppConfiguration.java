@@ -1,6 +1,7 @@
 package io.sufeng.context;
 
 import io.sufeng.common.file.aliyun.AliyunOssObjectManagerFactory;
+import io.sufeng.common.icon.github.GitHubIconServiceProvider;
 import io.sufeng.common.icon.group.GroupIconServiceProvider;
 import io.sufeng.common.icon.user.UserIconServiceProvider;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -38,6 +39,12 @@ public class AppConfiguration {
     public GroupIconServiceProvider getGroupIconServiceProvider(){
         return new GroupIconServiceProvider();
     }
+    @Bean
+    public GitHubIconServiceProvider getGitHubIconServiceProvider(){
+        return new GitHubIconServiceProvider();
+    }
+
+
 
 
     @PostConstruct

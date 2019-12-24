@@ -1,5 +1,6 @@
 package io.sufeng.context.domain.service.impl;
 
+import io.sufeng.common.icon.github.GitHubIconServiceProvider;
 import io.sufeng.context.domain.service.OssObjectServie;
 import org.apache.commons.lang3.StringUtils;
 import io.sufeng.common.file.ObjectManagerFactory;
@@ -27,7 +28,7 @@ public class OssObjectServieImpl implements OssObjectServie {
     @Autowired
     ObjectManagerFactory objectManagerFactory;
 
-    @Resource(type = UserIconServiceProvider.class)
+    @Resource(type = GitHubIconServiceProvider.class)
     IconServiceProvider<String> userIconServiceProvider;
 
     @Resource(type = GroupIconServiceProvider.class)
