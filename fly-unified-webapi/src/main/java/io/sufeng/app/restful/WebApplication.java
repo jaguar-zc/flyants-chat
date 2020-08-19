@@ -12,10 +12,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @ImportAutoConfiguration(AppConfiguration.class)
 @SpringBootApplication
-public class UnifiedRestfulApplication {
+public class WebApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(UnifiedRestfulApplication.class, args);
+        SpringApplication.run(WebApplication.class, args);
     }
 
 }
